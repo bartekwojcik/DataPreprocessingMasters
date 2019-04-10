@@ -33,9 +33,9 @@ class Face:
             ]
         )
 
-    def is_inside_face(self, vector: list) -> bool:
+    def is_inside_face(self, vec: np.ndarray) -> bool:
 
-        vec = np.array(vector).astype(float)
+
         transformed_vec = self.transform_to_face(vec)
         efsr = self.m_extraFaceSpaceRatio
         if (

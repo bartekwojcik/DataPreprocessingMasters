@@ -12,11 +12,12 @@ class JointConstants:
     TALKING = "talking"
     TIME_END = "timeEnd"
     TIME_START = "timeStart"
-    TYPE = "TYPE"
+    TYPE = "type"
     MISSING = "missing"
     EXTRA_INFO = "extraInfo"
     FPS = "fps"
     DATA = "data"
+    OUT = "out"
 
 
 
