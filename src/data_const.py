@@ -16,6 +16,7 @@ class JointConstants:
     MISSING = "missing"
     EXTRA_INFO = "extraInfo"
     FPS = "fps"
+    DATA = "data"
 
 
 

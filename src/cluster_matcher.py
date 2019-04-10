@@ -17,7 +17,7 @@ class ClusterMatcher:
             list(map(lambda item: item[0], list_of_tuples)), string
         )
 
-    def label_centroids_heuristically(self, centroids):
+    def label_centroids_heuristically(self, centroids: np.ndarray):
         """
         Labels centroids to "mouth", "rightEye" or "rightEye"
         :return:
