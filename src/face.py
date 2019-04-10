@@ -60,3 +60,4 @@ class Face:
     def __norm(self, vec):
         vec = np.array(vec).astype(float)
         return float(np.sqrt(vec.dot(vec)))
+

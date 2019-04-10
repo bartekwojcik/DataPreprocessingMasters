@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 from data_const import JointConstants
 
@@ -10,3 +12,7 @@ class Utils:
     @staticmethod
     def vec_to_dict(vector: np.ndarray) -> dict:
         return {JointConstants.X: vector[0], JointConstants.Y: vector[1]}
+
+    @staticmethod
+    def any_string_in_list(list_of_strings: List[str], searched_string: str):
+        return any(item == searched_string for item in list_of_strings)
