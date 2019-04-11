@@ -22,19 +22,21 @@ class ConversationGazeTranslator:
         clustering_data: dict,
         main_person: str,
         other_person: str,
-        num_clusters: int,
+        main_num_clusters: int,
+        other_num_clusters: int,
     ):
         self.__main_person = main_person
         self.__other_person = other_person
-        self.__num_clusters = num_clusters
+        self.__num_clusters_main = main_num_clusters
+        self.__num_clusters_other = other_num_clusters
         self.__clustering_data = clustering_data
         self.__joint_data = joint_data
         self.__res_info = self.__extract_resolution_info(joint_data)
         self.__centroids_main = self.__extract_centroids(
-            self.__clustering_data, self.__main_person, self.__num_clusters
+            self.__clustering_data, self.__main_person, self.__num_clusters_main
         )
         self.__centroids_other = self.__extract_centroids(
-            self.__clustering_data, self.__main_person, self.__num_clusters
+            self.__clustering_data, self.__main_person, self.__num_clusters_other
         )
 
         self.__cluster_matcher = ClusterMatcher()

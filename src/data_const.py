@@ -20,7 +20,6 @@ class JointConstants:
     OUT = "out"
 
 
-
 class ClusterConstants(object):
     PERSON_1 = "person1"
     PERSON_2 = "person2"
@@ -38,3 +37,11 @@ class ClusterConstants(object):
     IN_COUNT = "inCount"
 
 
+class UsableConversationConstants():
+    MAIN = "main"
+    NUMBER = "number"
+    PERSON1 = "person1"
+    PERSON2 = "person2"
+    FACE_CLUSTERS = "faceClusters"
+    OTHER_PERSON_CLUSTERS = "otherPersonClusters"
+    CONVERSATIONS = "conversations"

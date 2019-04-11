@@ -3,137 +3,130 @@
 	{
 	"number" : 3,
 	"main" : "person1" ,
-	"faceClusters" : 2
+	"faceClusters" : 2,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 4,
 	"main" : "person1" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 6,
 	"main" : "person1" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,
+	"otherPersonClusters": 2
 	},
 	{
 	"number" : 7,
 	"main" : "person2" ,
-	"faceClusters" : 2
+	"faceClusters" : 2,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 8,
 	"main" : "person1" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 9,
 	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,
+	"otherPersonClusters": 2
 	},
 	{
 	"number" : 11,
 	"main" : "person2" ,
 	"faceClusters" : 2
+	,"otherPersonClusters": 3
 	},
 	{
 	"number" : 13,
 	"main" : "person2" ,
 	"faceClusters" : 2
+	,"otherPersonClusters": 2
 	},
 	{
 	"number" : 15,
 	"main" : "person1" ,
-	"faceClusters" : 2
-	},
-	{
-	"number" : 15,
-	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 2,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 16,
 	"main" : "person1" ,
 	"faceClusters" : 3
+	,"otherPersonClusters": 3
 	},
 	{
 	"number" : 17,
 	"main" : "person1" ,
 	"faceClusters" : 3
+	,"otherPersonClusters": 2
 	},
 	{
 	"number" : 19,
 	"main" : "person2" ,
-	"faceClusters" : 2
+	"faceClusters" : 2,"otherPersonClusters": 2
 	},
 	{
 	"number" : 24,
 	"main" : "person1" ,
-	"faceClusters" : 2
+	"faceClusters" : 2,"otherPersonClusters": 3
 	},
 	{
 	"number" : 26,
 	"main" : "person1" ,
-	"faceClusters" : 2
-	},
-	{
-	"number" : 26,
-	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 2,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 29,
 	"main" : "person1" ,
-	"faceClusters" : 3
-	},
-	{
-	"number" : 29,
-	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,
+	"otherPersonClusters": 3
 	},
 	{
 	"number" : 30,
 	"main" : "person1" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 2
 	},
 	{
 	"number" : 31,
 	"main" : "person1" ,
-	"faceClusters" : 3
-	},
-	{
-	"number" : 31,
-	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 3
 	},
 	{
 	"number" : 32,
 	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 2
 	},
 	{
 	"number" : 33,
 	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 3
 	},
 	{
 	"number" : 34,
 	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 2
 	},
 	{
 	"number" : 35,
 	"main" : "person2" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 2
 	},
 	{
 	"number" : 36,
 	"main" : "person1" ,
-	"faceClusters" : 3
+	"faceClusters" : 3,"otherPersonClusters": 2
 	},
 	{
 	"number" : 37,
 	"main" : "person2" ,
-	"faceClusters" : 2
+	"faceClusters" : 2,"otherPersonClusters": 2
 	}
 ]
 }
