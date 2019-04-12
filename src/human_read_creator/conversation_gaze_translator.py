@@ -1,10 +1,12 @@
 import json
 import math
 from typing import Tuple
-from cluster_matcher import ClusterMatcher
+from human_read_creator.cluster_matcher import ClusterMatcher
 from data_const import ClusterConstants as ConstCluster, JointConstants as ConstJoint
-from utils import *
-from face import Face
+from human_read_creator.utils import *
+from human_read_creator.face import Face
+
+
 
 """
 Converts conversation (per frame) file from gaze x and y coordinates to gaze "mouth" or gaze "out"
