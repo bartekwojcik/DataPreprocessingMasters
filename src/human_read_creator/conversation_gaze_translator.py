@@ -167,7 +167,7 @@ class ConversationGazeTranslator:
             gaze_main_state = ConstJoint.OUT  # type: str
             gaze_other_state = ConstJoint.OUT  # type: str
 
-            if main_face.is_inside_face(gaze_other_vector):
+            if main_face.is_gaze_inside(gaze_other_vector):
                 gaze_other_state = self.__get_centroid_label(
                     self.__centroids_main,
                     centroids_with_labels_main,
@@ -176,8 +176,8 @@ class ConversationGazeTranslator:
                 )
 
             # Note: in fracisco code it was otherFace.isInside(gazeOther)
-            if other_face.is_inside_face(gaze_main_vector):
-                gaze_other_state = self.__get_centroid_label(
+            if other_face.is_gaze_inside(gaze_main_vector):
+                gaze_main_state = self.__get_centroid_label(
                     self.__centroids_other,
                     centroids_with_labels_other,
                     gaze_main_vector,

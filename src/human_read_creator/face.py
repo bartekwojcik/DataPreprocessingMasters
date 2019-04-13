@@ -33,7 +33,7 @@ class Face:
             ]
         )
 
-    def is_inside_face(self, vec: np.ndarray) -> bool:
+    def is_gaze_inside(self, vec: np.ndarray) -> bool:
 
 
         transformed_vec = self.transform_to_face(vec)

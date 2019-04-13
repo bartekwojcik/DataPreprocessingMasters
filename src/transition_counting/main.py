@@ -16,7 +16,7 @@ if __name__ == '__main__':
         full_file_name = os.path.join(folder_path, filename)
 
         with open(full_file_name, 'r') as data_raw:
-            frame_step = 24
+            frame_step = 1
             starting_points = np.arange(0, frame_step)
             data = json.loads(data_raw.read())
 
