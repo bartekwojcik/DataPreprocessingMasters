@@ -3,7 +3,7 @@ from transition_counting.frame_analyzer import FrameAnalyzer
 
 
 class TransitionCounter:
-    def count_transitions(self, file_data: dict, offset: int) -> np.ndarray:
+    def count_transitions(self, file_data: dict, step: int, starting_step: int) -> np.ndarray:
         """
         Counts transitions.
         :return: return 2x2x2x2 matrix that translates to:
@@ -12,10 +12,9 @@ class TransitionCounter:
         result = np.zeros((2, 2, 2, 2))
 
         previous_frame = None
-        for index, frame in enumerate(file_data):
-            if index % offset != 0:
-                continue
 
+        #take only nth item at list
+        for frame in file_data[starting_step::step]:
             if previous_frame is None:
                 previous_frame = frame
                 continue
