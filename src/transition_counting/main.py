@@ -4,9 +4,8 @@ import json
 import numpy as np
 from transition_counting.transition_counter import TransitionCounter
 from transition_counting.gaze_processor import GazeProcessor
-from data_const import JointConstants as Constants
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     result = np.zeros((2, 2, 2, 2))
@@ -15,7 +14,7 @@ if __name__ == '__main__':
     for filename in os.listdir(folder_path):
         full_file_name = os.path.join(folder_path, filename)
 
-        with open(full_file_name, 'r') as data_raw:
+        with open(full_file_name, "r") as data_raw:
             frame_step = 12
             starting_points = np.arange(0, frame_step)
             data = json.loads(data_raw.read())
@@ -27,8 +26,12 @@ if __name__ == '__main__':
             file_end_debug = 5
     gaze_processor = GazeProcessor()
     print(result)
+    result_file_path = os.path.join(
+        settings.MY_DATA_FOLDER_PATH, "transition_counting_results"
+    )
+    np.save(result_file_path, result)
 
-#OTHER IN-> OUT
+    # OTHER IN-> OUT
     print("OTHER IN-> OUT #############")
     in_out_in_in = gaze_processor.decode_matrix(result, 1, 0, 1, 1)
     print(f"in_out_in_in: {in_out_in_in }")
@@ -64,12 +67,10 @@ if __name__ == '__main__':
     # OTHER OUT-> IN
     print("OTHER OUT-> IN #############")
     out_in_in_in = gaze_processor.decode_matrix(result, 0, 1, 1, 1)
-    print(f"in_out_in_in: {in_out_in_in }")
+    print(f"out_in_in_in: {out_in_in_in }")
     out_in_in_out = gaze_processor.decode_matrix(result, 0, 1, 1, 0)
-    print(f"in_out_in_out: {in_out_in_out }")
+    print(f"out_in_in_out: {out_in_in_out }")
     out_in_out_out = gaze_processor.decode_matrix(result, 0, 1, 0, 0)
-    print(f"in_out_out_out: {in_out_out_out }")
+    print(f"out_in_out_out: {out_in_out_out }")
     out_in_out_in = gaze_processor.decode_matrix(result, 0, 1, 0, 1)
-    print(f"in_out_out_in: {in_out_out_in }")
-
-
+    print(f"out_in_out_in: {out_in_out_in }")
