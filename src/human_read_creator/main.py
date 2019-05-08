@@ -5,12 +5,12 @@ from data_const import UsableConversationConstants as ConstUC
 from human_read_creator.conversation_gaze_translator import ConversationGazeTranslator
 
 if __name__ == "__main__":
-    JOINT_FILE_PATH = os.path.join(
-        settings.JOINT_DATA_FOLDER_PATH, "conversation_04.json"
-    )
-    CLUSTER_FILE_PATH = os.path.join(
-        settings.CLUSTER_DATA_FOLDER_PATH, "clustering_04.json"
-    )
+    # JOINT_FILE_PATH = os.path.join(
+    #     settings.JOINT_DATA_FOLDER_PATH, "conversation_04.json"
+    # )
+    # CLUSTER_FILE_PATH = os.path.join(
+    #     settings.CLUSTER_DATA_FOLDER_PATH, "clustering_04.json"
+    # )
 
     with open(settings.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:
 

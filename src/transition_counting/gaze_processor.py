@@ -1,26 +1,21 @@
 from data_const import JointConstants as ConstJoint
+from transition_counting.gaze_utils import GazeUtils
 
 
 class GazeProcessor():
 
     def __init__(self):
-        self.gaze_states_in_list = [
-            ConstJoint.MOUTH,
-            ConstJoint.LEFT_EYE,
-            ConstJoint.RIGHT_EYE,
-        ]
-        self.gaze_states_out_list = [ConstJoint.OUT]
 
-    def get_state_id(self, state):
+        self.gaze_states_in_list = GazeUtils.gaze_states_in_list
+        self.gaze_states_out_list = GazeUtils.gaze_states_out_list
+
+    def get_state_id(self, state)->int:
         """
         Return 1 if looks at the face, 0 if not
         :param state:
         :return:
         """
-        if state in self.gaze_states_in_list:
-            return 1
-        else:
-            return 0
+        return GazeUtils.get_gaze_id(state)
 
     def decode_matrix(self, matrix, other_previous_state: int, other_current_state: int, main_previous_state: int,
                       main_current_state: int):
