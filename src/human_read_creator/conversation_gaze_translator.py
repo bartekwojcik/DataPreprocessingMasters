@@ -2,7 +2,7 @@ import json
 import math
 from typing import Tuple
 from human_read_creator.cluster_matcher import ClusterMatcher
-from data_const import ClusterConstants as ConstCluster, JointConstants as ConstJoint
+from data_const import ClusterConstants as ConstCluster, JointConstants as ConstJoint, UsableConversationConstants as UsableConst
 from human_read_creator.utils import *
 from human_read_creator.face import Face
 
@@ -239,5 +239,6 @@ class ConversationGazeTranslator:
             ConstJoint.TIME_END: time_end,
             ConstJoint.TIME_START: time_start,
             ConstJoint.TYPE: frame_type,
+            UsableConst.MAIN: self.__main_person
         }
         return new_frame

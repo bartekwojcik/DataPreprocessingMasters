@@ -2,7 +2,7 @@ import os
 import json
 import settings
 from data_const import UsableConversationConstants as ConstUC
-from human_read_creator.conversation_gaze_translator import ConversationGazeTranslator
+from human_read_creator.conversation_gaze_translator import ConversationGazeTranslator, Utils
 
 if __name__ == "__main__":
     # JOINT_FILE_PATH = os.path.join(
@@ -28,12 +28,9 @@ if __name__ == "__main__":
                 settings.CLUSTER_DATA_FOLDER_PATH,
                 f"clustering_{str(conv_number).zfill(2)}.json",
             )
-            people_dict = {
-                ConstUC.PERSON1: ConstUC.PERSON2,
-                ConstUC.PERSON2: ConstUC.PERSON1,
-            }
+
             main_person = conversation_data[ConstUC.MAIN]
-            other_person = people_dict[main_person]
+            other_person = Utils.people_dict[main_person]
             main_person_clusters = conversation_data[ConstUC.FACE_CLUSTERS]
             other_person_clusters = conversation_data[ConstUC.OTHER_PERSON_CLUSTERS]
 

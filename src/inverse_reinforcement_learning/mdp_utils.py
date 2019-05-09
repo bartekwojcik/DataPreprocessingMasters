@@ -1,8 +1,11 @@
 import os
+from typing import Tuple
+
 import numpy as np
 from inverse_reinforcement_learning.mdp_components import MdpAction, MdpState, MdpGraph
 from mdp_const import MdpConsts as consts
 import settings
+import itertools
 
 
 class Simple16ActionMdp:
@@ -25,7 +28,7 @@ class Simple16ActionMdp:
             consts.AATB,
             [
                 MdpAction(
-                    consts.AATB_TO_AATB, {consts.AATB: counts[0, 0, 1, 10 / atob_sum]}
+                    consts.AATB_TO_AATB, {consts.AATB: counts[0, 0, 1, 1] / atob_sum}
                 ),
                 MdpAction(
                     consts.AATB_TO_BATA, {consts.BATA: counts[0, 1, 1, 0] / atob_sum}
@@ -121,12 +124,19 @@ class Simple16ActionMdp:
         graph = MdpGraph([MutualState, NoneState, AToBState, BToAState])
         self.graph = graph
 
+    def get_states_names(self):
+        return list(map(lambda state: state.name, list(self.get_states())))
+
     def get_states(self):
         return self.graph.states
 
+    def get_actions_names(self):
+        actions_names = [action.name for action in itertools.chain(*self.get_actions())]
+        return actions_names #list(map(lambda action: action.name, actions))
+
     def get_actions(self):
         for state in self.graph.states:
-            yield from state.actions
+            yield state.actions
 
 
 class MdpUtils:
@@ -150,19 +160,60 @@ class MdpUtils:
             return MdpUtils.__Simple16ActionMdp
 
     @staticmethod
-    def get_state(person1_state: int, person2_state: int) -> str:
+    def get_state(main_state: int, other_state: int) -> str:
         """
 
-        :param person1_state: 0 if not looking at person2, 1 if looking at person 2
-        :param person2_state: 0 if not looking at person1, 1 if looking at person 1
+        :param main_state: 0 if not looking at person2, 1 if looking at person 2
+        :param other_state: 0 if not looking at person1, 1 if looking at person 1
         :return: name of state
         """
 
         model = MdpUtils.simple_16_action_graph()
 
-        if person1_state == 0 and person2_state == 0:
+        if main_state == 0 and other_state == 0:
             state = next(
                 state.name for state in model.graph.states if state.name == consts.NONE
             )
             return state
+
+        elif main_state == 1 and other_state == 1:
+            state = next(
+                state.name
+                for state in model.graph.states
+                if state.name == consts.MUTUAL
+            )
+            return state
+
+        elif main_state == 1 and other_state == 0:
+            state = next(
+                state.name for state in model.graph.states if state.name == consts.AATB
+            )
+            return state
+
+        elif main_state == 0 and other_state == 1:
+            state = next(
+                state.name for state in model.graph.states if state.name == consts.BATA
+            )
+            return state
+
+        else:
+            raise ValueError("no combination matches")
+
+    @staticmethod
+    def get_states_from_action_name(action_name:str, list_of_states = consts.LIST_OF_STATES)->Tuple[str,str]:
+        """
+        Assumes " to " string does not exist in States names
+        :param action_name: string for instance "A to B to Mutual"
+        :return: tuple for instance ("A to B", "Mutual")
+        """
+
+        original_action_name = action_name
+
+        splitted_action = action_name.split(" to ")
+        start_state, end_state = splitted_action[0], splitted_action[1]
+
+        assert start_state
+        assert end_state
+        return start_state,end_state
+
 

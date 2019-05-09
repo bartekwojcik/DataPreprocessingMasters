@@ -1,10 +1,16 @@
 from typing import List
 
 import numpy as np
-from data_const import JointConstants
+from data_const import JointConstants, UsableConversationConstants as ConstUC
 
 
 class Utils:
+
+    people_dict = {
+        ConstUC.PERSON1: ConstUC.PERSON2,
+        ConstUC.PERSON2: ConstUC.PERSON1,
+    }
+
     @staticmethod
     def dict_to_vec(json: dict) -> np.ndarray:
         """
@@ -39,3 +45,5 @@ class Utils:
         """returns an array containing the index to the nearest centroid for each point"""
         distances = np.sqrt(((points - centroids[:, np.newaxis]) ** 2).sum(axis=2))
         return np.argmin(distances, axis=0)
+
+
