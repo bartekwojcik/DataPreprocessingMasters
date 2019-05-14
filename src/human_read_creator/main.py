@@ -1,8 +1,61 @@
 import os
 import json
+from typing import List
+
 import settings
-from data_const import UsableConversationConstants as ConstUC
-from human_read_creator.conversation_gaze_translator import ConversationGazeTranslator, Utils
+from data_const import (
+    UsableConversationConstants as ConstUC,
+    ReadableConvMetadataConstants as ReadConst,
+)
+from human_read_creator.conversation_gaze_translator import (
+    ConversationGazeTranslator,
+    Utils,
+)
+from human_read_creator.at_high_at_low_calculator import AtHightAtLowCalculator
+
+OUTPUT_FILE_NAME_PATTERN = "human_readable_conversation_{}.json"
+
+
+def save_conversation_to_file(labeled_data):
+
+    folder_path = settings.HUMAN_READABLE_FOLDER_PATH
+    file_name = OUTPUT_FILE_NAME_PATTERN.format(
+        conv_number
+    )  # f"human_conversation_{conv_number}.json"
+    full_path = os.path.join(folder_path, file_name)
+    with open(full_path, "w") as new_file:
+        json.dump(labeled_data, new_file)
+
+
+def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalculator]):
+    """
+    Saves at low and at high values to file
+    :param at_high_at_low_calculators: list of calculator that calculate at low and at high values
+    """
+    result_dict = {}
+
+    for calc in at_high_at_low_calculators:
+        file_name, person1_at_person2, person2_at_person1 = calc.get_results()
+        if person1_at_person2 >= person2_at_person1:
+            person_high = ReadConst.PERSON1
+            person_low = ReadConst.PERSON2
+        else:
+            person_high = ReadConst.PERSON2
+            person_low = ReadConst.PERSON1
+
+        result_dict[file_name] = {
+            ReadConst.PERSON_1_AT_PERSON_2_PERCENTAGE: person1_at_person2,
+            ReadConst.PERSON_2_AT_PERSON_1_PERCENTAGE: person2_at_person1,
+            ReadConst.AT_HIGH: person_high,
+            ReadConst.AT_LOW: person_low,
+        }
+
+    folder_path = settings.MY_DATA_FOLDER_PATH
+    output_file_name = f"human-readable-conversation-metadata.json"
+    full_path = os.path.join(folder_path, output_file_name)
+    with open(full_path, "w") as new_file:
+        json.dump(result_dict, new_file)
+
 
 if __name__ == "__main__":
     # JOINT_FILE_PATH = os.path.join(
@@ -18,6 +71,7 @@ if __name__ == "__main__":
             ConstUC.CONVERSATIONS
         ]
 
+        list_of_at_high_calculators = []  # type: List[AtHightAtLowCalculator]
         for conversation_data in usable_conversations_data:
             conv_number = conversation_data[ConstUC.NUMBER]
             joint_file_path = os.path.join(
@@ -52,10 +106,14 @@ if __name__ == "__main__":
                     main_person_clusters,
                     other_person_clusters,
                 )
-                labeled_data = conversation_translator.convert_to_readable()
+                at_high_at_low_calculator = AtHightAtLowCalculator(
+                    OUTPUT_FILE_NAME_PATTERN.format(conv_number)
+                )
+                labeled_data = conversation_translator.convert_to_readable(
+                    at_high_at_low_calculator
+                )
 
-                folder_path = settings.HUMAN_READABLE_FOLDER_PATH
-                file_name = f"human_conversation_{conv_number}.json"
-                full_path = os.path.join(folder_path, file_name)
-                with open(full_path, "w") as new_file:
-                    json.dump(labeled_data, new_file)
+                list_of_at_high_calculators.append(at_high_at_low_calculator)
+                save_conversation_to_file(labeled_data)
+
+        save_at_high_calc_to_file(list_of_at_high_calculators)

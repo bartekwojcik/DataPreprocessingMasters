@@ -1,6 +1,6 @@
 class JointConstants:
-    PERSON_1 = "person1"
-    PERSON_2 = "person2"
+    PERSON1 = "person1"
+    PERSON2 = "person2"
     X = "x"
     Y = "y"
     GAZE = "gaze"
@@ -45,3 +45,13 @@ class UsableConversationConstants():
     FACE_CLUSTERS = "faceClusters"
     OTHER_PERSON_CLUSTERS = "otherPersonClusters"
     CONVERSATIONS = "conversations"
+
+class ReadableConvMetadataConstants():
+    AT_HIGH = "person at high"
+    AT_LOW = "person at low"
+    PERSON1 = "person1"
+    PERSON2 = "person2"
+    PERSON_1_AT_PERSON_2_PERCENTAGE = "person 1 at person 2 ratio"
+    PERSON_2_AT_PERSON_1_PERCENTAGE = "person 2 at person 1 ratio"
+    FILE_NAME = "file name"
+    DATA = "data"

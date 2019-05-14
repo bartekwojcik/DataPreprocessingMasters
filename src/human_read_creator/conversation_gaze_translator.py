@@ -2,11 +2,15 @@ import json
 import math
 from typing import Tuple
 from human_read_creator.cluster_matcher import ClusterMatcher
-from data_const import ClusterConstants as ConstCluster, JointConstants as ConstJoint, UsableConversationConstants as UsableConst
+from data_const import (
+    ClusterConstants as ConstCluster,
+    JointConstants as ConstJoint,
+    UsableConversationConstants as UsableConst,
+)
 from human_read_creator.utils import *
 from human_read_creator.face import Face
-
-
+from human_read_creator.at_high_at_low_calculator import AtHightAtLowCalculator
+from transition_counting.gaze_utils import GazeUtils
 
 """
 Converts conversation (per frame) file from gaze x and y coordinates to gaze "mouth" or gaze "out"
@@ -68,21 +72,21 @@ class ConversationGazeTranslator:
         """
         extra_info = joint_data["extraInfo"]  # type: dict
         result = {
-            ConstJoint.PERSON_1: {
-                ConstJoint.FPS: extra_info[ConstJoint.PERSON_1][ConstJoint.FPS],
-                ConstJoint.X: extra_info[ConstJoint.PERSON_1]["imageSize"][
+            ConstJoint.PERSON1: {
+                ConstJoint.FPS: extra_info[ConstJoint.PERSON1][ConstJoint.FPS],
+                ConstJoint.X: extra_info[ConstJoint.PERSON1]["imageSize"][
                     ConstJoint.X
                 ],
-                ConstJoint.Y: extra_info[ConstJoint.PERSON_1]["imageSize"][
+                ConstJoint.Y: extra_info[ConstJoint.PERSON1]["imageSize"][
                     ConstJoint.Y
                 ],
             },
-            ConstJoint.PERSON_2: {
-                ConstJoint.FPS: extra_info[ConstJoint.PERSON_2][ConstJoint.FPS],
-                ConstJoint.X: extra_info[ConstJoint.PERSON_2]["imageSize"][
+            ConstJoint.PERSON2: {
+                ConstJoint.FPS: extra_info[ConstJoint.PERSON2][ConstJoint.FPS],
+                ConstJoint.X: extra_info[ConstJoint.PERSON2]["imageSize"][
                     ConstJoint.X
                 ],
-                ConstJoint.Y: extra_info[ConstJoint.PERSON_2]["imageSize"][
+                ConstJoint.Y: extra_info[ConstJoint.PERSON2]["imageSize"][
                     ConstJoint.Y
                 ],
             },
@@ -127,10 +131,10 @@ class ConversationGazeTranslator:
 
         return main_face, other_face
 
-    def convert_to_readable(self) -> list:
+    def convert_to_readable(self, at_high_at_low_calc: AtHightAtLowCalculator) -> list:
         """
         Converts join_data and cluster_data to more human-readable format
-        :return: dict
+        :return: list of frames with readable data
         """
 
         centroids_with_labels_main = self.__cluster_matcher.label_centroids_heuristically(
@@ -196,8 +200,31 @@ class ConversationGazeTranslator:
             )
 
             new_frames.append(new_frame)
+            if at_high_at_low_calc:
+                self.__update_at_hight_at_low_counter(
+                    at_high_at_low_calc,
+                    self.__main_person,
+                    gaze_main_state,
+                    gaze_other_state,
+                )
 
         return new_frames
+
+    def __update_at_hight_at_low_counter(
+        self,
+        at_high_at_low_calc: AtHightAtLowCalculator,
+        main_person: str,
+        main_gaze_state: str,
+        other_gaze_state: str,
+    ):
+        if main_person == ConstUC.PERSON1:
+            person_1_state = GazeUtils.get_gaze_id(main_gaze_state)
+            person_2_state = GazeUtils.get_gaze_id(other_gaze_state)
+        else:
+            person_2_state = GazeUtils.get_gaze_id(main_gaze_state)
+            person_1_state = GazeUtils.get_gaze_id(other_gaze_state)
+
+        at_high_at_low_calc.update(person_1_state, person_2_state)
 
     def __get_centroid_label(self, centroids, centroids_with_labels, gaze_vector, face):
         """
@@ -239,6 +266,6 @@ class ConversationGazeTranslator:
             ConstJoint.TIME_END: time_end,
             ConstJoint.TIME_START: time_start,
             ConstJoint.TYPE: frame_type,
-            UsableConst.MAIN: self.__main_person
+            UsableConst.MAIN: self.__main_person,
         }
         return new_frame

@@ -8,3 +8,4 @@ USABLE_CONVERSATIONS_FILE_PATH = os.path.join(PROJECT_ROOT, "original-data", "Cl
                                               "UsableConversations.json")  # type: str
 HUMAN_READABLE_FOLDER_PATH = os.path.join(PROJECT_ROOT, "my-data", "human-readable-conversations")  # type: str
 MY_DATA_FOLDER_PATH = os.path.join(PROJECT_ROOT, "my-data")
+
