@@ -1,1 +1,140 @@
-{"human_readable_conversation_3.json": {"person 1 at person 2 (%)": 0.9764531654942614, "person 2 at person 1 (%)": 0.7632728619029989, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_4.json": {"person 1 at person 2 (%)": 0.8445444497078793, "person 2 at person 1 (%)": 0.89720511605874, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_6.json": {"person 1 at person 2 (%)": 0.8047746191298885, "person 2 at person 1 (%)": 0.9401602010365949, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_7.json": {"person 1 at person 2 (%)": 0.8781452192667146, "person 2 at person 1 (%)": 0.8869518332135155, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_8.json": {"person 1 at person 2 (%)": 0.8307418316323035, "person 2 at person 1 (%)": 0.974929789711624, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_9.json": {"person 1 at person 2 (%)": 0.8545771578029643, "person 2 at person 1 (%)": 0.8918918918918919, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_11.json": {"person 1 at person 2 (%)": 0.8068919593807224, "person 2 at person 1 (%)": 0.8716497419677044, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_13.json": {"person 1 at person 2 (%)": 0.9653527767118031, "person 2 at person 1 (%)": 0.845841784989858, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_15.json": {"person 1 at person 2 (%)": 0.8419385221337443, "person 2 at person 1 (%)": 0.9234523503724634, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_16.json": {"person 1 at person 2 (%)": 0.9138229281333543, "person 2 at person 1 (%)": 0.6489227866016669, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_17.json": {"person 1 at person 2 (%)": 0.891232423490488, "person 2 at person 1 (%)": 0.902103273071015, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_19.json": {"person 1 at person 2 (%)": 0.9592643258853929, "person 2 at person 1 (%)": 0.7597405887419567, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_24.json": {"person 1 at person 2 (%)": 0.8992512662409161, "person 2 at person 1 (%)": 0.4666373045584673, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_26.json": {"person 1 at person 2 (%)": 0.8419625246548323, "person 2 at person 1 (%)": 0.7829142011834319, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_29.json": {"person 1 at person 2 (%)": 0.9256551511095094, "person 2 at person 1 (%)": 0.8693301755650518, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_30.json": {"person 1 at person 2 (%)": 0.9387570912841671, "person 2 at person 1 (%)": 0.89118102114492, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_31.json": {"person 1 at person 2 (%)": 0.9363797378675168, "person 2 at person 1 (%)": 0.9764789231314205, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_32.json": {"person 1 at person 2 (%)": 0.9759781810552817, "person 2 at person 1 (%)": 0.9664323927410049, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_33.json": {"person 1 at person 2 (%)": 0.8439062398545549, "person 2 at person 1 (%)": 0.865593143302383, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_34.json": {"person 1 at person 2 (%)": 0.4966091245376079, "person 2 at person 1 (%)": 0.8202836004932182, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_35.json": {"person 1 at person 2 (%)": 0.9379695213565142, "person 2 at person 1 (%)": 0.8896758961150462, "person at high": "person1", "person at low": "person2"}, "human_readable_conversation_36.json": {"person 1 at person 2 (%)": 0.7902892561983471, "person 2 at person 1 (%)": 0.9146694214876033, "person at high": "person2", "person at low": "person1"}, "human_readable_conversation_37.json": {"person 1 at person 2 (%)": 0.8295579965312451, "person 2 at person 1 (%)": 0.9398223577022127, "person at high": "person2", "person at low": "person1"}}
+{
+	"human_readable_conversation_3.json": {
+		"person 1 at person 2 (%)": 0.9764531654942614,
+		"person 2 at person 1 (%)": 0.7632728619029989,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_4.json": {
+		"person 1 at person 2 (%)": 0.8445444497078793,
+		"person 2 at person 1 (%)": 0.89720511605874,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_6.json": {
+		"person 1 at person 2 (%)": 0.8047746191298885,
+		"person 2 at person 1 (%)": 0.9401602010365949,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_7.json": {
+		"person 1 at person 2 (%)": 0.8781452192667146,
+		"person 2 at person 1 (%)": 0.8869518332135155,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_8.json": {
+		"person 1 at person 2 (%)": 0.8307418316323035,
+		"person 2 at person 1 (%)": 0.974929789711624,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_9.json": {
+		"person 1 at person 2 (%)": 0.8545771578029643,
+		"person 2 at person 1 (%)": 0.8918918918918919,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_11.json": {
+		"person 1 at person 2 (%)": 0.8068919593807225,
+		"person 2 at person 1 (%)": 0.8716497419677044,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_13.json": {
+		"person 1 at person 2 (%)": 0.9653527767118031,
+		"person 2 at person 1 (%)": 0.845841784989858,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_15.json": {
+		"person 1 at person 2 (%)": 0.8419385221337443,
+		"person 2 at person 1 (%)": 0.9234523503724634,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_16.json": {
+		"person 1 at person 2 (%)": 0.9138229281333543,
+		"person 2 at person 1 (%)": 0.6489227866016669,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_17.json": {
+		"person 1 at person 2 (%)": 0.891232423490488,
+		"person 2 at person 1 (%)": 0.902103273071015,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_19.json": {
+		"person 1 at person 2 (%)": 0.9592643258853929,
+		"person 2 at person 1 (%)": 0.7597405887419567,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_24.json": {
+		"person 1 at person 2 (%)": 0.8992512662409161,
+		"person 2 at person 1 (%)": 0.4666373045584673,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_26.json": {
+		"person 1 at person 2 (%)": 0.8419625246548324,
+		"person 2 at person 1 (%)": 0.7829142011834319,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_29.json": {
+		"person 1 at person 2 (%)": 0.9256551511095094,
+		"person 2 at person 1 (%)": 0.8693301755650518,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_30.json": {
+		"person 1 at person 2 (%)": 0.9387570912841671,
+		"person 2 at person 1 (%)": 0.89118102114492,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_31.json": {
+		"person 1 at person 2 (%)": 0.9363797378675168,
+		"person 2 at person 1 (%)": 0.9764789231314205,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_32.json": {
+		"person 1 at person 2 (%)": 0.9759781810552817,
+		"person 2 at person 1 (%)": 0.9664323927410049,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_33.json": {
+		"person 1 at person 2 (%)": 0.8439062398545549,
+		"person 2 at person 1 (%)": 0.865593143302383,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_34.json": {
+		"person 1 at person 2 (%)": 0.4966091245376079,
+		"person 2 at person 1 (%)": 0.8202836004932183,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_35.json": {
+		"person 1 at person 2 (%)": 0.9379695213565142,
+		"person 2 at person 1 (%)": 0.8896758961150462,
+		"person at high": "person1",
+		"person at low": "person2"
+	},
+	"human_readable_conversation_36.json": {
+		"person 1 at person 2 (%)": 0.7902892561983471,
+		"person 2 at person 1 (%)": 0.9146694214876033,
+		"person at high": "person2",
+		"person at low": "person1"
+	},
+	"human_readable_conversation_37.json": {
+		"person 1 at person 2 (%)": 0.8295579965312451,
+		"person 2 at person 1 (%)": 0.9398223577022127,
+		"person at high": "person2",
+		"person at low": "person1"
+	}
+}

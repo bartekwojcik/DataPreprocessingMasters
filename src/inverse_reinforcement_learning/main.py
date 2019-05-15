@@ -2,24 +2,25 @@ import settings
 import os
 import json
 
-from inverse_reinforcement_learning.mdp_utils import MdpUtils
-from inverse_reinforcement_learning.policy_parser import PolicyParser
-from inverse_reinforcement_learning.policy_trans_matrix_creator import PolicyMatrixCreator
+from Mdp.mdp_utils import MdpUtils
+from Mdp.policy_parser import PolicyParser
 
 if __name__ == '__main__':
 
+    FILE_NAME = "human_readable_conversation_4.json"
+    FILE_TO_READ = os.path.join(settings.HUMAN_READABLE_FOLDER_PATH, FILE_NAME)
+    METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 
-    FILE_TO_READ = os.path.join(settings.HUMAN_READABLE_FOLDER_PATH, "human_conversation_4.json")
+    with open(METADATA_PATH, "r") as metadata_file:
+        metadata_json = json.loads(metadata_file.read())
 
-    with open(FILE_TO_READ, "r") as conversation_file:
+        with open(FILE_TO_READ, "r") as conversation_file:
 
-        conv_json = json.loads(conversation_file.read())
-        optimal_policy = PolicyParser.parse_data_to_policy(conv_json)
-        mdp_graph = MdpUtils.simple_16_action_graph()
-        actions_names = mdp_graph.get_actions_names()
-        states_names = mdp_graph.get_states_names()
+            this_file_metadata = metadata_json[FILE_NAME]
+            conv_json = json.loads(conversation_file.read())
+            optimal_policy = PolicyParser.parse_data_to_policy(conv_json,this_file_metadata)
+            mdp_graph = MdpUtils.simple_16_action_graph()
 
-        matrix_creator = PolicyMatrixCreator(optimal_policy,actions_names,states_names)
 
 
 

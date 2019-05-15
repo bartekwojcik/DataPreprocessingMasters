@@ -37,6 +37,7 @@ if __name__ == "__main__":
         settings.MY_DATA_FOLDER_PATH, "transition_counting_results"
     )
     np.save(result_file_path, result)
+    print(f"results saved to {result_file_path}")
 
     # LOW IN-> OUT
     print("LOW IN-> OUT #############")

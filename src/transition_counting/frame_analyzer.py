@@ -15,7 +15,7 @@ class FrameAnalyzer:
         :param previous_frame:
         :param frame:
         :return: return 2x2x2x2 matrix that translates to:
-            [High_previous_state][High_current_state][High_previous_state][High_current_state]
+            [Low_previous_state][Low_current_state][High_previous_state][High_current_state]
         """
 
         # assuming person1 is main, and person2 is other

@@ -1,51 +1,15 @@
-def create_action_name(state_from, state_to):
-    return f"{state_from} to {state_to}"
-
-
 class MdpConsts:
 
-    NONE = "None"
-    AATB = "A at B"
-    BATA = "B at A"
-    MUTUAL = "Mutual"
+    NONE = 0
+    H_AT_L = AATB = 1
+    L_AT_H = BATA = 2
+    MUTUAL = 3
 
-    LIST_OF_STATES = [NONE, AATB, BATA, MUTUAL]
+    LIST_OF_STATES = [NONE, H_AT_L, L_AT_H, MUTUAL]
 
-    AATB_TO_NONE = create_action_name(AATB, NONE)
-    AATB_TO_AATB = create_action_name(AATB, AATB)
-    AATB_TO_BATA = create_action_name(AATB, BATA)
-    AATB_TO_MUTUAL = create_action_name(AATB, MUTUAL)
+    STATE_TO_NONE = 0
+    STATE_TO_H_AT_L = 1
+    STATE_TO_L_AT_H = 2
+    STATE_TO_MUTUAL = 3
 
-    BATA_TO_NONE = create_action_name(BATA, NONE)
-    BATA_TO_AATB = create_action_name(BATA, AATB)
-    BATA_TO_BATA = create_action_name(BATA, BATA)
-    BATA_TO_MUTUAL = create_action_name(BATA, MUTUAL)
-
-    MUTUAL_TO_NONE = create_action_name(MUTUAL, NONE)
-    MUTUAL_TO_AATB = create_action_name(MUTUAL, AATB)
-    MUTUAL_TO_BATA = create_action_name(MUTUAL, BATA)
-    MUTUAL_TO_MUTUAL = create_action_name(MUTUAL, MUTUAL)
-
-    NONE_TO_NONE = create_action_name(NONE, NONE)
-    NONE_TO_AATB = create_action_name(NONE, AATB)
-    NONE_TO_BATA = create_action_name(NONE, BATA)
-    NONE_TO_MUTUAL = create_action_name(NONE, MUTUAL)
-
-    LIST_OF_ACTIONS = [
-        AATB_TO_NONE,
-        AATB_TO_MUTUAL,
-        AATB_TO_BATA,
-        AATB_TO_AATB,
-        NONE_TO_AATB,
-        NONE_TO_BATA,
-        NONE_TO_MUTUAL,
-        NONE_TO_NONE,
-        BATA_TO_AATB,
-        BATA_TO_BATA,
-        BATA_TO_MUTUAL,
-        BATA_TO_NONE,
-        MUTUAL_TO_AATB,
-        MUTUAL_TO_BATA,
-        MUTUAL_TO_MUTUAL,
-        MUTUAL_TO_NONE,
-    ]
+    LIST_OF_ACTIONS = [STATE_TO_NONE, STATE_TO_H_AT_L, STATE_TO_L_AT_H, STATE_TO_MUTUAL]

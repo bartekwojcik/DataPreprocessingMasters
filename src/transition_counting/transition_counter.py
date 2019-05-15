@@ -8,7 +8,7 @@ class TransitionCounter:
         Counts transitions. High is "Person at high" and low is "Person at low" as in paper
 
         :return: return 2x2x2x2 matrix that translates to:
-            [High_previous_state][High_current_state][High_previous_state][High_current_state]
+            [Low_previous_state][Low_current_state][High_previous_state][High_current_state]
         """
         result = np.zeros((2, 2, 2, 2))
 
