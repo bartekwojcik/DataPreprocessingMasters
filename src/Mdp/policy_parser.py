@@ -8,13 +8,14 @@ from data_const import ReadableConvMetadataConstants as readConsts
 
 
 class PolicyParser:
-    """
-    Parses data from human_readable files to policy as a dict of {state:action}
-    """
+
 
     @staticmethod
     def parse_data_to_policy(data: dict, metadata:dict) -> List[dict]:
         """
+
+        Parses data from human_readable files to policy as a dict of {state:action}
+
         :param data: original data from human_readable_file
         :param metadata: metadata from my-data/human-readable-conversation-metadata.json
         """
