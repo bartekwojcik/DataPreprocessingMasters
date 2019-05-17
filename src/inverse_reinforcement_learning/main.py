@@ -1,24 +1,28 @@
 import random
 from typing import List
 
+import numpy as np
 import settings
 import os
 import json
 
+from Mdp.policy_player import PolicyPlayer
+from Mdp.value_iteration import ValueIteration
 from Mdp.mdp_utils import MdpUtils
 from Mdp.policy_parser import PolicyParser
 from inverse_reinforcement_learning.irl_algorithm_solver import IrlAlgorithmSolver
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
 )
+from inverse_reinforcement_learning.reward_calculator import RewardCalculator
 
 
-def get_random_feature_expectations() -> List[int]:
+def get_random_feature_expectations() -> np.ndarray:
     # TODO this is mock
     # for now, features mapping might be only [high_state, low_state]
     # TODO TO DISCUSS
     random_list = [random.randint(2, 8) for n in range(4)]
-    return random_list
+    return np.array(random_list)
 
 
 if __name__ == "__main__":
@@ -38,15 +42,22 @@ if __name__ == "__main__":
             mdp_graph = MdpUtils.simple_16_action_graph()
 
             feature_expectation_extractor = FeatureExpectationExtractor(
-                conv_json, len(mdp_graph.states), this_file_metadata
+                len(mdp_graph.states), this_file_metadata
             )
 
-            expert_feature_expectations: List[
-                int
-            ] = feature_expectation_extractor.get_experts_feature_expectations()
+            expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(conv_json)
             random_feature_expectations = get_random_feature_expectations()
+            policy_player = PolicyPlayer(this_file_metadata)
+
+            reward_calculator = RewardCalculator(len(mdp_graph.states))
+            value_iterator = ValueIteration(mdp_graph)
             irl = IrlAlgorithmSolver(
-                random_feature_expectations, random_feature_expectations
+                expert_feature_expectations,
+                random_feature_expectations,
+                reward_calculator,
+                value_iterator,
+                feature_expectation_extractor,
+                policy_player
             )
             weights = irl.find_weights()
 

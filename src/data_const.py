@@ -10,6 +10,7 @@ class JointConstants:
     CENTRE = "centre"
     HALFSIZE = "halfsize"
     TALKING = "talking"
+    QUIET = "quiet"
     TIME_END = "timeEnd"
     TIME_START = "timeStart"
     TYPE = "type"
@@ -18,6 +19,7 @@ class JointConstants:
     FPS = "fps"
     DATA = "data"
     OUT = "out"
+    MAIN = "main"
 
 
 class ClusterConstants(object):

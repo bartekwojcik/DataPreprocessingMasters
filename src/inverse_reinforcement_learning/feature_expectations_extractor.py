@@ -8,7 +8,7 @@ import numpy as np
 
 class FeatureExpectationExtractor:
 
-    def __init__(self, data:dict, n_states:int, conversation_metadata:dict, max_steps:int = 10000, discount_factor = 0.95):
+    def __init__(self, n_states:int, conversation_metadata:dict, max_steps:int = 10000, discount_factor = 0.95):
         """
         Will "play out" Markov chain / MDP to get feature expectations
         :param data: dict of conversation data
@@ -21,20 +21,19 @@ class FeatureExpectationExtractor:
         self.discount_factor = discount_factor
         self.conversation_metadata = conversation_metadata
         self.max_steps = max_steps
-        self.data = data
         self.eye_states = np.eye(self.n_states)
 
-    def get_experts_feature_expectations(self)-> np.ndarray:
+    def get_experts_feature_expectations(self,data:List[dict])-> np.ndarray:
         """
         Analyses data step by step to find out features expectations
         :return: experts feature expectations
         """
-        data_length = len(self.data)
+        data_length = len(data)
         max_steps = self.max_steps if data_length > self.max_steps else data_length
         mi = np.array([0 for n in range(self.n_states)])
 
         for i in range(max_steps):
-            current_frame = self.data[i]
+            current_frame = data[i]
             state_vector = self.__get_current_state(current_frame)
             #http://3dvision.princeton.edu/courses/COS598/2014sp/slides/lecture07_reinforcement.pdf
             mi = mi + ((self.discount_factor ** i) * state_vector)

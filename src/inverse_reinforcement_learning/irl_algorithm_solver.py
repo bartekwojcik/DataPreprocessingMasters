@@ -1,4 +1,8 @@
+from Mdp.policy_player import PolicyPlayer
+from Mdp.value_iteration import ValueIteration
 from typing import List
+
+from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
 from inverse_reinforcement_learning.reward_calculator import RewardCalculator
 import numpy as np
 from cvxopt import matrix, solvers
@@ -16,13 +20,29 @@ class IrlAlgorithmSolver:
 
     https://jangirrishabh.github.io/2016/07/09/virtual-car-IRL/
     """
-    def __init__(self, expert_feature_expectations:np.ndarray,random_feature_expectations:np.ndarray, reward_calculator: RewardCalculator, epsilon=0.1):
+
+    def __init__(
+        self,
+        expert_feature_expectations: np.ndarray,
+        random_feature_expectations: np.ndarray,
+        reward_calculator: RewardCalculator,
+        value_iterator:ValueIteration,
+        feature_expectation_extractor:FeatureExpectationExtractor,
+        policy_player: PolicyPlayer,
+        epsilon=0.1,
+    ):
         """
+        :param policy_player: policy player
+        :param feature_expectation_extractor: calculates feature expectations
+        :param value_iterator: objects that calculates value iteration algorithm
         :param expert_feature_expectations:
         :param random_feature_expectations:
         :param reward_calculator:
         :param epsilon:
         """
+        self.policy_player = policy_player
+        self.feature_expectation_extractor = feature_expectation_extractor
+        self.value_iterator = value_iterator
         self.reward_calculator = reward_calculator
         self.random_feature_expectations = random_feature_expectations
         self.epsilon = epsilon
@@ -30,10 +50,15 @@ class IrlAlgorithmSolver:
 
         # step 1 of algorithm
         # norm of the diff in expert and random
-        self.random_t = np.linalg.norm(np.asarray(self.expert_feature_expectations) - np.asarray(self.random_feature_expectations))
+        self.random_t = np.linalg.norm(
+            np.asarray(self.expert_feature_expectations)
+            - np.asarray(self.random_feature_expectations)
+        )
 
         # storing the policies and their respective t values in a dictionary
-        self.policies_feature_expectations = {self.random_t: self.random_feature_expectations}
+        self.policies_feature_expectations = {
+            self.random_t: self.random_feature_expectations
+        }
 
         self.currentT = self.random_t
 
@@ -43,13 +68,13 @@ class IrlAlgorithmSolver:
             W = self.calc_weights()
             self.current_t = self.update_policy_list(W)
             if self.current_t <= self.epsilon:
-                #step 3
+                # step 3
                 break
 
         assert W, "weights are broken"
         return W
 
-    def calc_weights(self)-> np.ndarray:
+    def calc_weights(self) -> np.ndarray:
         """
         Step 2 of the algorithm
         taken from https://jangirrishabh.github.io/2016/07/09/virtual-car-IRL/
@@ -57,8 +82,8 @@ class IrlAlgorithmSolver:
         :return: weights
         """
         m = len(self.expert_feature_expectations)  # feature expectation
-        P = matrix(2.0 * np.eye(m), tc='d')  # min ||w||
-        q = matrix(np.zeros(m), tc='d')
+        P = matrix(2.0 * np.eye(m), tc="d")  # min ||w||
+        q = matrix(np.zeros(m), tc="d")
         policy_list = [self.expert_feature_expectations]
         h_list = [1]
         for i in self.policies_feature_expectations.keys():
@@ -66,29 +91,39 @@ class IrlAlgorithmSolver:
             h_list.append(1)
         policy_mat = np.matrix(policy_list)
         policy_mat[0] = -1 * policy_mat[0]
-        G = matrix(policy_mat, tc='d')
-        h = matrix(-np.array(h_list), tc='d')
+        G = matrix(policy_mat, tc="d")
+        h = matrix(-np.array(h_list), tc="d")
         sol = solvers.qp(P, q, G, h)
 
-        weights = np.squeeze(np.asarray(sol['x']))
+        weights = np.squeeze(np.asarray(sol["x"]))
         norm = np.linalg.norm(weights)
         weights = weights / norm
         return weights  # return the normalized weights
 
-    def update_policy_list(self, W: np.ndarray)->int:
+    def update_policy_list(self, W: np.ndarray) -> int:
         # get feature expectations of a new policy respective to the input weights
         temp_fe = self.get_reinforcement_learning_features_expectations(W)
-        hyper_distance = np.abs(np.dot(W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)))  # hyperdistance = t
+        hyper_distance = np.abs(
+            np.dot(
+                W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)
+            )
+        )  # hyperdistance = t
         self.policies_feature_expectations[hyper_distance] = temp_fe
         # t = (weights.tanspose)*(expert-newPolicy)
         return hyper_distance
 
-    def get_reinforcement_learning_features_expectations(self, W)-> List[int]:
+    def get_reinforcement_learning_features_expectations(self, W) -> List[int]:
+        assert not (np.any(np.isnan(W))), "some elements of W are Nan"
         reward_matrix = self.reward_calculator.calculate_reward(W)
-        #TODO now play a model, implement value iteration or something.
-        # 1) implement value iteration or something, find policy
+        policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
+        new_conversation = self.policy_player.play_policy(policy)
+        new_features = self.feature_expectation_extractor.get_experts_feature_expectations(new_conversation)
+
+        # TODO now play a model, implement value iteration or something.
+        # 1) DONE implement value iteration or something, find policy
         # 2) play this policy
         # 3) get feature expectations of this policy
-        #but model might just always stay in the best reward place, so be smart about that
-        pass
+        # but model might just always stay in the best reward place, so be smart about that
 
+        #TODO gets fucked up because model is deterministic and it always chooses the same action [0,0,20,0] etc
+        return new_features

@@ -3,7 +3,7 @@ import numpy as np
 
 class RewardCalculator:
 
-    def __init__(self, n_states):
+    def __init__(self, n_states:int):
         self.n_states = n_states
         self.eye_states = np.eye(self.n_states)
 
