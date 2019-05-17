@@ -1,5 +1,5 @@
 from typing import List
-
+from inverse_reinforcement_learning.reward_calculator import RewardCalculator
 import numpy as np
 from cvxopt import matrix, solvers
 
@@ -16,8 +16,14 @@ class IrlAlgorithmSolver:
 
     https://jangirrishabh.github.io/2016/07/09/virtual-car-IRL/
     """
-    def __init__(self, expert_feature_expectations,random_feature_expectations, epsilon=0.1):
-
+    def __init__(self, expert_feature_expectations:np.ndarray,random_feature_expectations:np.ndarray, reward_calculator: RewardCalculator, epsilon=0.1):
+        """
+        :param expert_feature_expectations:
+        :param random_feature_expectations:
+        :param reward_calculator:
+        :param epsilon:
+        """
+        self.reward_calculator = reward_calculator
         self.random_feature_expectations = random_feature_expectations
         self.epsilon = epsilon
         self.expert_feature_expectations = expert_feature_expectations
@@ -78,9 +84,11 @@ class IrlAlgorithmSolver:
         return hyper_distance
 
     def get_reinforcement_learning_features_expectations(self, W)-> List[int]:
-        # TODO Step 4 of the algorithm
-        # using value W you have to make it run to produce feature expectations.
-        # TODO how to use W in 'playing out' agent and model?
-
+        reward_matrix = self.reward_calculator.calculate_reward(W)
+        #TODO now play a model, implement value iteration or something.
+        # 1) implement value iteration or something, find policy
+        # 2) play this policy
+        # 3) get feature expectations of this policy
+        #but model might just always stay in the best reward place, so be smart about that
         pass
 
