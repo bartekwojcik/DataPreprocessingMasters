@@ -1,6 +1,5 @@
-from Mdp.policy_player import PolicyPlayer
-from Mdp.value_iteration import ValueIteration
-from typing import List
+from Mdp.policy_players.simple_deterministic_policy_player import SimpleDeterministicPolicyPlayer
+from Mdp.dynamic_programming_algorithms.simple_model_value_iteration import SimpleModelValueIteration
 
 from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
 from inverse_reinforcement_learning.reward_calculator import RewardCalculator
@@ -26,9 +25,9 @@ class IrlAlgorithmSolver:
         expert_feature_expectations: np.ndarray,
         random_feature_expectations: np.ndarray,
         reward_calculator: RewardCalculator,
-        value_iterator:ValueIteration,
+        value_iterator:SimpleModelValueIteration,
         feature_expectation_extractor:FeatureExpectationExtractor,
-        policy_player: PolicyPlayer,
+        policy_player: SimpleDeterministicPolicyPlayer,
         epsilon=0.1,
     ):
         """
@@ -113,7 +112,8 @@ class IrlAlgorithmSolver:
         return hyper_distance
 
     def get_reinforcement_learning_features_expectations(self, W) -> np.ndarray:
-        assert not (np.any(np.isnan(W))), "some elements of W are Nan"
+        if (np.any(np.isnan(W))):
+            raise ValueError("some elements of W are Nan")
         reward_matrix = self.reward_calculator.calculate_reward(W)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
         new_conversation = self.policy_player.play_policy(policy)
@@ -127,4 +127,16 @@ class IrlAlgorithmSolver:
 
         #TODO gets fucked up because model is deterministic and it always
         #TODO chooses the same action FE=[0,0,20,0] with the highest reward
+
+        #TODO also i need to take features from all the conversation, not just that one (in progress)
+
+        #TODO in that case i should "play" the policy from the perspective of High or Low and the other
+        #TODO person should be "controlled" by probabilities, therefore the state is not always the same
+
+        # TODO also if i am playing one person i think i need to update feature extraction (to extract only one person)
+        # TODO And I also need to update value iteration to calculate rewards, given that the state we might end up (actions results) are no longer deterministic
+
+        # TODO but even if one person is stochastic and the other is not, given policy with the reward being highest in
+        # TODO one state, the agent will always go there, the only thing that will change is a general state.
+
         return new_features

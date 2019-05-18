@@ -23,10 +23,6 @@ def plot_heatmaps(result_array:np.ndarray)->None:
     plot_count_heatmap(count_matrix, file_name_counts)
     plot_count_heatmap(np.round(probabilities_matrix, decimals=3),file_name_probs)
 
-    # im = plt.matshow(results, cmap='hot', aspect='auto') # pl is pylab imported a pl
-    # plt.colorbar(im)
-    # plt.show()
-
 if __name__ == "__main__":
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH

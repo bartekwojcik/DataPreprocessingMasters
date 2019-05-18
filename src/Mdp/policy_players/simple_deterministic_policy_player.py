@@ -8,7 +8,7 @@ from mdp_const import MdpConsts as mdp_consts
 import numpy as np
 
 
-class PolicyPlayer:
+class SimpleDeterministicPolicyPlayer:
 
     def __init__(self, file_metadata: dict):
 

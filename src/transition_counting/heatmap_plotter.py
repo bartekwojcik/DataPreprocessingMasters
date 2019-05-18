@@ -3,8 +3,13 @@ import matplotlib
 import numpy as np
 
 def plot_count_heatmap(array:np.ndarray, file_path_to_save:str)->None:
+    """
+    Taken from matplotlib website
+    :param array:
+    :param file_path_to_save:
+    :return:
+    """
     states = ["None", "High at Low", "Low at High", "Mutual"]
-
 
     fig, ax = plt.subplots()
     im = ax.imshow(array)

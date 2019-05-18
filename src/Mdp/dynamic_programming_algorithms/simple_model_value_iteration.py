@@ -1,16 +1,16 @@
 from typing import Tuple
 
-from Mdp.mdp_utils import MdpUtils, Simple16ActionMdpModel
+from Mdp.mdp_utils import MdpUtils
+from Mdp.models.simple_16_deterministic_model import Simple16ActionMdpModel
 import numpy as np
 
 
-class ValueIteration:
+class SimpleModelValueIteration:
     def __init__(
         self, model: Simple16ActionMdpModel, theta=0.0001, discount_factor=0.95
     ):
         self.theta = theta
         self.discount_factor = discount_factor
-        self.M = model
         self.G = model.graph
         self.n_s = len(model.states)
         self.n_a = len(model.actions)
@@ -45,6 +45,7 @@ class ValueIteration:
                 action_values = np.zeros(self.n_a)
                 for a in range(self.n_a):
                     for prob, next_state in self.G[s][a]:
+                        # TODO
                         # rewards[a] because each action's index is related to next state index,
                         # namely actions[0] always leads to state[0]
                         reward = rewards[a]

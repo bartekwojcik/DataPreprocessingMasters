@@ -1,6 +1,7 @@
 from typing import List
 
-from Mdp.mdp_utils import Simple16ActionMdpModel, MdpUtils
+from Mdp.mdp_utils import MdpUtils
+from Mdp.models.simple_16_deterministic_model import Simple16ActionMdpModel
 from data_const import JointConstants as consts, ReadableConvMetadataConstants as read_consts
 from transition_counting.gaze_utils import GazeUtils
 
