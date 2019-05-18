@@ -1,9 +1,31 @@
 import os
+
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+
 import settings
 import json
 import numpy as np
 from transition_counting.transition_counter import TransitionCounter
 from transition_counting.gaze_processor import GazeProcessor
+#import pylab as plt
+from Mdp.transition_counting_translator import  TransitionCountingTranslator
+
+from transition_counting.heatmap_plotter import plot_count_heatmap
+
+def plot_heatmaps(result_array:np.ndarray)->None:
+    file_name_counts = os.path.join(settings.MY_DATA_FOLDER_PATH, "heat_plot_counts.png")
+    file_name_probs = os.path.join(settings.MY_DATA_FOLDER_PATH, "heat_plot_probs.png")
+
+    translator = TransitionCountingTranslator(result_array)
+    count_matrix = translator.transform_to_4x4_count_matrix()
+    probabilities_matrix = translator.transform_to_4x4_probabilities_matrix()
+    plot_count_heatmap(count_matrix, file_name_counts)
+    plot_count_heatmap(np.round(probabilities_matrix, decimals=3),file_name_probs)
+
+    # im = plt.matshow(results, cmap='hot', aspect='auto') # pl is pylab imported a pl
+    # plt.colorbar(im)
+    # plt.show()
 
 if __name__ == "__main__":
 
@@ -37,6 +59,7 @@ if __name__ == "__main__":
         settings.MY_DATA_FOLDER_PATH, "transition_counting_results"
     )
     np.save(result_file_path, result)
+    plot_heatmaps(result)
     print(f"results saved to {result_file_path}")
 
     # LOW IN-> OUT

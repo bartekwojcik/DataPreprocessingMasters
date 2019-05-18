@@ -112,7 +112,7 @@ class IrlAlgorithmSolver:
         # t = (weights.tanspose)*(expert-newPolicy)
         return hyper_distance
 
-    def get_reinforcement_learning_features_expectations(self, W) -> List[int]:
+    def get_reinforcement_learning_features_expectations(self, W) -> np.ndarray:
         assert not (np.any(np.isnan(W))), "some elements of W are Nan"
         reward_matrix = self.reward_calculator.calculate_reward(W)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
@@ -121,9 +121,10 @@ class IrlAlgorithmSolver:
 
         # TODO now play a model, implement value iteration or something.
         # 1) DONE implement value iteration or something, find policy
-        # 2) play this policy
-        # 3) get feature expectations of this policy
+        # 2) DONE play this policy
+        # 3) DONE get feature expectations of this policy
         # but model might just always stay in the best reward place, so be smart about that
 
-        #TODO gets fucked up because model is deterministic and it always chooses the same action [0,0,20,0] etc
+        #TODO gets fucked up because model is deterministic and it always
+        #TODO chooses the same action FE=[0,0,20,0] with the highest reward
         return new_features

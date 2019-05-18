@@ -11,7 +11,7 @@ class TransitionCountingTranslator:
             2,
         ), "it is not (2,2,2,2) matrix, is it coming from transition_counting_results.npy?"
 
-    def transform_to_4x4_count_matrix(self):
+    def transform_to_4x4_count_matrix(self)->np.ndarray:
         """
         translates matrix 2x2x2x2 matrix of [Low_previous_state][Low_current_state][High_previous_state][High_current_state]
         to 4x4 matrix of actions counting as stated in .xlsx file
@@ -62,7 +62,7 @@ class TransitionCountingTranslator:
             # Mutual to Mutual
             [cm[1, 0, 1, 0], cm[1, 0, 1, 1], cm[1, 1, 1, 0], cm[1, 1, 1, 1]],
         ]
-        return cm
+        return np.array(self.matrix_4x4)
 
     def transform_to_4x4_probabilities_matrix(self):
         """
