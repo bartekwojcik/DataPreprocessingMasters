@@ -45,14 +45,12 @@ class SimpleModelValueIteration:
                 action_values = np.zeros(self.n_a)
                 for a in range(self.n_a):
                     for prob, next_state in self.G[s][a]:
-                        # TODO
+                        # TODO is it really todo?
                         # rewards[a] because each action's index is related to next state index,
                         # namely actions[0] always leads to state[0]
                         reward = rewards[a]
 
-                        action_values[a] += prob * (
-                            reward + self.discount_factor * V[next_state]
-                        )
+                        action_values[a] += prob * (reward + self.discount_factor * V[next_state])
                 best_a = np.max(action_values)
 
                 delta = max(delta, np.abs(best_a - V[s]))
@@ -65,6 +63,7 @@ class SimpleModelValueIteration:
             action_values = np.zeros(self.n_a)
             for a in range(self.n_a):
                 for prob, next_state in self.G[s][a]:
+                    # TODO is it really todo?
                     # rewards[a] because each action's index is related to next state index,
                     # namely actions[0] always leads to state[0]
                     reward = rewards[a]

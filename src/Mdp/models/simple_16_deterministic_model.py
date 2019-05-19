@@ -25,7 +25,7 @@ class Simple16ActionMdpModel:
     3 - State to Mutual
 
     To maintain flexibility we retain an idea that (s,a) might have stochastic results, therefore each
-    Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state). Insert reward here when known
+    Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state).
 
     """
 

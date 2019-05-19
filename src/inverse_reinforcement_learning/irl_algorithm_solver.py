@@ -1,4 +1,5 @@
-from Mdp.policy_players.simple_deterministic_policy_player import SimpleDeterministicPolicyPlayer
+from Mdp.models.at_high_model import AtHighMdpModel
+
 from Mdp.dynamic_programming_algorithms.simple_model_value_iteration import SimpleModelValueIteration
 
 from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
@@ -27,7 +28,7 @@ class IrlAlgorithmSolver:
         reward_calculator: RewardCalculator,
         value_iterator:SimpleModelValueIteration,
         feature_expectation_extractor:FeatureExpectationExtractor,
-        policy_player: SimpleDeterministicPolicyPlayer,
+        policy_player: AtHighMdpModel,
         epsilon=0.1,
     ):
         """
@@ -128,15 +129,23 @@ class IrlAlgorithmSolver:
         #TODO gets fucked up because model is deterministic and it always
         #TODO chooses the same action FE=[0,0,20,0] with the highest reward
 
+        # 1)
         #TODO also i need to take features from all the conversation, not just that one (in progress)
 
+        # 2)
         #TODO in that case i should "play" the policy from the perspective of High or Low and the other
         #TODO person should be "controlled" by probabilities, therefore the state is not always the same
 
+        # 3) I think it does not have to be done (the state is still represented in the same way)
         # TODO also if i am playing one person i think i need to update feature extraction (to extract only one person)
+
+        # 6) DONE
         # TODO And I also need to update value iteration to calculate rewards, given that the state we might end up (actions results) are no longer deterministic
 
+        # 4) this is not the task
         # TODO but even if one person is stochastic and the other is not, given policy with the reward being highest in
         # TODO one state, the agent will always go there, the only thing that will change is a general state.
 
+        # 5) DONE
+        # TODO mdp model that includes the probabilities
         return new_features
