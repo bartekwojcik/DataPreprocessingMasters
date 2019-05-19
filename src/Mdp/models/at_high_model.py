@@ -45,6 +45,7 @@ class AtHighMdpModel:
         self.graph = {}
         for s in self.states:
             self.graph[s] = {}
+            #TODO actions probably should be: Look or not look
             for a in self.actions:
                 self.graph[s][a] = []
                 for next_s in self.states:

@@ -1,6 +1,5 @@
-from Mdp.models.at_high_model import AtHighMdpModel
-
 from Mdp.dynamic_programming_algorithms.simple_model_value_iteration import SimpleModelValueIteration
+from Mdp.policy_players.high_policy_player import HighPolicyPlayer
 
 from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
 from inverse_reinforcement_learning.reward_calculator import RewardCalculator
@@ -28,7 +27,7 @@ class IrlAlgorithmSolver:
         reward_calculator: RewardCalculator,
         value_iterator:SimpleModelValueIteration,
         feature_expectation_extractor:FeatureExpectationExtractor,
-        policy_player: AtHighMdpModel,
+        policy_player: HighPolicyPlayer,
         epsilon=0.1,
     ):
         """
@@ -145,7 +144,10 @@ class IrlAlgorithmSolver:
         # 4) this is not the task
         # TODO but even if one person is stochastic and the other is not, given policy with the reward being highest in
         # TODO one state, the agent will always go there, the only thing that will change is a general state.
+        #
+        # 6) I think the time might be the best paramter
 
         # 5) DONE
         # TODO mdp model that includes the probabilities
+
         return new_features

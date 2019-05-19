@@ -5,9 +5,10 @@ import settings
 import os
 import json
 
-from Mdp.policy_players.simple_deterministic_policy_player import SimpleDeterministicPolicyPlayer
+from Mdp.policy_players.high_policy_player import HighPolicyPlayer
 from Mdp.dynamic_programming_algorithms.simple_model_value_iteration import SimpleModelValueIteration
 from Mdp.mdp_utils import MdpUtils
+from Mdp.transition_counting_translator import TransitionCountingTranslator
 from inverse_reinforcement_learning.irl_algorithm_solver import IrlAlgorithmSolver
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
@@ -29,8 +30,11 @@ if __name__ == "__main__":
     FILE_TO_READ = os.path.join(settings.HUMAN_READABLE_FOLDER_PATH, FILE_NAME)
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 
+
     with open(METADATA_PATH, "r") as metadata_file:
         metadata_json = json.loads(metadata_file.read())
+        transition_counting_array = np.load(os.path.join(settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"))
+        translator = TransitionCountingTranslator(transition_counting_array)
 
         with open(FILE_TO_READ, "r") as conversation_file:
 
@@ -45,7 +49,7 @@ if __name__ == "__main__":
 
             expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(conv_json)
             random_feature_expectations = get_random_feature_expectations()
-            policy_player = SimpleDeterministicPolicyPlayer(this_file_metadata)
+            policy_player = HighPolicyPlayer(this_file_metadata, translator.transform_to_4x4_count_matrix())
 
             reward_calculator = RewardCalculator(len(mdp_graph.states))
             value_iterator = SimpleModelValueIteration(mdp_graph)
