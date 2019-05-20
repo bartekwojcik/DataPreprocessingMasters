@@ -1,5 +1,7 @@
+import random
 from typing import List
 
+from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from data_const import (
     JointConstants as data_consts,
     ReadableConvMetadataConstants as metadata_consts,
@@ -7,11 +9,20 @@ from data_const import (
 from mdp_const import MdpConsts as mdp_consts
 import numpy as np
 
+class HighPolicyPlayer:
+    """
+    Plays out policy assuming that high person is an agent and low person is an part of environment.
+    Uses transition_counting_results to calculates probabilities.
+    """
 
-class SimpleDeterministicPolicyPlayer:
+    def __init__(self, file_metadata: dict, model: AtHighMdpModel):
+        """
 
-    def __init__(self, file_metadata: dict):
-
+        :param file_metadata: metadata stating who is high and who is low
+        :param count_array: (4x4) probability matrix from TransitionCountingTranslator
+        """
+        self.model = model
+        self.count_array = model.Ca
         self.file_metadata = file_metadata
 
     def play_policy(
@@ -37,13 +48,13 @@ class SimpleDeterministicPolicyPlayer:
         low_person = self.file_metadata[metadata_consts.AT_LOW]
 
         for i in range(max_steps):
-            # actions are currently correlated with new state, action 0 leads to state 0 and so on
-            action_number = policy[int(current_state)]
 
+            action_number = policy[int(current_state)]
+            new_state = self.random_next_state(current_state, action_number)
             assert (high_person != low_person), "high and low person can not be the same, something went wrong, kek"
 
             # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
-            if action_number == mdp_consts.NONE:
+            if new_state == mdp_consts.NONE:
 
                 frame = self.__create_frame(
                     high_person,
@@ -53,7 +64,7 @@ class SimpleDeterministicPolicyPlayer:
                     current_state,
                     time_step,
                 )
-            elif action_number == mdp_consts.H_AT_L:
+            elif new_state == mdp_consts.H_AT_L:
                 frame = self.__create_frame(
                     high_person,
                     data_consts.LEFT_EYE,
@@ -62,7 +73,7 @@ class SimpleDeterministicPolicyPlayer:
                     current_state,
                     time_step,
                 )
-            elif action_number == mdp_consts.L_AT_H:
+            elif new_state == mdp_consts.L_AT_H:
                 frame = self.__create_frame(
                     high_person,
                     data_consts.OUT,
@@ -71,7 +82,7 @@ class SimpleDeterministicPolicyPlayer:
                     current_state,
                     time_step,
                 )
-            elif action_number == mdp_consts.MUTUAL:
+            elif new_state == mdp_consts.MUTUAL:
                 frame = self.__create_frame(
                     high_person,
                     data_consts.LEFT_EYE,
@@ -84,14 +95,15 @@ class SimpleDeterministicPolicyPlayer:
                 raise ValueError("action is out of range, something went wrong")
 
             current_time += time_step
+            #TODO current_state must be changed
             current_state = action_number
             result.append(frame)
 
         return result
 
     def __create_frame(
-        self, high_person, high_gaze, low_person, low_gaze, current_time, time_step
-    )-> dict:
+            self, high_person, high_gaze, low_person, low_gaze, current_time, time_step
+    ) -> dict:
         # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
         result = {
             high_person: {
@@ -108,3 +120,24 @@ class SimpleDeterministicPolicyPlayer:
             data_consts.MAIN: high_person,
         }
         return result
+
+    def random_next_state(self, model_current_state:int, agent_action_number:int)->int:
+
+        cm = self.count_array
+
+        # 0 - None 1 - A at B 2 - B at A 3 - Mutual
+        # 0 - not look, 1 - look
+
+        # 4x4, in - 1, out - 0, array[0,0]
+        # i am high, low is environment
+
+        rnd = random.random()
+
+        list_of_possible_actions = self.model.graph[model_current_state][agent_action_number]
+
+        for proba, next_state in list_of_possible_actions:
+            if rnd < proba:
+                return next_state
+
+        raise ValueError("no state was chosen, something went wrong")
+

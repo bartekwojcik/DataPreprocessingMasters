@@ -5,8 +5,8 @@ import settings
 import os
 import json
 
-from Mdp.policy_players.high_policy_player import HighPolicyPlayer
-from Mdp.dynamic_programming_algorithms.simple_model_value_iteration import SimpleModelValueIteration
+from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
+from Mdp.at_high_model_components.at_high_model_value_iteration import AtHighValueIteration
 from Mdp.mdp_utils import MdpUtils
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from inverse_reinforcement_learning.irl_algorithm_solver import IrlAlgorithmSolver
@@ -17,10 +17,9 @@ from inverse_reinforcement_learning.reward_calculator import RewardCalculator
 
 
 def get_random_feature_expectations() -> np.ndarray:
-    # TODO this is mock
-    # for now, features mapping might be only [high_state, low_state]
-    # TODO TO DISCUSS
-    random_list = [random.randint(2, 8) for n in range(4)]
+
+    n_states = len(MdpUtils.get_at_high_mdp_model().states)
+    random_list = [random.randint(2, 8) for _ in range(n_states)]
     return np.array(random_list)
 
 
@@ -40,8 +39,8 @@ if __name__ == "__main__":
 
             this_file_metadata = metadata_json[FILE_NAME]
             conv_json = json.loads(conversation_file.read())
-            # optimal_policy = PolicyParser.parse_data_to_policy(conv_json,this_file_metadata)
-            mdp_graph = MdpUtils.simple_16_action_graph()
+
+            mdp_graph = MdpUtils.get_at_high_mdp_model()
 
             feature_expectation_extractor = FeatureExpectationExtractor(
                 len(mdp_graph.states), this_file_metadata
@@ -49,10 +48,10 @@ if __name__ == "__main__":
 
             expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(conv_json)
             random_feature_expectations = get_random_feature_expectations()
-            policy_player = HighPolicyPlayer(this_file_metadata, translator.transform_to_4x4_count_matrix())
+            policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph)
 
             reward_calculator = RewardCalculator(len(mdp_graph.states))
-            value_iterator = SimpleModelValueIteration(mdp_graph)
+            value_iterator = AtHighValueIteration(mdp_graph)
             irl = IrlAlgorithmSolver(
                 expert_feature_expectations,
                 random_feature_expectations,

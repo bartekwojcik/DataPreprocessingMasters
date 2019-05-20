@@ -1,13 +1,12 @@
 from typing import Tuple
 
-from Mdp.mdp_utils import MdpUtils
-from Mdp.models.simple_16_deterministic_model import Simple16ActionMdpModel
+from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 import numpy as np
 
 
-class SimpleModelValueIteration:
+class AtHighValueIteration:
     def __init__(
-        self, model: Simple16ActionMdpModel, theta=0.0001, discount_factor=0.95
+        self, model: AtHighMdpModel, theta=0.0001, discount_factor=0.95
     ):
         self.theta = theta
         self.discount_factor = discount_factor
@@ -24,11 +23,6 @@ class SimpleModelValueIteration:
         1 - H at L
         2 - L at H
         3 - Mutual
-        and action is denoted as number
-        where 0 - State to None
-            1 - State to H at L
-            2 - State to L at H
-            3 - State to Mutual
         """
         return self.__calculate_value_iteration(rewards)
 
@@ -45,11 +39,8 @@ class SimpleModelValueIteration:
                 action_values = np.zeros(self.n_a)
                 for a in range(self.n_a):
                     for prob, next_state in self.G[s][a]:
-                        # TODO is it really todo?
-                        # rewards[a] because each action's index is related to next state index,
-                        # namely actions[0] always leads to state[0]
-                        reward = rewards[a]
-
+                        # the reward is the reward of given next_state
+                        reward = rewards[next_state]
                         action_values[a] += prob * (reward + self.discount_factor * V[next_state])
                 best_a = np.max(action_values)
 
@@ -63,10 +54,8 @@ class SimpleModelValueIteration:
             action_values = np.zeros(self.n_a)
             for a in range(self.n_a):
                 for prob, next_state in self.G[s][a]:
-                    # TODO is it really todo?
-                    # rewards[a] because each action's index is related to next state index,
-                    # namely actions[0] always leads to state[0]
-                    reward = rewards[a]
+                    # the reward is the reward of given next_state
+                    reward = rewards[next_state]
                     action_values[a] += prob * (
                         reward + self.discount_factor * V[next_state]
                     )

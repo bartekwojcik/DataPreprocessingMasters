@@ -1,36 +1,35 @@
 import os
 
 import numpy as np
-
-from Mdp.models.simple_16_deterministic_model import Simple16ActionMdpModel
 from mdp_const import MdpConsts as consts
+from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 import settings
+from Mdp.transition_counting_translator import TransitionCountingTranslator
 
 
 class MdpUtils:
-    __Simple16ActionMdp = None  # type: Simple16ActionMdpModel
+    __AtHighMdpModel = None  # type: AtHighMdpModel
 
     @staticmethod
-    def simple_16_action_graph() -> Simple16ActionMdpModel:
+    def get_at_high_mdp_model() -> AtHighMdpModel:
         """
         Gets MDP model from "transition_counting_results.npy" file
         :return: MDP model as graph.
         """
-        if MdpUtils.__Simple16ActionMdp:
-            return MdpUtils.__Simple16ActionMdp
+        if MdpUtils.__AtHighMdpModel:
+            return MdpUtils.__AtHighMdpModel
 
         else:
-            # TODO NOT USED NOW, left here on purpose
-            if False:
-                file = os.path.join(
-                    settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"
-                )
-                array = np.load(file)
+            file = os.path.join(
+                settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"
+            )
+            array = np.load(file)
+            translator = TransitionCountingTranslator(array)
+            counting_array = translator.transform_to_4x4_count_matrix()
 
-            MdpUtils.__Simple16ActionMdp = (
-                Simple16ActionMdpModel()
-            )  # Simple16ActionMdpModel(array)
-            return MdpUtils.__Simple16ActionMdp
+            MdpUtils.__AtHighMdpModel = AtHighMdpModel(counting_array)
+
+            return MdpUtils.__AtHighMdpModel
 
     @staticmethod
     def get_state(high_state: int, low_state: int):
@@ -57,21 +56,3 @@ class MdpUtils:
                 f"No combination of gaze states matches: H:{high_state}, L:{low_state}"
             )
 
-    @staticmethod
-    def get_action(first_state: int, end_state: int):
-        """
-        Returns state of given configuration. To be honest, given my current code configuration (15.05.2019), number of action is corresponding to end_state
-        :param first_state: previous state of the model, NONE, MUTUAl etc
-        :param end_state: end state of the model, NONE, MUTUAl etc
-        :return: integer symbolising action ( 0 - State to None
-              1 - State to A at B (High at Low)
-              2 - State to B at A (Low at High)
-              3 - State to Mutual)
-        """
-
-        graph = MdpUtils.simple_16_action_graph().graph
-
-        s1 = graph[first_state]
-        action = next(action for action in s1.values() if action[0][1] == end_state)
-
-        return action[1]

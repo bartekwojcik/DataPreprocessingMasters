@@ -1,0 +1,66 @@
+import numpy as np
+from mdp_const import MdpConsts as consts
+
+
+class AtHighMdpModel:
+    """
+    mdp model where person at high is an agent and low person is a part of environemt. Action's probabilities are defined from .xlsx file
+
+    States:
+
+    0 - None
+
+    1 - A at B (High at Low)
+
+    2 - B at A (Low at High)
+
+    3 - Mutual
+
+
+    Per State 2 actions:
+
+    0 - not look
+    1 - look
+
+    To maintain flexibility we retain an idea that (s,a) might have stochastic results, therefore each
+    Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state). (might insert rewards later)
+
+    """
+
+    def __init__(self, counting_array: np.ndarray):
+        """
+
+        :param counting_array: (4x4) array of transitions counts
+        """
+
+        self.Ca = counting_array
+
+        self.states = consts.LIST_OF_STATES
+        self.actions = consts.LIST_OF_ACTIONS
+
+        # P[s][a] = (prob, next_state)
+        # self.graph = {
+        #     consts.NONE:
+        #         {
+        #         consts.LOOK: [(self.Pa[],consts.H_AT_L), (self.Pa, consts.MUTUAL)],
+        #         consts.NOT_LOOK: []
+        #     }
+        #
+        # }
+
+        self.graph = {}
+        for s in self.states:
+            self.graph[s] = {}
+            for a in self.actions:
+                self.graph[s][a] = []
+                # in .xlsx file, part "At high model probas"
+                # if a = 0, not look, it always go to "none" =0 or "l at h" =2
+                # if a =1, look, it always to go to "h at l" =1 or "mutual" = 3
+                first_count = self.Ca[s, a]
+                second_count = self.Ca[s, a + 2]
+                sum = first_count + second_count
+                first_proba = first_count / sum
+                second_proba = second_count / sum
+
+                self.graph[s][a].append((first_proba, a))
+                self.graph[s][a].append((second_proba, a + 2))
