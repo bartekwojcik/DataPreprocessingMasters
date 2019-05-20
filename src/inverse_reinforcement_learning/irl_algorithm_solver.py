@@ -70,7 +70,7 @@ class IrlAlgorithmSolver:
                 # step 3
                 break
 
-        assert W, "weights are broken"
+        assert not (np.all(np.isnan(W))), "weights are broken"
         return W
 
     def calc_weights(self) -> np.ndarray:

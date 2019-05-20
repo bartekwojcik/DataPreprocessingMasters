@@ -36,7 +36,7 @@ class HighPolicyPlayer:
         :param time_step:
         :param max_steps: max iterations of playing
         :param model:
-        :param policy: mapping of policy[state]->action where each index of state number (0-3) and action is integer (0-3)
+        :param policy: mapping of policy[state]->action where each index of state number (0-3) and action is integer (0-1)
         :return: dictionary that looks the same as the ones in human_readible_files, where states are true to "in" or "out" but random within, namely when state is "leftEye" all it is means that it is "in", "leftEye" is randomed
         """
 
@@ -134,10 +134,11 @@ class HighPolicyPlayer:
         rnd = random.random()
 
         list_of_possible_actions = self.model.graph[model_current_state][agent_action_number]
-
+        last_proba = 0
         for proba, next_state in list_of_possible_actions:
-            if rnd < proba:
+            if rnd < last_proba+proba:
                 return next_state
+            else: last_proba+= proba
 
         raise ValueError("no state was chosen, something went wrong")
 
