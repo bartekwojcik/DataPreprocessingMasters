@@ -95,7 +95,7 @@ class HighPolicyPlayer:
                 raise ValueError("action is out of range, something went wrong")
 
             current_time += time_step
-            #TODO current_state must be changed
+
             current_state = action_number
             result.append(frame)
 
