@@ -1,38 +1,28 @@
-import random
 
 import numpy as np
 import settings
 import os
 import json
 
-from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
-from Mdp.at_high_model_components.at_high_model_value_iteration import AtHighValueIteration
 from Mdp.mdp_utils import MdpUtils
 from Mdp.transition_counting_translator import TransitionCountingTranslator
-from inverse_reinforcement_learning.irl_algorithm_solver import IrlAlgorithmSolver
-from inverse_reinforcement_learning.feature_expectations_extractor import (
-    FeatureExpectationExtractor,
-)
-from inverse_reinforcement_learning.reward_calculator import RewardCalculator
-
-
-def get_random_feature_expectations() -> np.ndarray:
-
-    n_states = len(MdpUtils.get_at_high_mdp_model().states)
-    random_list = [random.randint(2, 8) for _ in range(n_states)]
-    return np.array(random_list)
-
+from inverse_reinforcement_learning.compare_processor import CompareProcessor
+from inverse_reinforcement_learning.irl_processor import IrlProcessor
 
 if __name__ == "__main__":
 
-    FILE_NAME = "human_readable_conversation_4.json"
+    FILE_NAME = "human_readable_conversation_9.json"
     FILE_TO_READ = os.path.join(settings.HUMAN_READABLE_FOLDER_PATH, FILE_NAME)
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 
-
     with open(METADATA_PATH, "r") as metadata_file:
         metadata_json = json.loads(metadata_file.read())
-        transition_counting_array = np.load(os.path.join(settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"))
+
+        transition_counting_array = np.load(
+            os.path.join(
+                settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"
+            )
+        )
         translator = TransitionCountingTranslator(transition_counting_array)
 
         with open(FILE_TO_READ, "r") as conversation_file:
@@ -42,30 +32,11 @@ if __name__ == "__main__":
 
             mdp_graph = MdpUtils.get_at_high_mdp_model()
 
-            feature_expectation_extractor = FeatureExpectationExtractor(
-                len(mdp_graph.states), this_file_metadata
-            )
+            processor = IrlProcessor()
+            irl_result = processor.process(conv_json,mdp_graph,this_file_metadata,FILE_NAME)
 
-            expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(conv_json)
-            random_feature_expectations = get_random_feature_expectations()
-            policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph)
+            compare_processor = CompareProcessor()
+            compare_processor.compare(irl_result,FILE_NAME,conv_json,this_file_metadata,12,True)
 
-            reward_calculator = RewardCalculator(len(mdp_graph.states))
-            value_iterator = AtHighValueIteration(mdp_graph)
-            irl = IrlAlgorithmSolver(
-                expert_feature_expectations,
-                random_feature_expectations,
-                reward_calculator,
-                value_iterator,
-                feature_expectation_extractor,
-                policy_player
-            )
-            weights = irl.find_weights()
-
-            # TODO things to do:
-            # 1) DONE implement calculating feature expectations from dataset (easy)
-            # 2) implement playing out game with weights (W) to obtain more feature expectations
-            # 3) how to include many experts policies (from all the files)
-            # 4) what exactly does the algorithm return?
 
         debug = 5

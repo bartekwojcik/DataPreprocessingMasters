@@ -1,9 +1,11 @@
+from typing import List
+
 import numpy as np
 from transition_counting.frame_analyzer import FrameAnalyzer
 
 
 class TransitionCounter:
-    def count_transitions(self, file_data: dict, step: int, starting_step: int, metadata:dict) -> np.ndarray:
+    def count_transitions(self, file_data: List[dict], step: int, starting_step: int, metadata:dict) -> np.ndarray:
         """
         Counts transitions. High is "Person at high" and low is "Person at low" as in paper
 

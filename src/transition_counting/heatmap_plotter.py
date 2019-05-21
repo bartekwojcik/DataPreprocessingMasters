@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+import os
 
-def plot_count_heatmap(array:np.ndarray, file_path_to_save:str)->None:
+
+def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = True) -> None:
     """
     Taken from matplotlib website
     :param array:
@@ -31,7 +33,9 @@ def plot_count_heatmap(array:np.ndarray, file_path_to_save:str)->None:
             text = ax.text(j, i, array[i, j],
                            ha="center", va="center", color="w")
 
-    ax.set_title("State to state transitions (number)")
+    base = os.path.basename(file_path_to_save)
+    ax.set_title(base)
     fig.tight_layout()
     plt.savefig(file_path_to_save)
-    plt.show()
+    if show:
+        plt.show()
