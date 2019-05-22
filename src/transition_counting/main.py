@@ -29,8 +29,8 @@ if __name__ == "__main__":
     result = np.zeros((2, 2, 2, 2))
     counter = TransitionCounter()
 
-    metadata_file_name = "human-readable-conversation-metadata.json"
-    metadata_full_path = os.path.join(settings.MY_DATA_FOLDER_PATH, metadata_file_name)
+
+    metadata_full_path = settings.READABLE_METADATA_FILE_PATH
     with open(metadata_full_path, "r") as meta_data_file:
         metadata = json.loads(meta_data_file.read())
 

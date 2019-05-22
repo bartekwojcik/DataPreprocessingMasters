@@ -50,9 +50,8 @@ def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalcu
             ReadConst.AT_LOW: person_low,
         }
 
-    folder_path = settings.MY_DATA_FOLDER_PATH
-    output_file_name = f"human-readable-conversation-metadata.json"
-    full_path = os.path.join(folder_path, output_file_name)
+
+    full_path = settings.READABLE_METADATA_FILE_PATH
     with open(full_path, "w") as new_file:
         json.dump(result_dict, new_file)
 
