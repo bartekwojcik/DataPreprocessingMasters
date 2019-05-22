@@ -89,6 +89,13 @@ class TransitionCountingTranslator:
         Mutual to B at A (Low at Low)
         Mutual to Mutual
         """
-        cm = self.transform_to_4x4_count_matrix()
-        pm = cm / cm.sum(axis=1, keepdims=True)
-        return pm
+        with np.errstate(divide='ignore', invalid='ignore'):
+            cm = self.transform_to_4x4_count_matrix()
+            sum = cm.sum(axis=1, keepdims=True)
+            # pm = cm / sum
+
+            # https://stackoverflow.com/questions/26248654/how-to-return-0-with-divide-by-zero/32106804#32106804
+            c = np.true_divide(cm, sum)
+            c[c == np.inf] = 0
+            c = np.nan_to_num(c)
+            return c
