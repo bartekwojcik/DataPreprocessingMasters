@@ -7,7 +7,7 @@ import settings
 import json
 import numpy as np
 from transition_counting.transition_counter import TransitionCounter
-from transition_counting.gaze_processor import GazeProcessor
+from transition_counting.state_processor import StateProcessor
 #import pylab as plt
 from Mdp.transition_counting_translator import  TransitionCountingTranslator
 
@@ -49,10 +49,10 @@ if __name__ == "__main__":
 
 
 
-    gaze_processor = GazeProcessor()
+    gaze_processor = StateProcessor()
     print(result)
     result_file_path = os.path.join(
-        settings.MY_DATA_FOLDER_PATH, "transition_counting_results"
+        settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk"
     )
     np.save(result_file_path, result)
     plot_heatmaps(result)

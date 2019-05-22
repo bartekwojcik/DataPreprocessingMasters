@@ -8,6 +8,9 @@ from transition_counting.transition_counter import TransitionCounter
 
 
 class ConversationComparer:
+    """
+    Compares real conversation with the reasult created by IRL algorithm and saves plots to disc
+    """
     def compare_and_save_plots(
         self,
         file_name: str,

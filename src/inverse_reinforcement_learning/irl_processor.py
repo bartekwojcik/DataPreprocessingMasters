@@ -12,7 +12,9 @@ from inverse_reinforcement_learning.reward_calculator import RewardCalculator
 
 
 class IrlProcessor():
-
+    """
+    Encapsulates IRL algorithm process
+    """
     def __get_random_feature_expectations(self) -> np.ndarray:
         n_states = len(MdpUtils.get_at_high_mdp_model().states)
         random_list = [random.uniform(0, 5) for i in range(n_states)]

@@ -5,6 +5,9 @@ from inverse_reinforcement_learning.irl_processor_result import IrlProcessorResu
 
 
 class CompareProcessor:
+    """
+    Compares real conversation with the reasult created by IRL algorithm
+    """
     def compare(
         self,
         irl_result: IrlProcessorResult,
@@ -14,6 +17,16 @@ class CompareProcessor:
         frame_step: int,
         show_plot=True,
     ) -> None:
+        """
+        Compares real conversation with the reasult created by IRL algorithm
+        :param irl_result:
+        :param file_name:
+        :param original_conversation:
+        :param metadata:
+        :param frame_step:
+        :param show_plot:
+        :return:
+        """
         file_name_to_save_plot = file_name
         if not irl_result.is_ok:
             file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
