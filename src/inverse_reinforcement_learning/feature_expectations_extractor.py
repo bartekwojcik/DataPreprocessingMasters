@@ -2,7 +2,7 @@ from typing import List
 
 from Mdp.mdp_utils import MdpUtils
 from data_const import JointConstants as consts, ReadableConvMetadataConstants as read_consts
-from transition_counting.gaze_utils import GazeUtils
+from transition_counting.state_utils import StateUtils
 
 import numpy as np
 
@@ -52,10 +52,10 @@ class FeatureExpectationExtractor:
         low_person = self.conversation_metadata[read_consts.AT_LOW]
 
         high_data = frame[high_person]
-        high_gaze_state = GazeUtils.get_gaze_id(high_data[consts.GAZE])
+        high_gaze_state = StateUtils.get_gaze_id(high_data[consts.GAZE])
 
         low_data = frame[low_person]
-        low_gaze_state = GazeUtils.get_gaze_id(low_data[consts.GAZE])
+        low_gaze_state = StateUtils.get_gaze_id(low_data[consts.GAZE])
 
         state_index = MdpUtils.get_state(high_gaze_state,low_gaze_state)
         state_vector = self.eye_states[state_index]

@@ -18,15 +18,15 @@ def plot_heatmaps(result_array:np.ndarray)->None:
     file_name_probs = os.path.join(settings.MY_DATA_FOLDER_PATH, "heat_plot_probs.png")
 
     translator = TransitionCountingTranslator(result_array)
-    count_matrix = translator.transform_to_4x4_count_matrix()
-    probabilities_matrix = translator.transform_to_4x4_probabilities_matrix()
+    count_matrix = translator.transform_to_2D_count_matrix()
+    probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
     plot_count_heatmap(count_matrix, file_name_counts)
     plot_count_heatmap(np.round(probabilities_matrix, decimals=3),file_name_probs)
 
 if __name__ == "__main__":
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
-    result = np.zeros((2, 2, 2, 2))
+    result = np.zeros((2, 2, 2, 2,2, 2, 2, 2))
     counter = TransitionCounter()
 
 
@@ -44,12 +44,11 @@ if __name__ == "__main__":
                 data = json.loads(data_raw.read())
 
                 for i in starting_points:
-                    file_result = counter.count_transitions(data, frame_step, i, file_metadata)
+                    file_result = counter.count_transitions(data, frame_step, i, file_metadata, result.shape)
                     result += file_result
 
 
 
-    gaze_processor = StateProcessor()
     print(result)
     result_file_path = os.path.join(
         settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk"
@@ -58,46 +57,4 @@ if __name__ == "__main__":
     plot_heatmaps(result)
     print(f"results saved to {result_file_path}")
 
-    # LOW IN-> OUT
-    print("LOW IN-> OUT #############")
-    in_out_in_in = gaze_processor.decode_matrix(result, 1, 0, 1, 1)
-    print(f"in_out_in_in: {in_out_in_in }")
-    in_out_in_out = gaze_processor.decode_matrix(result, 1, 0, 1, 0)
-    print(f"in_out_in_out: {in_out_in_out }")
-    in_out_out_out = gaze_processor.decode_matrix(result, 1, 0, 0, 0)
-    print(f"in_out_out_out: {in_out_out_out }")
-    in_out_out_in = gaze_processor.decode_matrix(result, 1, 0, 0, 1)
-    print(f"in_out_out_in: {in_out_out_in }")
 
-    # LOW IN-> IN
-    print("LOW IN-> IN #############")
-    in_in_in_in = gaze_processor.decode_matrix(result, 1, 1, 1, 1)
-    print(f"in_in_in_in: {in_in_in_in }")
-    in_in_in_out = gaze_processor.decode_matrix(result, 1, 1, 1, 0)
-    print(f"in_in_in_out: {in_in_in_out }")
-    in_in_out_out = gaze_processor.decode_matrix(result, 1, 1, 0, 0)
-    print(f"in_in_out_out: {in_in_out_out }")
-    in_in_out_in = gaze_processor.decode_matrix(result, 1, 1, 0, 1)
-    print(f"in_in_out_in: {in_in_out_in }")
-
-    # LOW OUT-> OUT
-    print("LOW OUT-> OUT #############")
-    out_out_in_in = gaze_processor.decode_matrix(result, 0, 0, 1, 1)
-    print(f"out_out_in_in: {out_out_in_in }")
-    out_out_in_out = gaze_processor.decode_matrix(result, 0, 0, 1, 0)
-    print(f"out_out_in_out: {out_out_in_out }")
-    out_out_out_out = gaze_processor.decode_matrix(result, 0, 0, 0, 0)
-    print(f"out_out_out_out: {out_out_out_out }")
-    out_out_out_in = gaze_processor.decode_matrix(result, 0, 0, 0, 1)
-    print(f"out_out_out_in: {out_out_out_in }")
-
-    # LOW OUT-> IN
-    print("LOW OUT-> IN #############")
-    out_in_in_in = gaze_processor.decode_matrix(result, 0, 1, 1, 1)
-    print(f"out_in_in_in: {out_in_in_in }")
-    out_in_in_out = gaze_processor.decode_matrix(result, 0, 1, 1, 0)
-    print(f"out_in_in_out: {out_in_in_out }")
-    out_in_out_out = gaze_processor.decode_matrix(result, 0, 1, 0, 0)
-    print(f"out_in_out_out: {out_in_out_out }")
-    out_in_out_in = gaze_processor.decode_matrix(result, 0, 1, 0, 1)
-    print(f"out_in_out_in: {out_in_out_in }")

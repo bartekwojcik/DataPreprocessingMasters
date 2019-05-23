@@ -3,6 +3,8 @@ import matplotlib
 import numpy as np
 import os
 
+from mdp_const import MdpConsts
+
 
 def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = True) -> None:
     """
@@ -11,7 +13,7 @@ def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = T
     :param file_path_to_save:
     :return:
     """
-    states = ["None", "High at Low", "Low at High", "Mutual"]
+    states = MdpConsts.GET_TALK_AND_LOOK_STATES()
 
     fig, ax = plt.subplots()
     im = ax.imshow(array)

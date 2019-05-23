@@ -45,7 +45,7 @@ class ConversationComparer:
 
         translator = TransitionCountingTranslator(results)
 
-        probabilities_matrix = translator.transform_to_4x4_probabilities_matrix()
+        probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
 
         plot_count_heatmap(np.round(probabilities_matrix, decimals=3), file_name_probs, show)
 

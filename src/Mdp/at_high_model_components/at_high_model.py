@@ -35,18 +35,11 @@ class AtHighMdpModel:
 
         self.Ca = counting_array
 
-        self.states = consts.LIST_OF_STATES
-        self.actions = consts.LIST_OF_ACTIONS
-
-        # P[s][a] = (prob, next_state)
-        # self.graph = {
-        #     consts.NONE:
-        #         {
-        #         consts.LOOK: [(self.Pa[],consts.H_AT_L), (self.Pa, consts.MUTUAL)],
-        #         consts.NOT_LOOK: []
-        #     }
-        #
-        # }
+        # self.states = consts.LIST_OF_STATES
+        # self.actions = consts.LIST_OF_ACTIONS
+        
+        self.__init_states()
+        #TODO HERE IS WORK
 
         self.graph = {}
         for s in self.states:
@@ -64,3 +57,8 @@ class AtHighMdpModel:
 
                 self.graph[s][a].append((first_proba, a))
                 self.graph[s][a].append((second_proba, a + 2))
+
+    def __init_states(self):
+        self.states = []
+
+

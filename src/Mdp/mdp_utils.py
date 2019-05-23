@@ -25,7 +25,7 @@ class MdpUtils:
             )
             array = np.load(file)
             translator = TransitionCountingTranslator(array)
-            counting_array = translator.transform_to_4x4_count_matrix()
+            counting_array = translator.transform_to_2D_count_matrix()
 
             MdpUtils.__AtHighMdpModel = AtHighMdpModel(counting_array)
 

@@ -1,13 +1,31 @@
+
+
 class MdpConsts:
-
-    NONE = 0
-    H_AT_L = AATB = 1
-    L_AT_H = BATA = 2
-    MUTUAL = 3
-
-    LIST_OF_STATES = [NONE, H_AT_L, L_AT_H, MUTUAL]
 
     NOT_LOOK = 0
     LOOK = 1
 
-    LIST_OF_ACTIONS = [NOT_LOOK, LOOK]
+    QUIET = 0
+    TALK = 1
+    __LIST_OF_LOOKING_STATES = [NOT_LOOK, LOOK]
+    __LIST_OF_TALKING_STATES = [QUIET, TALK]
+
+    @classmethod
+    def GET_TALK_AND_LOOK_STATES(cls):
+        """
+        :return: List of tuples - possible states ,[(High_gaze,High_talk,Low_gaze,Low_talk)...]
+        """
+        result = []
+        for hg in cls.__LIST_OF_LOOKING_STATES:
+            for lg in cls.__LIST_OF_LOOKING_STATES:
+                for ht in cls.__LIST_OF_TALKING_STATES:
+                    for lt in cls.__LIST_OF_TALKING_STATES:
+                        result.append((hg,ht,lg,lt))
+
+        return result
+
+
+
+
+
+

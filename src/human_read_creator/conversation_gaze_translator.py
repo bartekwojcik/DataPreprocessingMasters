@@ -10,7 +10,7 @@ from data_const import (
 from human_read_creator.utils import *
 from human_read_creator.face import Face
 from human_read_creator.at_high_at_low_calculator import AtHightAtLowCalculator
-from transition_counting.gaze_utils import GazeUtils
+from transition_counting.state_utils import StateUtils
 
 """
 Converts conversation (per frame) file from gaze x and y coordinates to gaze "mouth" or gaze "out"
@@ -218,11 +218,11 @@ class ConversationGazeTranslator:
         other_gaze_state: str,
     ):
         if main_person == ConstUC.PERSON1:
-            person_1_state = GazeUtils.get_gaze_id(main_gaze_state)
-            person_2_state = GazeUtils.get_gaze_id(other_gaze_state)
+            person_1_state = StateUtils.get_gaze_id(main_gaze_state)
+            person_2_state = StateUtils.get_gaze_id(other_gaze_state)
         else:
-            person_2_state = GazeUtils.get_gaze_id(main_gaze_state)
-            person_1_state = GazeUtils.get_gaze_id(other_gaze_state)
+            person_2_state = StateUtils.get_gaze_id(main_gaze_state)
+            person_1_state = StateUtils.get_gaze_id(other_gaze_state)
 
         at_high_at_low_calc.update(person_1_state, person_2_state)
 
