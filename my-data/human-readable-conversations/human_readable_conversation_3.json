@@ -2,11 +2,11 @@
 	{
 		"person1": {
 			"gaze": "leftEye",
-			"talking": "quiet"
+			"talking": "talking"
 		},
 		"person2": {
-			"gaze": "out",
-			"talking": "quiet"
+			"gaze": "leftEye",
+			"talking": "talking"
 		},
 		"timeEnd": 4.68,
 		"timeStart": 4.64,

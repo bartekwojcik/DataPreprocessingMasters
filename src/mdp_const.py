@@ -17,8 +17,8 @@ class MdpConsts:
         """
         result = []
         for hg in cls.__LIST_OF_LOOKING_STATES:
-            for lg in cls.__LIST_OF_LOOKING_STATES:
-                for ht in cls.__LIST_OF_TALKING_STATES:
+            for ht in cls.__LIST_OF_TALKING_STATES:
+                for lg in cls.__LIST_OF_LOOKING_STATES:
                     for lt in cls.__LIST_OF_TALKING_STATES:
                         result.append((hg,ht,lg,lt))
 

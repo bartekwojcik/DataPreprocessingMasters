@@ -24,14 +24,10 @@ class StateProcessor:
     def increment_matrix(
         self,
         matrix,
-        low_previous_state: str,
-        low_current_state,
-        high_previous_state,
-        high_current_state,
-        low_previous_talk_state: str,
-        low_current_talk_state: str,
-        high_previous_talk_state: str,
-        high_current_talk_state: str,
+            previous_high_gaze_state: str, current_high_gaze_state : str,
+            previous_high_talk_state : str, current_high_talk_state : str,
+            previous_low_gaze_state : str, current_low_gaze_state: str,
+            previous_low_talk_state: str, current_low_talk_state: str,
         increment_value: int,
     ):
         """
@@ -44,21 +40,21 @@ class StateProcessor:
          by increment_value
         """
 
-        low_previous_gaze = self.get_state_id(low_previous_state)
-        low_current_gaze = self.get_state_id(low_current_state)
-        high_previous_gaze = self.get_state_id(high_previous_state)
-        high_current_gaze = self.get_state_id(high_current_state)
+        low_previous_gaze = self.get_state_id(previous_low_gaze_state)
+        low_current_gaze = self.get_state_id(current_low_gaze_state)
+        high_previous_gaze = self.get_state_id(previous_high_gaze_state)
+        high_current_gaze = self.get_state_id(current_high_gaze_state)
 
-        low_previous_talk = self.get_talk_id(low_previous_talk_state)
-        low_current_talk = self.get_talk_id(low_current_talk_state)
-        high_previous_talk = self.get_talk_id(high_previous_talk_state)
-        high_current_talk = self.get_talk_id(high_current_talk_state)
+        low_previous_talk = self.get_talk_id(previous_low_talk_state)
+        low_current_talk = self.get_talk_id(current_low_talk_state)
+        high_previous_talk = self.get_talk_id(previous_high_talk_state)
+        high_current_talk = self.get_talk_id(current_high_talk_state)
 
         matrix[
-            high_previous_gaze][high_current_gaze][
-            high_previous_talk][high_current_talk][
-            low_previous_gaze][low_current_gaze][
-            low_previous_talk][low_current_talk
+            high_previous_gaze][high_previous_talk][
+            low_previous_gaze][low_previous_talk][
+            high_current_gaze][high_current_talk][
+            low_current_gaze][low_current_talk
         ] += increment_value
 
         return matrix
