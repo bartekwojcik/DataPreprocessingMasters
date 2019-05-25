@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from inverse_reinforcement_learning.conversation_comperar import ConversationComparer
 from inverse_reinforcement_learning.irl_processor_result import IrlProcessorResult
@@ -15,7 +15,9 @@ class CompareProcessor:
         original_conversation: List[dict],
         metadata: dict,
         frame_step: int,
+        result_shape: Tuple,
         show_plot=True,
+
     ) -> None:
         """
         Compares real conversation with the reasult created by IRL algorithm
@@ -39,4 +41,5 @@ class CompareProcessor:
             frame_step=frame_step,
             file_metadata=metadata,
             show=show_plot,
+            result_shape=result_shape
         )

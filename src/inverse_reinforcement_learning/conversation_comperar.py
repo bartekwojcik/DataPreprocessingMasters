@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import numpy as np
 import os
 import settings
@@ -18,16 +18,17 @@ class ConversationComparer:
         calculated_conversation: List[dict],
         frame_step: int,
         file_metadata: dict,
-        show: bool
+        show: bool,
+        result_shape: Tuple
     ):
         base = os.path.basename(file_name)
         # get file name without extention
         name = os.path.splitext(base)[0]
         original_results = self.__count(
-            original_conversation, file_metadata, frame_step
+            original_conversation, file_metadata, frame_step,result_shape
         )
         calculated_results = self.__count(
-            calculated_conversation, file_metadata, frame_step
+            calculated_conversation, file_metadata, frame_step,result_shape
         )
 
         self.__save_plots(original_results, name, "original", show)
@@ -49,14 +50,14 @@ class ConversationComparer:
 
         plot_count_heatmap(np.round(probabilities_matrix, decimals=3), file_name_probs, show)
 
-    def __count(self, conversation, file_metadata: dict, frame_step: int) -> np.ndarray:
-        result = np.zeros((2, 2, 2, 2))
+    def __count(self, conversation, file_metadata: dict, frame_step: int, shape:Tuple) -> np.ndarray:
+        result = np.zeros(shape)
         starting_points = np.arange(0, frame_step)
         counter = TransitionCounter()
 
         for i in starting_points:
             file_result = counter.count_transitions(
-                conversation, frame_step, i, file_metadata
+                conversation, frame_step, i, file_metadata, shape
             )
             result += file_result
 
