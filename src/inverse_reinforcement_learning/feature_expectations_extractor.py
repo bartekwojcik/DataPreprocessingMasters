@@ -21,7 +21,6 @@ class FeatureExpectationExtractor:
         self.discount_factor = discount_factor
         self.conversation_metadata = conversation_metadata
         self.max_steps = max_steps
-        self.eye_states = np.eye(self.n_states)
 
     def get_experts_feature_expectations(self,data:List[dict])-> np.ndarray:
         """
@@ -53,12 +52,13 @@ class FeatureExpectationExtractor:
 
         high_data = frame[high_person]
         high_gaze_state = StateUtils.get_gaze_id(high_data[consts.GAZE])
+        high_talk_state = StateUtils.get_talk_id(high_data[consts.TALKING])
 
         low_data = frame[low_person]
         low_gaze_state = StateUtils.get_gaze_id(low_data[consts.GAZE])
+        low_talk_state = StateUtils.get_talk_id(low_data[consts.TALKING])
 
-        state_index = MdpUtils.get_state(high_gaze_state,low_gaze_state)
-        state_vector = self.eye_states[state_index]
+        state_vector = (high_gaze_state, high_talk_state, low_gaze_state, low_talk_state)
 
         return np.array(state_vector)
 

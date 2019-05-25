@@ -13,36 +13,31 @@ class AtHighMdpModel:
 
     def __init__(self, counting_array: np.ndarray):
         """
-
-        :param counting_array: (4x4) array of transitions counts
+        :param counting_array: (2,2,2,2,2,2,2,2) array of transitions counts
         """
 
+        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2), "did you update model?"
         self.Ca = counting_array
 
         self.states = consts.GET_TALK_AND_LOOK_STATES()
         self.actions = consts.GET_TALK_AND_LOOK_ACTIONS()
-        
-        self.__init_states()
-        #TODO HERE IS WORK
 
+        self.__init_states()
+
+    def __init_states(self):
         self.graph = {}
         for s in self.states:
             self.graph[s] = {}
             for a in self.actions:
                 self.graph[s][a] = []
-                # in .xlsx file, part "At high model probas"
-                # if a = 0, not look, it always go to "none" =0 or "l at h" =2
-                # if a =1, look, it always to go to "h at l" =1 or "mutual" = 3
-                first_count = self.Ca[s, a]
-                second_count = self.Ca[s, a + 2]
-                sum = first_count + second_count
-                first_proba = first_count / sum
-                second_proba = second_count / sum
+                # now collect possible states we might end up given state we are in and action we take
+                # get sum of all transition:
+                sum = 0
+                for p_a in self.actions:
+                    # tuple1 + tuple2 = tuple3
+                    # and array[0,0] == array[(0,0)]
+                    sum += self.Ca[a + p_a]
 
-                self.graph[s][a].append((first_proba, a))
-                self.graph[s][a].append((second_proba, a + 2))
-
-    def __init_states(self):
-        self.states = []
-
-
+                for p_a in self.actions:
+                    proba = self.Ca[a + p_a] / sum
+                    self.graph[s][a].append((proba, a + p_a))

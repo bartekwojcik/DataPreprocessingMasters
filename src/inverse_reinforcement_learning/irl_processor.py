@@ -15,9 +15,14 @@ class IrlProcessor():
     """
     Encapsulates IRL algorithm process
     """
-    def __get_random_feature_expectations(self) -> np.ndarray:
-        n_states = len(MdpUtils.get_at_high_mdp_model().states)
-        random_list = [random.uniform(0, 5) for i in range(n_states)]
+    def __get_random_feature_expectations(self, n_attributes) -> np.ndarray:
+        """
+
+        :param n_states: number of attributes in state
+        :return:
+        """
+
+        random_list = [random.uniform(0, 5) for i in range(n_attributes)]
         return np.array(random_list)
 
     def process(self, conversation_json: List[dict], mdp_graph: AtHighMdpModel, metadata: dict, file_name: str)->IrlProcessorResult:
@@ -28,14 +33,16 @@ class IrlProcessor():
         :param metadata:
         :return: IrlProcessorResult
         """
+        n_attributes_in_state =len(mdp_graph.states[0])
         feature_expectation_extractor = FeatureExpectationExtractor(
-            len(mdp_graph.states), metadata
+            n_attributes_in_state, metadata
         )
 
         expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(
             conversation_json
         )
-        random_feature_expectations = self.__get_random_feature_expectations()
+
+        random_feature_expectations = self.__get_random_feature_expectations(n_attributes_in_state)
         policy_player = HighPolicyPlayer(metadata, mdp_graph)
 
         reward_calculator = RewardCalculator(len(mdp_graph.states))

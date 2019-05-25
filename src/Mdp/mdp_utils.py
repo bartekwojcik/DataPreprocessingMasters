@@ -24,10 +24,8 @@ class MdpUtils:
                 settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk.npy"
             )
             array = np.load(file)
-            translator = TransitionCountingTranslator(array)
-            counting_array = translator.transform_to_2D_count_matrix()
 
-            MdpUtils.__AtHighMdpModel = AtHighMdpModel(counting_array)
+            MdpUtils.__AtHighMdpModel = AtHighMdpModel(array)
 
             return MdpUtils.__AtHighMdpModel
 
