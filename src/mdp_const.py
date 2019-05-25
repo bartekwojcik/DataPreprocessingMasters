@@ -1,3 +1,4 @@
+import itertools
 
 
 class MdpConsts:
@@ -22,6 +23,12 @@ class MdpConsts:
                     for lt in cls.__LIST_OF_TALKING_STATES:
                         result.append((hg,ht,lg,lt))
 
+        return result
+
+    @classmethod
+    def GET_TALK_AND_LOOK_ACTIONS(cls):
+        #maybe instead of tuple i should use list?
+        result = list(itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
         return result
 
 

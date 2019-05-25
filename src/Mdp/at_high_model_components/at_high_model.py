@@ -6,24 +6,8 @@ class AtHighMdpModel:
     """
     mdp model where person at high is an agent and low person is a part of environemt. Action's probabilities are defined from .xlsx file
 
-    States:
-
-    0 - None
-
-    1 - A at B (High at Low)
-
-    2 - B at A (Low at High)
-
-    3 - Mutual
-
-
-    Per State 2 actions:
-
-    0 - not look
-    1 - look
-
     To maintain flexibility we retain an idea that (s,a) might have stochastic results, therefore each
-    Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state). (might insert rewards later)
+    Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state).
 
     """
 
@@ -35,8 +19,8 @@ class AtHighMdpModel:
 
         self.Ca = counting_array
 
-        # self.states = consts.LIST_OF_STATES
-        # self.actions = consts.LIST_OF_ACTIONS
+        self.states = consts.GET_TALK_AND_LOOK_STATES()
+        self.actions = consts.GET_TALK_AND_LOOK_ACTIONS()
         
         self.__init_states()
         #TODO HERE IS WORK

@@ -5,7 +5,7 @@
 			"talking": "talking"
 		},
 		"person2": {
-			"gaze": "leftEye",
+			"gaze": "out",
 			"talking": "talking"
 		},
 		"timeEnd": 4.68,
@@ -15,12 +15,12 @@
 	},
 	{
 		"person1": {
-			"gaze": "leftEye",
-			"talking": "quiet"
+			"gaze": "out",
+			"talking": "talking"
 		},
 		"person2": {
 			"gaze": "out",
-			"talking": "quiet"
+			"talking": "talking"
 		},
 		"timeEnd": 4.72,
 		"timeStart": 4.68,

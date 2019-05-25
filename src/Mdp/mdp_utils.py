@@ -21,7 +21,7 @@ class MdpUtils:
 
         else:
             file = os.path.join(
-                settings.MY_DATA_FOLDER_PATH, "transition_counting_results.npy"
+                settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk.npy"
             )
             array = np.load(file)
             translator = TransitionCountingTranslator(array)
@@ -33,6 +33,7 @@ class MdpUtils:
 
     @staticmethod
     def get_state(high_state: int, low_state: int):
+        #TODO TO BE DELETED
         """
         Returns state of given configuration
         :param high_state: gaze state of person at high, 0 - not looking, 1 - looking
