@@ -15,11 +15,12 @@ class HighPolicyPlayer:
     Uses transition_counting_results to calculates probabilities.
     """
 
+
     def __init__(self, file_metadata: dict, model: AtHighMdpModel):
         """
 
         :param file_metadata: metadata stating who is high and who is low
-        :param count_array: (4x4) probability matrix from TransitionCountingTranslator
+        :param count_array: (2,2,2,2,2,2,2,2) probability
         """
         self.model = model
         self.count_array = model.Ca

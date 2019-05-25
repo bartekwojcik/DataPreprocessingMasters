@@ -25,6 +25,10 @@ class AtHighMdpModel:
         self.__init_states()
 
     def __init_states(self):
+        """
+        Sets graph where graph[state][action] = List of tuples (probability_of going to this state, state we will end up)
+
+        """
         self.graph = {}
         for s in self.states:
             self.graph[s] = {}
@@ -36,8 +40,12 @@ class AtHighMdpModel:
                 for p_a in self.actions:
                     # tuple1 + tuple2 = tuple3
                     # and array[0,0] == array[(0,0)]
-                    sum += self.Ca[a + p_a]
+                    #selc.Ca[s+a+p_a] -> s = state we were in, a = action agent wants to do, p_a = action that the other guy might do
+                    sum += self.Ca[s+a + p_a]
 
                 for p_a in self.actions:
-                    proba = self.Ca[a + p_a] / sum
+                    if sum == 0:
+                        proba = 0
+                    else:
+                        proba = self.Ca[s+ a + p_a] / sum
                     self.graph[s][a].append((proba, a + p_a))

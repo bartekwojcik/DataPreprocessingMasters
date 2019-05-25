@@ -2,9 +2,9 @@ import numpy as np
 
 class RewardCalculator:
 
-    def __init__(self, n_states:int):
-        self.n_states = n_states
-        self.eye_states = np.eye(self.n_states)
+    def __init__(self, reward_shape:tuple, states:np.ndarray):
+        self.states = states
+        self.reward_shape = reward_shape
 
     def calculate_reward(self, W:np.ndarray)-> np.ndarray:
         """
@@ -14,10 +14,12 @@ class RewardCalculator:
         :return: array of reward of dim [States,Actions]
         """
 
-        R = np.zeros((self.n_states,))
+        shape_length = self.reward_shape[0]
+        #shape of 16, because reward PER state
+        R = np.zeros((shape_length,))
 
-        for s in range(self.n_states):
-            state_vector = self.eye_states[s]
+        for s in range(shape_length):
+            state_vector = self.states[s]
             R[s] = np.dot(W.T, state_vector)
 
         return R

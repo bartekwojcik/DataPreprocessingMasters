@@ -45,7 +45,8 @@ class IrlProcessor():
         random_feature_expectations = self.__get_random_feature_expectations(n_attributes_in_state)
         policy_player = HighPolicyPlayer(metadata, mdp_graph)
 
-        reward_calculator = RewardCalculator(len(mdp_graph.states))
+        states_array = np.array(mdp_graph.states)
+        reward_calculator = RewardCalculator(states_array.shape, states_array)
         value_iterator = AtHighValueIteration(mdp_graph)
         irl = IrlAlgorithmSolver(
             file_name,
