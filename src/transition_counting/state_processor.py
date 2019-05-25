@@ -41,15 +41,15 @@ class StateProcessor:
          by increment_value
         """
 
-        low_previous_gaze = self.get_state_id(previous_low_gaze_state)
-        low_current_gaze = self.get_state_id(current_low_gaze_state)
         high_previous_gaze = self.get_state_id(previous_high_gaze_state)
-        high_current_gaze = self.get_state_id(current_high_gaze_state)
-
-        low_previous_talk = self.get_talk_id(previous_low_talk_state)
-        low_current_talk = self.get_talk_id(current_low_talk_state)
         high_previous_talk = self.get_talk_id(previous_high_talk_state)
+        low_previous_gaze = self.get_state_id(previous_low_gaze_state)
+        low_previous_talk = self.get_talk_id(previous_low_talk_state)
+
+        high_current_gaze = self.get_state_id(current_high_gaze_state)
         high_current_talk = self.get_talk_id(current_high_talk_state)
+        low_current_gaze = self.get_state_id(current_low_gaze_state)
+        low_current_talk = self.get_talk_id(current_low_talk_state)
 
         matrix[
             high_previous_gaze][high_previous_talk][

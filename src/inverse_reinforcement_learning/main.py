@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
                 compare_processor = CompareProcessor()
                 compare_processor.compare(
-                    irl_result, full_file_name, conv_json, this_file_metadata, 12, mdp_graph.Ca.shape, True
+                    irl_result, full_file_name, conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, mdp_graph.Ca.shape, True
                 )
 
                 #TODO might do something with irl_result later ¯\_(ツ)_/¯ asd

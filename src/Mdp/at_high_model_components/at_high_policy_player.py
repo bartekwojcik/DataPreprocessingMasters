@@ -80,7 +80,7 @@ class HighPolicyPlayer:
 
             current_time += time_step
 
-            current_state_index = action_index
+            current_state_index = self.model.states.index(new_state)
             result.append(frame)
 
         return result
@@ -132,6 +132,7 @@ class HighPolicyPlayer:
         #if we got here it means that all probabilities were 0
         if last_proba == 0:
             #go to random place
-            return list_of_possible_actions[0][1]
+            random_int = random.randint(0,len(current_state)-1)
+            return list_of_possible_actions[random_int][1]
 
         raise ValueError("no state was chosen, something went wrong")

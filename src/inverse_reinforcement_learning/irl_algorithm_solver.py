@@ -166,6 +166,7 @@ class IrlAlgorithmSolver:
         """
         if np.any(np.isnan(W)):
             raise ValueError("some elements of W are Nan")
+
         reward_matrix = self.reward_calculator.calculate_reward(W)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
         new_conversation = self.policy_player.play_policy(policy, max_steps= self.policy_player_max_step)
