@@ -20,7 +20,6 @@ if __name__ == "__main__":
         for filename in os.listdir(HUMAN_READABLE_FOLDER_PATH):
             full_file_name = os.path.join(HUMAN_READABLE_FOLDER_PATH, filename)
 
-
             with open(full_file_name, "r") as conversation_file:
 
                 this_file_metadata = metadata_json[filename]
@@ -28,16 +27,23 @@ if __name__ == "__main__":
 
                 mdp_graph = MdpUtils.get_at_high_mdp_model()
 
+                VERBOSE = True
                 processor = IrlProcessor()
                 irl_result = processor.process(
-                    conv_json, mdp_graph, this_file_metadata, full_file_name
+                    conv_json, mdp_graph, this_file_metadata, full_file_name, verbose=VERBOSE
                 )
 
                 compare_processor = CompareProcessor()
                 compare_processor.compare(
-                    irl_result, full_file_name, conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, mdp_graph.Ca.shape, True
+                    irl_result,
+                    full_file_name,
+                    conv_json,
+                    this_file_metadata,
+                    settings.TRANSITION_FRAME_STEP,
+                    mdp_graph.Ca.shape,
+                    show_plot=VERBOSE
                 )
 
-                #TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
+                # TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
 
         debug = 5

@@ -87,7 +87,10 @@ class IrlAlgorithmSolver:
         i = 0
         while True:
 
-            W = self.calc_weights()
+            try:
+                W = self.calc_weights()
+            except ValueError:
+                return W, reward_matrix, policy, V, new_conversation, False
             self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W)
             print(f"iteration: {i}")
             print("weights:")
@@ -153,7 +156,7 @@ class IrlAlgorithmSolver:
             )
         )  # hyperdistance = t
         self.policies_feature_expectations[hyper_distance] = temp_fe
-        # t = (weights.tanspose)*(expert-newPolicy)
+        # t = (weights.transpose)*(expert-newPolicy)
         return (hyper_distance, reward_matrix, policy, V, new_conversation)
 
     def get_reinforcement_learning_features_expectations(
@@ -173,7 +176,5 @@ class IrlAlgorithmSolver:
         new_features = self.feature_expectation_extractor.get_experts_feature_expectations(
             new_conversation
         )
-
-        # 6) I think the time might be the best paramter
 
         return new_features, reward_matrix, policy, V, new_conversation

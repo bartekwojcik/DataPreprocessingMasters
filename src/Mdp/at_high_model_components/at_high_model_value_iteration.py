@@ -32,7 +32,7 @@ class AtHighValueIteration:
 
         V = np.zeros(self.n_s)
         policy = np.zeros((self.n_s,))
-
+        i = 0
         while True:
             delta = 0
 
@@ -53,7 +53,7 @@ class AtHighValueIteration:
                 index_of_state = self.model.states.index(s)
                 delta = max(delta, np.abs(best_a - V[index_of_state]))
                 V[index_of_state] = best_a
-
+            i+=1
             if delta < self.theta:
                 break
 

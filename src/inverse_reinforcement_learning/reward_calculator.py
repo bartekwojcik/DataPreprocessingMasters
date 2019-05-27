@@ -20,7 +20,11 @@ class RewardCalculator:
 
         for s in range(shape_length):
             state_vector = self.states[s]
-            R[s] = np.dot(W.T, state_vector)
+            ##this is just to make work around zero vector problem
+            if np.all(state_vector==0):
+                R[s] = -0.8
+            else:
+                R[s] = np.dot(W.T, state_vector)
 
         return R
 

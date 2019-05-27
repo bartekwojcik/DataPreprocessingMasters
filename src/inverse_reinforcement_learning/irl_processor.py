@@ -25,7 +25,7 @@ class IrlProcessor():
         random_list = [random.uniform(0, 5) for i in range(n_attributes)]
         return np.array(random_list)
 
-    def process(self, conversation_json: List[dict], mdp_graph: AtHighMdpModel, metadata: dict, file_name: str)->IrlProcessorResult:
+    def process(self, conversation_json: List[dict], mdp_graph: AtHighMdpModel, metadata: dict, file_name: str,verbose:bool)->IrlProcessorResult:
         """
         Processes one file of conversation with Inverse Reinforcement Learning
         :param conversation_json:
@@ -56,12 +56,12 @@ class IrlProcessor():
             value_iterator,
             feature_expectation_extractor,
             policy_player,
-            policy_player_max_step=2000,
+            policy_player_max_step=3000,
             max_iterations=50
 
         )
         weights, reward_matrix, policy, V, new_conversation, is_ok = irl.find_weights(
-            verbose=True
+            verbose=verbose
         )
 
         return IrlProcessorResult(weights, reward_matrix, policy, V, new_conversation, is_ok)
