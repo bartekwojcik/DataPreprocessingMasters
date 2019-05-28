@@ -26,4 +26,6 @@ class TransitionCounter:
             this_frame_result = frame_analyzer.process_frame(previous_frame, frame, metadata)
             result = result + this_frame_result
 
+            previous_frame = frame
+
         return result

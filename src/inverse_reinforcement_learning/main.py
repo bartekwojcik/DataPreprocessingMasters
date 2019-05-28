@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
             with open(full_file_name, "r") as conversation_file:
 
-                this_file_metadata = metadata_json[full_file_name]
+                this_file_metadata = metadata_json[filename]
                 conv_json = json.loads(conversation_file.read())
 
                 mdp_graph = MdpUtils.get_at_high_mdp_model()
