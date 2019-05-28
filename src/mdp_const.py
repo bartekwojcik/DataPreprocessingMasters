@@ -1,7 +1,15 @@
 import itertools
 
+import settings
+
 
 class MdpConsts:
+
+    # arbitrary
+    __MAX_CONTINUOUS_TIME_SEC = 10.0
+    # each step in data is like that
+    __CONTINUOUS_TIME_STEP_SEC = 0.04 * settings.TRANSITION_FRAME_STEP
+    TIME_SIZE = int(__MAX_CONTINUOUS_TIME_SEC / __CONTINUOUS_TIME_STEP_SEC)
 
     NOT_LOOK = 0
     LOOK = 1
@@ -14,8 +22,9 @@ class MdpConsts:
     @classmethod
     def GET_TALK_AND_LOOK_STATES(cls):
         """
-        :return: List of tuples - possible states ,[(High_gaze,High_talk,Low_gaze,Low_talk)...]
+        :return: List of tuples - possible states [(High_gaze,High_talk,Low_gaze,Low_talk,time0)...]
         """
+
         result = []
         for hg in cls.__LIST_OF_LOOKING_STATES:
             for ht in cls.__LIST_OF_TALKING_STATES:

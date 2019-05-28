@@ -1,8 +1,5 @@
 import os
-
-import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
-
+from mdp_const import MdpConsts as mdp
 import settings
 import json
 import numpy as np
@@ -26,9 +23,14 @@ def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_proba
 
 
 if __name__ == "__main__":
+    """
+    the time transitions are from perspective of high, namely: after what time did the at high person change his state 
+    
+    """
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
-    global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2))
+    time_size = mdp.TIME_SIZE
+    global_results = np.zeros((2, 2,time_size, 2, 2,time_size, 2, 2,time_size, 2, 2,time_size))
     counter = TransitionCounter()
 
 
