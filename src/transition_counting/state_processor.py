@@ -4,6 +4,8 @@ from transition_counting.state_utils import StateUtils
 
 
 class StateProcessor:
+    def __init__(self):
+        self.previous_time =0
 
     def get_state_id(self, state) -> int:
         """
@@ -32,7 +34,7 @@ class StateProcessor:
         increment_value: int,
     ):
         """
-         increment values in matrix given GAZE
+         increment values in matrix given gaze, talk and time
          :return: return 2x2x2x2x2x2x2x2 matrix that translates to:
              previous_high_gaze_state, current_high_gaze_state,
             previous_high_talk_state, current_high_talk_state,
@@ -51,11 +53,24 @@ class StateProcessor:
         low_current_gaze = self.get_state_id(current_low_gaze_state)
         low_current_talk = self.get_talk_id(current_low_talk_state)
 
+        previous_state = (
+            high_previous_gaze, high_previous_talk, low_previous_gaze, low_previous_talk)
+        current_state = (
+            high_current_gaze, high_current_talk, low_current_gaze, low_current_talk)
+
+        if previous_state == current_state:
+            # the state is the same so we increment time step
+            self.previous_time += 1
+        else:
+            # state changed and we get back to the state 0 of new state
+            self.previous_time = 0
+
         matrix[
             high_previous_gaze][high_previous_talk][
             low_previous_gaze][low_previous_talk][
             high_current_gaze][high_current_talk][
-            low_current_gaze][low_current_talk
+            low_current_gaze][low_current_talk][
+            self.previous_time,
         ] += increment_value
 
         return matrix

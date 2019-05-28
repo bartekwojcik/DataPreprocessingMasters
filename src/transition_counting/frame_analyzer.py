@@ -10,6 +10,7 @@ Processes frames and counts the transition states
 
 
 class FrameAnalyzer:
+
     def process_frame(self, previous_frame: dict, frame: dict, metadata: dict, shape: Tuple) -> np.ndarray:
         """
         Study transition changes between previous and current frame. High is "Person at high" and low is "Person at low" as in paper
@@ -42,6 +43,8 @@ class FrameAnalyzer:
         previous_low_talk_state = previous_frame[low][ConstJoint.TALKING]
         current_low_talk_state = frame[low][ConstJoint.TALKING]
 
+        #unfortunately this metod also takes care of checking if states were the same and updates time.
+        #sorry future you
         result = gaze_processor.increment_matrix(
             result,
             previous_high_gaze_state, current_high_gaze_state,
