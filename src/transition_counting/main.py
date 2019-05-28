@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     time_size = mdp.TIME_SIZE
-    global_results = np.zeros((2, 2,time_size, 2, 2,time_size, 2, 2,time_size, 2, 2,time_size))
+    global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2,time_size))
     counter = TransitionCounter()
 
 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     print(global_results)
     result_file_path = os.path.join(
-        settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk"
+        settings.MY_DATA_FOLDER_PATH, f"transition_counting_results_with_talk_{FRAME_STEP}_frame"
     )
     np.save(result_file_path, global_results)
     plot_heatmaps(global_results,"heat_plot_counts.png","heat_plot_probs.png")

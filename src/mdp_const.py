@@ -6,9 +6,9 @@ import settings
 class MdpConsts:
 
     # arbitrary
-    __MAX_CONTINUOUS_TIME_SEC = 10.0
+    __MAX_CONTINUOUS_TIME_SEC = 20.0
     # each step in data is like that
-    __CONTINUOUS_TIME_STEP_SEC = 0.04 * settings.TRANSITION_FRAME_STEP
+    __CONTINUOUS_TIME_STEP_SEC = 0.04
     TIME_SIZE = int(__MAX_CONTINUOUS_TIME_SEC / __CONTINUOUS_TIME_STEP_SEC)
 
     NOT_LOOK = 0
@@ -30,14 +30,14 @@ class MdpConsts:
             for ht in cls.__LIST_OF_TALKING_STATES:
                 for lg in cls.__LIST_OF_LOOKING_STATES:
                     for lt in cls.__LIST_OF_TALKING_STATES:
-                        result.append((hg,ht,lg,lt))
+                        result.append([hg,ht,lg,lt])
 
         return result
 
     @classmethod
     def GET_TALK_AND_LOOK_ACTIONS(cls):
         #maybe instead of tuple i should use list?
-        result = list(itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
+        result = list(list(tuple) for tuple in itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
         return result
 
 

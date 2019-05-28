@@ -21,7 +21,7 @@ class MdpUtils:
 
         else:
             file = os.path.join(
-                settings.MY_DATA_FOLDER_PATH, "transition_counting_results_with_talk.npy"
+                settings.MY_DATA_FOLDER_PATH, f"transition_counting_results_with_talk_{settings.TRANSITION_FRAME_STEP}_frame"
             )
             array = np.load(file)
 
