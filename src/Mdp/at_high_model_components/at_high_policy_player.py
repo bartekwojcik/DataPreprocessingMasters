@@ -132,7 +132,7 @@ class HighPolicyPlayer:
         #if we got here it means that all probabilities were 0
         if last_proba == 0:
             #go to random place
-            random_int = random.randint(0,len(current_state)-1)
+            random_int = random.randint(0,len(list_of_possible_actions)-1)
             return list_of_possible_actions[random_int][1]
 
         raise ValueError("no state was chosen, something went wrong")
