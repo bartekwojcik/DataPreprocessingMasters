@@ -90,6 +90,7 @@ class IrlAlgorithmSolver:
             try:
                 W = self.calc_weights()
             except ValueError:
+                print(f"{self.conversation_name} file IS STUCK AND ITERATION IS BROKEN")
                 return W, reward_matrix, policy, V, new_conversation, False
             self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W)
             print(f"iteration: {i}")
@@ -103,7 +104,7 @@ class IrlAlgorithmSolver:
             if verbose:
                 plt.scatter(i, self.current_t)
                 plt.pause(0.05)
-
+            print(f"current t: {self.current_t}")
             if self.current_t <= self.epsilon:
                 # step 3
                 break

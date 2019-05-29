@@ -58,11 +58,7 @@ class StateProcessor:
         current_state = (
             high_current_gaze, high_current_talk, low_current_gaze, low_current_talk)
 
-        if previous_state == current_state:
-            # the state is the same so we increment time step
-            self.previous_time += 1
-        else:
-            # state changed and we get back to the state 0 of new state
+        if self.previous_time == MdpConsts.TIME_SIZE:
             self.previous_time = 0
 
         matrix[
@@ -72,6 +68,13 @@ class StateProcessor:
             low_current_gaze][low_current_talk][
             self.previous_time,
         ] += increment_value
+
+        if previous_state == current_state:
+            # the state is the same so we increment time step
+            self.previous_time += 1
+        else:
+            # state changed and we get back to the state 0 of new state
+            self.previous_time = 0
 
         return matrix
 

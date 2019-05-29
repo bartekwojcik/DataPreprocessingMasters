@@ -1,4 +1,5 @@
 import numpy as np
+from mdp_const import MdpConsts as mdp
 
 
 class TransitionCountingTranslator:
@@ -15,16 +16,19 @@ class TransitionCountingTranslator:
             2,
             2,
             2,
-        ), "it is not (2,2,2,2,2,2,2,2) matrix, is it coming from transition_counting_results_with_talk.npy?"
+            mdp.TIME_SIZE
+        ), "it is not (2,2,2,2,2,2,2,2,TIME_SIZE) matrix, is it coming from transition_counting_results_with_talk_time_{someframe}.npy?"
 
     def transform_to_2D_count_matrix(self)->np.ndarray:
         """
         translates matrix 2x2x2x2 matrix to 16x16
         """
+        #sum the time dimentions, so it looks like there was no time dimentions and have just sums per state transitions
 
-        self.matrix = self.counting_matrix.reshape((16,16))
+        sums_per_time = self.counting_matrix.sum(axis=-1)
+        matrix = sums_per_time.reshape((16,16))
 
-        return self.matrix
+        return matrix
 
     def transform_to_2D_probabilities_matrix(self):
 

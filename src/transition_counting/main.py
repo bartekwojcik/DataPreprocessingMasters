@@ -57,8 +57,6 @@ if __name__ == "__main__":
                 #plot_heatmaps(file_results, f"{clear_name}_counts.jpg", f"{clear_name}_probas.jpg")
                 debug = 5
 
-
-    print(global_results)
     result_file_path = os.path.join(
         settings.MY_DATA_FOLDER_PATH, f"transition_counting_results_with_talk_{FRAME_STEP}_frame"
     )

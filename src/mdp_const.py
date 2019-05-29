@@ -6,7 +6,7 @@ import settings
 class MdpConsts:
 
     # arbitrary
-    __MAX_CONTINUOUS_TIME_SEC = 20.0
+    __MAX_CONTINUOUS_TIME_SEC = 10.0
     # each step in data is like that
     __CONTINUOUS_TIME_STEP_SEC = 0.04
     TIME_SIZE = int(__MAX_CONTINUOUS_TIME_SEC / __CONTINUOUS_TIME_STEP_SEC)
@@ -21,7 +21,7 @@ class MdpConsts:
     __LIST_OF_TALKING_STATES = [QUIET, TALK]
 
     @classmethod
-    def GET_TALK_AND_LOOK_STATES(cls):
+    def GET_TALK_AND_LOOK_STATES_WITH_TIME(cls):
         """
         :return: List of tuples - possible states [(High_gaze,High_talk,Low_gaze,Low_talk,time0)...]
         """
@@ -33,14 +33,29 @@ class MdpConsts:
                     for lt in cls.__LIST_OF_TALKING_STATES:
                         #so i am not interested in real time (0.04 sec etc but in RELATIVE TIME STEP IN CONVERSATION
                         for time in range(cls.TIME_SIZE):
-                            result.append([hg,ht,lg,lt,time])
+                            result.append((hg,ht,lg,lt,time))
+
+        return result
+
+    @classmethod
+    def GET_TALK_AND_LOOK_STATES(cls):
+        """
+        :return: List of tuples - possible states [(High_gaze,High_talk,Low_gaze,Low_talk,time0)...]
+        """
+
+        result = []
+        for hg in cls.__LIST_OF_LOOKING_STATES:
+            for ht in cls.__LIST_OF_TALKING_STATES:
+                for lg in cls.__LIST_OF_LOOKING_STATES:
+                    for lt in cls.__LIST_OF_TALKING_STATES:
+                            result.append((hg, ht, lg, lt))
 
         return result
 
     @classmethod
     def GET_TALK_AND_LOOK_ACTIONS(cls):
         #maybe instead of tuple i should use list?
-        result = list(list(tuple) for tuple in itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
+        result = list(tuple for tuple in itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
         return result
 
 

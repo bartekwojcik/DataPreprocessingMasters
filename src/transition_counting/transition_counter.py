@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 from transition_counting.frame_analyzer import FrameAnalyzer
+from transition_counting.state_processor import StateProcessor
 
 
 class TransitionCounter:
@@ -19,15 +20,16 @@ class TransitionCounter:
         result = np.zeros(shape)
 
         previous_frame = None
-
+        state_processor = StateProcessor()
         #take only nth item at list
         for frame in file_data[starting_step::step]:
             if previous_frame is None:
                 previous_frame = frame
                 continue
 
+
             frame_analyzer = FrameAnalyzer()
-            this_frame_result = frame_analyzer.process_frame(previous_frame, frame, metadata, shape)
+            this_frame_result = frame_analyzer.process_frame(previous_frame, frame, metadata, shape,state_processor)
             result = result + this_frame_result
             previous_frame = frame
 

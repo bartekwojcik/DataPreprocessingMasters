@@ -44,6 +44,7 @@ if __name__ == "__main__":
                     show_plot=VERBOSE
                 )
 
+                print(f"file {filename} done")
                 # TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
 
         debug = 5
