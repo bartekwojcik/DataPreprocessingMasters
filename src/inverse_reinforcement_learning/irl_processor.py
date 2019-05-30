@@ -5,6 +5,8 @@ from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
 )
+
+from Mdp.at_high_model_components.at_high_policy_iteration import AtHighPolicyIteration
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.mdp_utils import MdpUtils
 from inverse_reinforcement_learning.feature_expectations_extractor import (
@@ -63,6 +65,7 @@ class IrlProcessor:
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, states_array)
         value_iterator = AtHighValueIteration(mdp_graph)
+        # value_iterator = AtHighPolicyIteration(mdp_graph) #not a single iteration passed
         irl = IrlAlgorithmSolver(
             file_name,
             expert_feature_expectations,

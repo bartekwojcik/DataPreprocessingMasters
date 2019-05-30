@@ -43,39 +43,45 @@ class AtHighPolicyIteration:
                 state_index = self.model.states.index(s)
                 for action_index, action_proba in enumerate(policy[state_index]):
                     a = self.model.actions[action_index]
-                    list_of_s_prime = self.G[s][a]
-                    for prob, next_state in list_of_s_prime:
+                    for prob, next_state in self.G[s][a]:
                         index_of_next_state = self.model.states.index(next_state)
                         reward = rewards[index_of_next_state]
-                        v += action_proba * prob * (reward + self.discount_factor * V[next_state])
+                        v += action_proba * prob * (reward + self.discount_factor * V[index_of_next_state])
                 delta = max(delta, abs(v - V[state_index]))
                 V[state_index] = v
             if delta < self.theta:
                 break
+
         return np.array(V)
+
+
 
     def __calculate_policy_iteration(self, rewards: np.ndarray):
 
-        policy = np.zeros((self.n_s,))
+        policy = np.ones((self.n_s,self.n_a)) / self.n_a
 
         while True:
 
             evaluated_policy = self.__policy_eval(policy, rewards)
             policy_stable = True
 
-            for s in range(env.nS):
-                current_action = np.argmax(policy[s])
+            for s in self.model.states:
+                state_index = self.model.states.index(s)
+                current_action_index = np.argmax(policy[state_index])
 
-                actions_values = np.zeros(env.nA)
-                for a in range(env.nA):
-                    for prob, next_state, reward, done in env.P[s][a]:
-                        actions_values[a] += prob * (reward + discount_factor * evaluated_policy[next_state])
+                actions_values = np.zeros(self.n_a)
+                for a in self.model.actions:
+                    action_index = self.model.actions.index(a)
+                    for prob, next_state in self.G[s][a]:
+                        index_of_next_state = self.model.states.index(next_state)
+                        reward = rewards[index_of_next_state]
+                        actions_values[action_index] += prob * (reward + self.discount_factor * evaluated_policy[index_of_next_state])
 
-                best_action = np.argmax(actions_values)
-                if best_action != current_action:
+                best_action_index = np.argmax(actions_values)
+                if best_action_index != current_action_index:
                     policy_stable = False
 
-                policy[s] = np.eye(env.nA)[best_action]
+                policy[state_index] = best_action_index
 
             if policy_stable:
                 break

@@ -1,8 +1,9 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
 )
+from Mdp.at_high_model_components.at_high_policy_iteration import AtHighPolicyIteration
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 
 from inverse_reinforcement_learning.feature_expectations_extractor import (
@@ -33,7 +34,7 @@ class IrlAlgorithmSolver:
         expert_feature_expectations: np.ndarray,
         random_feature_expectations: np.ndarray,
         reward_calculator: RewardCalculator,
-        value_iterator: AtHighValueIteration,
+        value_iterator: Union[AtHighValueIteration,AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
         epsilon=0.1,
