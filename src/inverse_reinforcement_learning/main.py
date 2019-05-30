@@ -1,17 +1,16 @@
+import multiprocessing
+
 import numpy as np
 import settings
 import os
 import json
+from inverse_reinforcement_learning.process_file import process_file, async_process_file
 
-from Mdp.mdp_utils import MdpUtils
-from Mdp.transition_counting_translator import TransitionCountingTranslator
-from inverse_reinforcement_learning.compare_processor import CompareProcessor
-from inverse_reinforcement_learning.irl_processor import IrlProcessor
-from data_const import UsableConversationConstants as const_uc
 
 if __name__ == "__main__":
     HUMAN_READABLE_FOLDER_PATH = settings.HUMAN_READABLE_FOLDER_PATH
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
+    VERBOSE = True
 
     with open(METADATA_PATH, "r") as metadata_file:
 
@@ -22,36 +21,7 @@ if __name__ == "__main__":
 
             with open(full_file_name, "r") as conversation_file:
 
-                this_file_metadata = metadata_json[filename]
-                conv_json = json.loads(conversation_file.read())
+                process_file(metadata_json,filename,conversation_file,full_file_name,VERBOSE)
+                #async_process_file(metadata_json,filename,conversation_file,full_file_name,VERBOSE)
 
-                mdp_graph = MdpUtils.get_at_high_mdp_model()
 
-                VERBOSE = False
-                processor = IrlProcessor()
-                irl_result = processor.process(
-                    conv_json,
-                    mdp_graph,
-                    this_file_metadata,
-                    full_file_name,
-                    policy_player_max_step=3000,
-                    verbose=VERBOSE,
-                )
-
-                compare_processor = CompareProcessor()
-                compare_processor.compare(
-                    irl_result,
-                    full_file_name,
-                    conv_json,
-                    this_file_metadata,
-                    settings.TRANSITION_FRAME_STEP,
-                    mdp_graph.Ca.shape,
-                    show_plot=VERBOSE,
-                )
-
-                print(
-                    f"!!!!!!!!!!!!!!!!!!!!file {filename} done#################################"
-                )
-                # TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
-
-        debug = 5

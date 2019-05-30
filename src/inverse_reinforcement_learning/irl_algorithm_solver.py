@@ -81,7 +81,7 @@ class IrlAlgorithmSolver:
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
 
         """
-        # plt.axis([0, 50, 0, 10])
+        #plt.axis([0, 50, 0, 10])
 
         i = 0
         while True:
