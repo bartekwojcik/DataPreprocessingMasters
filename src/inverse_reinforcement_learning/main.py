@@ -1,4 +1,5 @@
 import multiprocessing
+import threading
 
 import numpy as np
 import settings
@@ -20,8 +21,11 @@ if __name__ == "__main__":
             full_file_name = os.path.join(HUMAN_READABLE_FOLDER_PATH, filename)
 
             with open(full_file_name, "r") as conversation_file:
+                conv_json = json.loads(conversation_file.read())
+                # thread1 = threading.Thread(target=process_file, args=(metadata_json,filename,conv_json,full_file_name,VERBOSE))
+                # thread1.start()
 
-                process_file(metadata_json,filename,conversation_file,full_file_name,VERBOSE)
-                #async_process_file(metadata_json,filename,conversation_file,full_file_name,VERBOSE)
+                process_file(metadata_json,filename,conv_json,full_file_name,VERBOSE)
+                #async_process_file(metadata_json,filename,conv_json,full_file_name,VERBOSE)
 
 

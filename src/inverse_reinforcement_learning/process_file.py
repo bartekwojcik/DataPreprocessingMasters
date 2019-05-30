@@ -6,16 +6,14 @@ from inverse_reinforcement_learning.compare_processor import CompareProcessor
 from inverse_reinforcement_learning.irl_processor import IrlProcessor
 import asyncio
 
-async def async_process_file(metadata_json, filename, conversation_file,full_file_name,VERBOSE):
-    asyncio.ensure_future(process_file(metadata_json, filename, conversation_file, full_file_name,VERBOSE))
+async def async_process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
+    asyncio.ensure_future(process_file(metadata_json, filename, conv_json, full_file_name,VERBOSE))
 
-def process_file(metadata_json, filename, conversation_file,full_file_name,VERBOSE):
+def process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
 
     this_file_metadata = metadata_json[filename]
-    conv_json = json.loads(conversation_file.read())
 
     mdp_graph = MdpUtils.get_at_high_mdp_model()
-
 
     processor = IrlProcessor()
     irl_result = processor.process(
