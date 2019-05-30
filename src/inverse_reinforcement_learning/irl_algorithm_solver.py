@@ -1,6 +1,4 @@
 from typing import List, Tuple
-import pprint
-
 
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
@@ -70,8 +68,9 @@ class IrlAlgorithmSolver:
         )
 
         # storing the policies and their respective t values in a dictionary
+        # i have also added None to store a policy, but it looks like i wont be using that
         self.policies_feature_expectations = {
-            self.random_t: self.random_feature_expectations
+            self.random_t: (self.random_feature_expectations,None)
         }
 
         self.currentT = self.random_t
@@ -82,8 +81,8 @@ class IrlAlgorithmSolver:
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
 
         """
-        plt.axis([0, 50, 0, 10])
-        pp = pprint.PrettyPrinter(indent=4)
+        # plt.axis([0, 50, 0, 10])
+
         i = 0
         while True:
 
@@ -92,19 +91,13 @@ class IrlAlgorithmSolver:
             except ValueError:
                 print(f"{self.conversation_name} Value iteration happened#################################")
                 return W, reward_matrix, policy, V, new_conversation, False
+
             self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W)
-            print(f"iteration: {i}")
-            print("weights:")
-            pp.pprint(W)
-            print("##### reward matrix ########")
-            pp.pprint(reward_matrix)
-            print("###### policy ######")
-            pp.pprint(policy)
 
             if verbose:
                 plt.scatter(i, self.current_t)
                 plt.pause(0.05)
-            print(f"current t: {self.current_t}")
+            print(f"iteration:{i}, current t: {self.current_t}")
             if self.current_t <= self.epsilon:
                 # step 3
                 break
@@ -114,6 +107,7 @@ class IrlAlgorithmSolver:
             i += 1
 
         assert not (np.all(np.isnan(W))), "weights are broken"
+
         return W, reward_matrix, policy, V, new_conversation, True
 
     def calc_weights(self) -> np.ndarray:
@@ -129,7 +123,8 @@ class IrlAlgorithmSolver:
         policy_list = [self.expert_feature_expectations]
         h_list = [1]
         for i in self.policies_feature_expectations.keys():
-            policy_list.append(self.policies_feature_expectations[i])
+            #get just t
+            policy_list.append(self.policies_feature_expectations[i][0])
             h_list.append(1)
         policy_mat = np.matrix(policy_list)
         policy_mat[0] = -1 * policy_mat[0]
@@ -149,14 +144,18 @@ class IrlAlgorithmSolver:
         :param W:
         :return: hyper_distance, reward_matrix, policy, V, new_conversation
         """
+
         # get feature expectations of a new policy respective to the input weights
         temp_fe, reward_matrix, policy, V, new_conversation = self.get_reinforcement_learning_features_expectations(W)
         hyper_distance = np.abs(
             np.dot(
                 W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)
             )
-        )  # hyperdistance = t
-        self.policies_feature_expectations[hyper_distance] = temp_fe
+        )
+
+        # hyperdistance = t
+        self.policies_feature_expectations[hyper_distance] = (temp_fe,policy)
+
         # t = (weights.transpose)*(expert-newPolicy)
         return (hyper_distance, reward_matrix, policy, V, new_conversation)
 

@@ -11,5 +11,6 @@ HUMAN_READABLE_FOLDER_PATH = os.path.join(PROJECT_ROOT, MY_DATA_FOLDER_PATH, "hu
 
 READABLE_METADATA_FILE_PATH = os.path.join(MY_DATA_FOLDER_PATH, "human-readable-conversation-metadata.json")
 COMPARISON_PLOTS_FOLDER_PATH = os.path.join(MY_DATA_FOLDER_PATH, "comparisons_plots")
+TRANSITION_RESULTS_FOLDER_PATH = os.path.join(MY_DATA_FOLDER_PATH,"transition_results")
 
 TRANSITION_FRAME_STEP = 1

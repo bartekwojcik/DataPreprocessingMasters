@@ -30,7 +30,12 @@ if __name__ == "__main__":
                 VERBOSE = False
                 processor = IrlProcessor()
                 irl_result = processor.process(
-                    conv_json, mdp_graph, this_file_metadata, full_file_name, verbose=VERBOSE
+                    conv_json,
+                    mdp_graph,
+                    this_file_metadata,
+                    full_file_name,
+                    policy_player_max_step=3000,
+                    verbose=VERBOSE,
                 )
 
                 compare_processor = CompareProcessor()
@@ -41,10 +46,12 @@ if __name__ == "__main__":
                     this_file_metadata,
                     settings.TRANSITION_FRAME_STEP,
                     mdp_graph.Ca.shape,
-                    show_plot=VERBOSE
+                    show_plot=VERBOSE,
                 )
 
-                print(f"!!!!!!!!!!!!!!!!!!!!file {filename} done#################################")
+                print(
+                    f"!!!!!!!!!!!!!!!!!!!!file {filename} done#################################"
+                )
                 # TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
 
         debug = 5

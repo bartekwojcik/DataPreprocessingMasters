@@ -57,7 +57,7 @@ if __name__ == "__main__":
                 debug = 5
 
     result_file_path = os.path.join(
-        settings.MY_DATA_FOLDER_PATH, f"transition_counting_results_with_talk_{FRAME_STEP}_frame"
+        settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_{FRAME_STEP}_frame_{mdp.TIME_SIZE}_time_size"
     )
     np.save(result_file_path, global_results)
     plot_heatmaps(global_results,"heat_plot_counts.png","heat_plot_probs.png")

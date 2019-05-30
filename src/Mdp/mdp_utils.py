@@ -1,7 +1,7 @@
 import os
 
 import numpy as np
-
+from mdp_const import MdpConsts as mdp
 import settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 
@@ -12,7 +12,7 @@ class MdpUtils:
     @staticmethod
     def get_at_high_mdp_model() -> AtHighMdpModel:
         """
-        Gets MDP model from "transition_counting_results.npy" file
+        Gets MDP model from current (settings and mdpsettings) "transition_results" file
         :return: MDP model as graph.
         """
         if MdpUtils.__AtHighMdpModel:
@@ -20,7 +20,7 @@ class MdpUtils:
 
         else:
             file = os.path.join(
-                settings.MY_DATA_FOLDER_PATH, f"transition_counting_results_with_talk_{settings.TRANSITION_FRAME_STEP}_frame.npy"
+                settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_{settings.TRANSITION_FRAME_STEP}_frame_{mdp.TIME_SIZE}_time_size.npy"
             )
             array = np.load(file)
 
