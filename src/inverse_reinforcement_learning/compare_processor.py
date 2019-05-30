@@ -1,7 +1,9 @@
 from typing import List, Tuple
 
+import settings
 from inverse_reinforcement_learning.conversation_comperar import ConversationComparer
 from inverse_reinforcement_learning.irl_processor_result import IrlProcessorResult
+from mdp_const import MdpConsts
 
 
 class CompareProcessor:
@@ -29,7 +31,7 @@ class CompareProcessor:
         :param show_plot:
         :return:
         """
-        file_name_to_save_plot = file_name
+        file_name_to_save_plot = f"{file_name}_frames_{settings.TRANSITION_FRAME_STEP}_time_size:{MdpConsts.TIME_SIZE}"
         if not irl_result.is_ok:
             file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
 

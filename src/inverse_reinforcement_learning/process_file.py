@@ -5,9 +5,16 @@ from Mdp.mdp_utils import MdpUtils
 from inverse_reinforcement_learning.compare_processor import CompareProcessor
 from inverse_reinforcement_learning.irl_processor import IrlProcessor
 import asyncio
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 
-async def async_process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
-    asyncio.ensure_future(process_file(metadata_json, filename, conv_json, full_file_name,VERBOSE))
+
+async def async_process_file(loop ,metadata_json, filename, conv_json,full_file_name,VERBOSE):
+
+     return await loop.run_in_executor(ProcessPoolExecutor(), process_file, metadata_json, filename, conv_json, full_file_name,VERBOSE)
+    # process_file(metadata_json, filename, conv_json, full_file_name,VERBOSE)
+
+    # async_func = asyncio.coroutine(process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE))
+    # return await async_func()
 
 def process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
 
