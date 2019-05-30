@@ -1,4 +1,6 @@
 from data_const import JointConstants as ConstJoint
+from mdp_const import MdpConsts
+from data_const import JointConstants
 
 class StateUtils:
 
@@ -36,4 +38,13 @@ class StateUtils:
             return 1
         else:
             return 0
+
+
+    @classmethod
+    def gaze_id_to_string(cls, id: int):
+        return JointConstants.LEFT_EYE if id == MdpConsts.LOOK else JointConstants.OUT
+
+    @classmethod
+    def talk_id_to_string(cls, id: int):
+        return JointConstants.TALKING if id == MdpConsts.TALK else JointConstants.QUIET
 

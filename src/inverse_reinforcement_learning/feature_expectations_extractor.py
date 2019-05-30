@@ -5,6 +5,7 @@ from data_const import (
     JointConstants as consts,
     ReadableConvMetadataConstants as read_consts,
 )
+from transition_counting.frame_analyzer import FrameAnalyzer
 from transition_counting.state_utils import StateUtils
 
 import numpy as np
@@ -61,54 +62,25 @@ class FeatureExpectationExtractor:
 
     def __get_current_state(self, current_frame, previous_frame) -> np.ndarray:
         """
-        Get vector of current state. For instance [0,0,1,0] = Low at High, [0,0,0,1] = mutual etc
+        Get vector of current state. For instance [0,0,1,0,TIME], [0,0,0,1,,TIME]
         :param current_frame:
         :return:
         """
         high_person = self.conversation_metadata[read_consts.AT_HIGH]
         low_person = self.conversation_metadata[read_consts.AT_LOW]
 
-        high_data = current_frame[high_person]
-        high_gaze_state = StateUtils.get_gaze_id(high_data[consts.GAZE])
-        high_talk_state = StateUtils.get_talk_id(high_data[consts.TALKING])
+        current_state_vector_without_time = FrameAnalyzer.\
+            get_gaze_talk_state_vector_from_frame(current_frame,high_person,low_person)
 
-        low_data = current_frame[low_person]
-        low_gaze_state = StateUtils.get_gaze_id(low_data[consts.GAZE])
-        low_talk_state = StateUtils.get_talk_id(low_data[consts.TALKING])
 
-        current_state_vector = (
-            high_gaze_state,
-            high_talk_state,
-            low_gaze_state,
-            low_talk_state,
-            self.previous_time / self.time_denominator,
-        )
+        previous_state_vector_without_time = FrameAnalyzer.\
+            get_gaze_talk_state_vector_from_frame(previous_frame,high_person,low_person)
 
-        previous_high_data = previous_frame[high_person]
-        previous_high_gaze_state = StateUtils.get_gaze_id(
-            previous_high_data[consts.GAZE]
-        )
-        previous_high_talk_state = StateUtils.get_talk_id(
-            previous_high_data[consts.TALKING]
-        )
 
-        previous_low_data = previous_frame[low_person]
-        previous_low_gaze_state = StateUtils.get_gaze_id(previous_low_data[consts.GAZE])
-        previous_low_talk_state = StateUtils.get_talk_id(
-            previous_low_data[consts.TALKING]
-        )
-
-        previous_state_vector = (
-            previous_high_gaze_state,
-            previous_high_talk_state,
-            previous_low_gaze_state,
-            previous_low_talk_state,
-        )
-
-        current_state_vector_witout_time = current_state_vector[:-1]
-        if previous_state_vector == current_state_vector_witout_time:
+        if previous_state_vector_without_time == current_state_vector_without_time:
             self.previous_time = +1
         else:
             self.previous_time = 0
 
+        current_state_vector = current_state_vector_without_time + (self.previous_time / self.time_denominator,)
         return np.array(current_state_vector)

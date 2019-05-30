@@ -34,21 +34,21 @@ class ConversationComparer:
         self.__save_plots(original_results, name, "original", show)
         self.__save_plots(calculated_results, name, "calculated", show)
 
+
     def __save_plots(self, results, file_name, original_or_not: str, show: bool):
-        file_name_counts = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{file_name}_{original_or_not}_plot_counts.png",
-        )
+        # file_name_counts = os.path.join(
+        #     settings.COMPARISON_PLOTS_FOLDER_PATH,
+        #     f"{file_name}_{original_or_not}_plot_counts.png",
+        # )
         file_name_probs = os.path.join(
             settings.COMPARISON_PLOTS_FOLDER_PATH,
             f"{file_name}_{original_or_not}_plot_probs.png",
         )
 
         translator = TransitionCountingTranslator(results)
-
         probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
-
         plot_count_heatmap(np.round(probabilities_matrix, decimals=3), file_name_probs, show)
+
 
     def __count(self, conversation, file_metadata: dict, frame_step: int, shape:Tuple) -> np.ndarray:
         result = np.zeros(shape)

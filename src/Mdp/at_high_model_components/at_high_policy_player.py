@@ -1,15 +1,14 @@
 import random
 from typing import List, Tuple
 
+import numpy as np
+
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from data_const import (
     JointConstants as data_consts,
     ReadableConvMetadataConstants as metadata_consts,
 )
-from mdp_const import MdpConsts as mdp_consts
-import numpy as np
-
-from transition_counting.state_processor import StateProcessor
+from transition_counting.state_utils import StateUtils
 
 
 class HighPolicyPlayer:
@@ -62,10 +61,10 @@ class HighPolicyPlayer:
             # TODO WORK HERE
             # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
 
-            high_gaze = StateProcessor.gaze_id_to_string(new_state[0])  # type:str
-            high_talk = StateProcessor.talk_id_to_string(new_state[1])  # type:str
-            low_gaze = StateProcessor.gaze_id_to_string(new_state[2])  # type:str
-            low_talk = StateProcessor.talk_id_to_string(new_state[3])  # type:str
+            high_gaze = StateUtils.gaze_id_to_string(new_state[0])  # type:str
+            high_talk = StateUtils.talk_id_to_string(new_state[1])  # type:str
+            low_gaze = StateUtils.gaze_id_to_string(new_state[2])  # type:str
+            low_talk = StateUtils.talk_id_to_string(new_state[3])  # type:str
 
             frame = self.__create_frame(
                 high_person,

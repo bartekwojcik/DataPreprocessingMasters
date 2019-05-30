@@ -4,7 +4,7 @@ import settings
 import json
 import numpy as np
 from transition_counting.transition_counter import TransitionCounter
-from transition_counting.state_processor import StateProcessor
+from transition_counting.transition_matrix_updater import TransitionMatrixUpdater
 #import pylab as plt
 from Mdp.transition_counting_translator import  TransitionCountingTranslator
 
@@ -32,7 +32,6 @@ if __name__ == "__main__":
     time_size = mdp.TIME_SIZE
     global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2,time_size))
     counter = TransitionCounter()
-
 
     metadata_full_path = settings.READABLE_METADATA_FILE_PATH
     with open(metadata_full_path, "r") as meta_data_file:
