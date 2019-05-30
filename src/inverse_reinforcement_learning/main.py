@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
                 mdp_graph = MdpUtils.get_at_high_mdp_model()
 
-                VERBOSE = True
+                VERBOSE = False
                 processor = IrlProcessor()
                 irl_result = processor.process(
                     conv_json, mdp_graph, this_file_metadata, full_file_name, verbose=VERBOSE
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                     show_plot=VERBOSE
                 )
 
-                print(f"file {filename} done")
+                print(f"!!!!!!!!!!!!!!!!!!!!file {filename} done#################################")
                 # TODO might do something with irl_result later ¯\_(ツ)_/¯ asd
 
         debug = 5

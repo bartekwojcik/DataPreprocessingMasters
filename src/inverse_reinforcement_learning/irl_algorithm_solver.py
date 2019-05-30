@@ -90,7 +90,7 @@ class IrlAlgorithmSolver:
             try:
                 W = self.calc_weights()
             except ValueError:
-                print(f"{self.conversation_name} file IS STUCK AND ITERATION IS BROKEN")
+                print(f"{self.conversation_name} Value iteration happened#################################")
                 return W, reward_matrix, policy, V, new_conversation, False
             self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W)
             print(f"iteration: {i}")
