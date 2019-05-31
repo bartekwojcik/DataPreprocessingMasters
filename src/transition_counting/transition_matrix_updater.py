@@ -14,7 +14,7 @@ class TransitionMatrixUpdater:
         low_current_gaze: int,
         low_current_talk: int,
         time: int,
-            increment_value: int,
+        increment_value: int,
     ):
         """
          increment values in matrix given gaze, talk and time

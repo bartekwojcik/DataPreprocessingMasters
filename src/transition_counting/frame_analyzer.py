@@ -74,8 +74,8 @@ class FrameAnalyzer:
             current_state[1],
             current_state[2],
             current_state[3],
-            1,
-            self.previous_time
+            self.previous_time,
+            1
         )
 
         if previous_state == current_state:
