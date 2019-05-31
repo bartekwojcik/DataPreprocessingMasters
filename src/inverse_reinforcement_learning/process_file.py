@@ -6,6 +6,7 @@ from inverse_reinforcement_learning.compare_processor import CompareProcessor
 from inverse_reinforcement_learning.irl_processor import IrlProcessor
 import asyncio
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from inverse_reinforcement_learning.get_model_probas import ModelProbasGetter
 
 
 async def async_process_file(loop ,metadata_json, filename, conv_json,full_file_name,VERBOSE):
@@ -20,7 +21,8 @@ def process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
 
     this_file_metadata = metadata_json[filename]
 
-    mdp_graph = MdpUtils.get_at_high_mdp_model()
+    probas_getter = ModelProbasGetter()
+    mdp_graph = probas_getter.get_model_probas(conv_json,this_file_metadata,settings.TRANSITION_FRAME_STEP)
 
     processor = IrlProcessor()
     irl_result = processor.process(
