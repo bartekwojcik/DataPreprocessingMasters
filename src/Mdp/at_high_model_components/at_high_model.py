@@ -1,6 +1,11 @@
+import os
+
 import numpy as np
+
+from Mdp.transition_counting_translator import TransitionCountingTranslator
 from mdp_const import MdpConsts as consts
 import settings
+from transition_counting.heatmap_plotter import plot_count_heatmap
 
 
 class AtHighMdpModel:
@@ -74,3 +79,27 @@ class AtHighMdpModel:
                         #we are going to new state and we are going to time step 0
                         self.graph[s][a].append((proba, a + p_a + (0,)))
         debug = 5
+
+
+    def plot_probabilities_per_state(self,verbose:bool,file_name:str):
+
+        results = np.zeros_like(self.Ca)
+
+        for s in self.states:
+            for a in self.actions:
+                debug = 5
+                s_wo_time = s[:4]
+                time = (s[4],)
+                for proba, next_state in self.graph[s][a]:
+                    next_s_wo_time = next_state[:4]
+                    next_time = (next_state[4],)
+                    results[s_wo_time + next_s_wo_time + time] += proba
+
+        translator = TransitionCountingTranslator(results)
+        #probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
+        count_matrix = translator.transform_to_2D_count_matrix()
+
+        file_name_count = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_counts.jpg")
+        #file_name_proba = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_probas.jpg")
+        plot_count_heatmap(np.round(count_matrix, decimals=2),file_name_count,show=verbose)
+        #plot_count_heatmap(probabilities_matrix,file_name_proba,show=verbose)

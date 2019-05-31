@@ -18,7 +18,7 @@ def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_proba
     count_matrix = translator.transform_to_2D_count_matrix()
     probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
     plot_count_heatmap(count_matrix, file_name_counts)
-    plot_count_heatmap(np.round(probabilities_matrix, decimals=3),file_name_probs)
+    plot_count_heatmap(np.round(probabilities_matrix, decimals=2),file_name_probs)
 
 
 

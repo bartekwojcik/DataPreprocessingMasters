@@ -22,7 +22,12 @@ def process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
     this_file_metadata = metadata_json[filename]
 
     probas_getter = ModelProbasGetter()
-    mdp_graph = probas_getter.get_model_probas(conv_json,this_file_metadata,settings.TRANSITION_FRAME_STEP)
+    mdp_graph = probas_getter.get_model_probas(conv_json,this_file_metadata,settings.TRANSITION_FRAME_STEP,filename,VERBOSE)
+
+    #plots probabilities of model's actions in states
+    # mdp_graph.plot_probabilities_per_state(VERBOSE,filename)
+
+    data_length = len(conv_json)
 
     processor = IrlProcessor()
     irl_result = processor.process(
@@ -30,7 +35,7 @@ def process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE):
         mdp_graph,
         this_file_metadata,
         full_file_name,
-        policy_player_max_step=3000,
+        policy_player_max_step=data_length,
         verbose=VERBOSE,
     )
 

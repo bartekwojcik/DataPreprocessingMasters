@@ -47,8 +47,9 @@ class ConversationComparer:
 
         translator = TransitionCountingTranslator(results)
         probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
-        plot_count_heatmap(np.round(probabilities_matrix, decimals=3), file_name_probs, show)
-        plot_count_heatmap(probabilities_matrix, file_name_counts, show)
+        count_matrix = translator.transform_to_2D_count_matrix()
+        plot_count_heatmap(np.round(probabilities_matrix, decimals=2), file_name_probs, show)
+        plot_count_heatmap(count_matrix, file_name_counts, show)
 
 
     def __count(self, conversation, file_metadata: dict, frame_step: int, shape:Tuple) -> np.ndarray:

@@ -22,14 +22,14 @@ class IrlProcessor:
     Encapsulates IRL algorithm process
     """
 
-    def __get_random_feature_expectations(self, n_attributes) -> np.ndarray:
+    def __get_random_feature_expectations(self, n_attributes, n_steps, discount_factor) -> np.ndarray:
         """
 
         :param n_states: number of attributes in state
         :return:
         """
 
-        random_list = [random.uniform(0, 5) for i in range(n_attributes)]
+        random_list = [random.uniform(5, 200) for i in range(n_attributes)]
         return np.array(random_list)
 
     def process(
@@ -48,18 +48,18 @@ class IrlProcessor:
         :param metadata:
         :return: IrlProcessorResult
         """
+        discount_factor = 0.99
         n_attributes_in_state = len(mdp_graph.states[0])
         feature_expectation_extractor = FeatureExpectationExtractor(
-            n_attributes_in_state, metadata
+            n_attributes_in_state, metadata,discount_factor=discount_factor
         )
 
-        expert_feature_expectations = feature_expectation_extractor.get_experts_feature_expectations(
+        expert_feature_expectations = feature_expectation_extractor.get_feature_expectations(
             conversation_json
         )
 
-        random_feature_expectations = self.__get_random_feature_expectations(
-            n_attributes_in_state
-        )
+        random_feature_expectations = feature_expectation_extractor.get_random_feature_expectations(len(conversation_json))
+
         policy_player = HighPolicyPlayer(metadata, mdp_graph)
 
         states_array = np.array(mdp_graph.states)
@@ -75,7 +75,7 @@ class IrlProcessor:
             feature_expectation_extractor,
             policy_player,
             policy_player_max_step=policy_player_max_step,
-            max_iterations=50,
+            max_iterations=100,
         )
         weights, reward_matrix, policy, V, new_conversation, is_ok = irl.find_weights(
             verbose=verbose

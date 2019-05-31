@@ -27,7 +27,7 @@ async def main():
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks)[:1])
+    await asyncio.gather(*(tasks)[4:5])
 
 
 if __name__ == "__main__":

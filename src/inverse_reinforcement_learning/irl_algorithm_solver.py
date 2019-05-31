@@ -69,9 +69,8 @@ class IrlAlgorithmSolver:
         )
 
         # storing the policies and their respective t values in a dictionary
-        # i have also added None to store a policy, but it looks like i wont be using that
         self.policies_feature_expectations = {
-            self.random_t: (self.random_feature_expectations,None)
+            self.random_t: self.random_feature_expectations
         }
 
         self.currentT = self.random_t
@@ -125,7 +124,7 @@ class IrlAlgorithmSolver:
         h_list = [1]
         for i in self.policies_feature_expectations.keys():
             #get just t
-            policy_list.append(self.policies_feature_expectations[i][0])
+            policy_list.append(self.policies_feature_expectations[i])
             h_list.append(1)
         policy_mat = np.matrix(policy_list)
         policy_mat[0] = -1 * policy_mat[0]
@@ -155,7 +154,7 @@ class IrlAlgorithmSolver:
         )
 
         # hyperdistance = t
-        self.policies_feature_expectations[hyper_distance] = (temp_fe,policy)
+        self.policies_feature_expectations[hyper_distance] = temp_fe
 
         # t = (weights.transpose)*(expert-newPolicy)
         return (hyper_distance, reward_matrix, policy, V, new_conversation)
@@ -174,8 +173,11 @@ class IrlAlgorithmSolver:
         reward_matrix = self.reward_calculator.calculate_reward(W)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
         new_conversation = self.policy_player.play_policy(policy, max_steps= self.policy_player_max_step)
-        new_features = self.feature_expectation_extractor.get_experts_feature_expectations(
+        new_features = self.feature_expectation_extractor.get_feature_expectations(
             new_conversation
         )
-
+        print(f"sum of new features:{np.sum(new_features)}")
+        print(f"sum of policy:{np.sum(policy)}")
+        print(f"sum of rewards:{np.sum(reward_matrix)}")
+        print(f"sum of W:{np.sum(W)}")
         return new_features, reward_matrix, policy, V, new_conversation

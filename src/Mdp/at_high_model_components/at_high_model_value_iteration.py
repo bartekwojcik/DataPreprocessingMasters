@@ -6,7 +6,7 @@ import numpy as np
 
 class AtHighValueIteration:
     def __init__(
-        self, model: AtHighMdpModel, theta=0.005, discount_factor=0.95
+        self, model: AtHighMdpModel, theta=0.001, discount_factor=0.99
     ):
         self.theta = theta
         self.discount_factor = discount_factor
