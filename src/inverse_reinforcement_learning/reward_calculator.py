@@ -1,8 +1,12 @@
 import numpy as np
+from typing import List, Tuple
+
+from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
+
 
 class RewardCalculator:
 
-    def __init__(self, reward_shape:tuple, states:np.ndarray):
+    def __init__(self, reward_shape:tuple, states:List[Tuple]):
         self.states = states
         self.reward_shape = reward_shape
 
@@ -19,12 +23,10 @@ class RewardCalculator:
         R = np.zeros((shape_length,))
 
         for s in range(shape_length):
-            state_vector = self.states[s]
+            current_state = self.states[s]
             ##this is just to make work around zero vector problem
-            if np.all(state_vector==0):
-                R[s] = -1
-            else:
-                R[s] = np.dot(W.T, state_vector)
+            state_vector = FeatureExpectationExtractor.calculate_state_vector(current_state,self.states)
+            R[s] = np.dot(W.T, state_vector)
 
         return R
 

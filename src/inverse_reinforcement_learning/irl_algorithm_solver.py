@@ -39,7 +39,7 @@ class IrlAlgorithmSolver:
         policy_player: HighPolicyPlayer,
         epsilon=0.1,
         policy_player_max_step:int = 5000,
-            max_iterations = 100
+        max_iterations = 100
     ):
         """
         :param policy_player: policy player
@@ -170,14 +170,22 @@ class IrlAlgorithmSolver:
         if np.any(np.isnan(W)):
             raise ValueError("some elements of W are Nan")
 
+
+
         reward_matrix = self.reward_calculator.calculate_reward(W)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
         new_conversation = self.policy_player.play_policy(policy, max_steps= self.policy_player_max_step)
         new_features = self.feature_expectation_extractor.get_feature_expectations(
             new_conversation
         )
+
         print(f"sum of new features:{np.sum(new_features)}")
         print(f"sum of policy:{np.sum(policy)}")
         print(f"sum of rewards:{np.sum(reward_matrix)}")
         print(f"sum of W:{np.sum(W)}")
+        print(f"sum of W difference:{np.sum(W) - np.sum(self.previous_W)}")
+
+        self.previous_reward_matrix = np.array(reward_matrix)
+        self.previous_W = np.array(W)
+        self.previous_policy = np.array(policy)
         return new_features, reward_matrix, policy, V, new_conversation

@@ -1,4 +1,5 @@
-from typing import List
+import random
+from typing import List, Tuple
 
 from mdp_const import MdpConsts
 from data_const import (
@@ -14,10 +15,10 @@ import numpy as np
 class FeatureExpectationExtractor:
     def __init__(
         self,
-        n_states: int,
+        states: List[Tuple],
         conversation_metadata: dict,
         max_steps: int = 20000,
-        discount_factor=0.99,
+        discount_factor=0.90,
     ):
         """
         Will "play out" Markov chain / MDP to get feature expectations
@@ -27,13 +28,13 @@ class FeatureExpectationExtractor:
         :param max_steps: maximal amount of steps model will check or perform
         :param discount_factor: gamma
         """
-        self.n_states = n_states
+        self.n_states = len(states)
+        self.states = states
         self.discount_factor = discount_factor
         self.conversation_metadata = conversation_metadata
         self.max_steps = max_steps
         self.previous_time = 0
-        self.time_denominator = MdpConsts.TIME_SIZE
-        self.number_of_non_time_states = len(MdpConsts.GET_TALK_AND_LOOK_STATES())
+
 
     def get_feature_expectations(self, data: List[dict]) -> np.ndarray:
         """
@@ -63,29 +64,16 @@ class FeatureExpectationExtractor:
 
     def get_random_feature_expectations(self,n_steps:int):
 
-
-        # we are simulating here that agent knows only policy that asks him to go to these two random places
-
-        first_random_state = np.array([0 for n in range(self.n_states)])
-        second_random_state = np.array([1/self.number_of_non_time_states for n in range(self.n_states)])
-        second_random_state[-1] = 0
-
-        def get_the_second_one(one_state):
-
-            if np.array_equal(one_state,first_random_state):
-                return second_random_state
-            else: return first_random_state
-
         mi = np.array([0 for n in range(self.n_states)])
-        return np.array([1 for n in range(self.n_states)])
-        previous_state = first_random_state
+
+
         for i in range(n_steps):
+            rnd = random.randint(0,self.n_states-1)
 
-            state_vector = get_the_second_one(previous_state)
-            previous_state = state_vector
+            zeros = np.zeros_like(mi)
+            zeros[rnd] = 1
+            state_vector = zeros
             mi = mi + ((self.discount_factor ** i) * state_vector)
-
-
 
         return mi
 
@@ -105,6 +93,7 @@ class FeatureExpectationExtractor:
         previous_state_vector_without_time = FrameAnalyzer.\
             get_gaze_talk_state_vector_from_frame(previous_frame,high_person,low_person)
 
+        current_state_vector = current_state_vector_without_time + (self.previous_time,)
 
         if previous_state_vector_without_time == current_state_vector_without_time:
             self.previous_time = +1
@@ -112,7 +101,16 @@ class FeatureExpectationExtractor:
             self.previous_time = 0
 
 
-        current_state_vector_without_time = tuple(n/self.number_of_non_time_states for n in current_state_vector_without_time)
+        mi = self.calculate_state_vector(current_state_vector,self.states)
 
-        current_state_vector = current_state_vector_without_time + (self.previous_time / self.time_denominator,)
-        return np.array(current_state_vector)
+        return np.array(mi)
+
+    @classmethod
+    def calculate_state_vector(cls, current_state_vector:Tuple, states: List[Tuple]):
+        zeros_indices = np.zeros(len(states))
+
+        state_index = states.index(current_state_vector)
+        zeros_indices[state_index] = 1
+        return zeros_indices
+
+
