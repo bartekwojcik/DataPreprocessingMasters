@@ -62,7 +62,7 @@ class FeatureExpectationExtractor:
 
         # possible it has to be normalised (1/m sum(m,i=1)) on slides but i think this is done in
         # irl_algorithm_solver in __init__ (make sure that is the same part of algorithm, not two different)
-        return mi / max_steps
+        return mi
 
     def get_random_feature_expectations(self,n_steps:int, model:AtHighMdpModel, policy_player:HighPolicyPlayer):
 

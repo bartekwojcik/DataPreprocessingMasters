@@ -70,8 +70,8 @@ class IrlProcessor:
 
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
-        value_iterator = AtHighValueIteration(mdp_graph)
-        # value_iterator = AtHighPolicyIteration(mdp_graph) #not a single iteration passed
+        #value_iterator = AtHighValueIteration(mdp_graph)
+        value_iterator = AtHighPolicyIteration(mdp_graph) #not a single iteration passed
         irl = IrlAlgorithmSolver(
             file_name,
             expert_feature_expectations,

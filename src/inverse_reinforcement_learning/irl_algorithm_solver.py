@@ -37,7 +37,7 @@ class IrlAlgorithmSolver:
         value_iterator: Union[AtHighValueIteration,AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
-        epsilon=0.000001,
+        epsilon=0.0001,
         policy_player_max_step:int = 5000,
         max_iterations = 100
     ):
@@ -83,7 +83,7 @@ class IrlAlgorithmSolver:
 
         """
         #plt.axis([0, 50, 0, 10])
-
+        possible_w = np.arange(-10,10,0.3)
         i = 0
         while True:
 

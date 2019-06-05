@@ -81,11 +81,16 @@ class AtHighPolicyIteration:
                 if best_action_index != current_action_index:
                     policy_stable = False
 
-                policy[state_index] = best_action_index
+                policy[state_index] = np.eye(self.n_a)[best_action_index]
 
             if policy_stable:
                 break
 
-        return policy, evaluated_policy
+        policy_with_numbers_of_actions = np.zeros((self.n_s,))
+        for s in self.model.states:
+            state_index = self.model.states.index(s)
+            policy_with_numbers_of_actions[state_index] = np.argmax(policy[state_index])
+
+        return policy_with_numbers_of_actions, evaluated_policy
 
 
