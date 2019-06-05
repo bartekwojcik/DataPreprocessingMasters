@@ -107,9 +107,6 @@ class HighPolicyPlayer:
 
     def __random_next_state(self, current_state_index: int, agent_action_number_index: int) -> Tuple[int, int, int, int]:
 
-        # TODO WORK HERE
-
-        cm = self.count_array
 
         # 0 - None 1 - A at B 2 - B at A 3 - Mutual
         # 0 - not look, 1 - look

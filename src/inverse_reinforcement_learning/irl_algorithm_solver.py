@@ -37,7 +37,7 @@ class IrlAlgorithmSolver:
         value_iterator: Union[AtHighValueIteration,AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
-        epsilon=0.1,
+        epsilon=0.000001,
         policy_player_max_step:int = 5000,
         max_iterations = 100
     ):
@@ -60,6 +60,7 @@ class IrlAlgorithmSolver:
         self.random_feature_expectations = random_feature_expectations
         self.epsilon = epsilon
         self.expert_feature_expectations = expert_feature_expectations
+        self.previous_W = 0
 
         # step 1 of algorithm
         # norm of the diff in expert and random
@@ -137,6 +138,9 @@ class IrlAlgorithmSolver:
         weights = weights / norm
         return weights  # return the normalized weights
 
+    #def getSVMweights(self):
+
+
     def update_policy_list(self, W: np.ndarray) -> Tuple[int, np.ndarray, np.ndarray, np.ndarray, List[dict] ]:
         """
 
@@ -183,7 +187,8 @@ class IrlAlgorithmSolver:
         print(f"sum of policy:{np.sum(policy)}")
         print(f"sum of rewards:{np.sum(reward_matrix)}")
         print(f"sum of W:{np.sum(W)}")
-        print(f"sum of W difference:{np.sum(W) - np.sum(self.previous_W)}")
+        if self.previous_W is not None:
+            print(f"sum of W difference:{'{:.10f}'.format(np.sum(W) - np.sum(self.previous_W))}")
 
         self.previous_reward_matrix = np.array(reward_matrix)
         self.previous_W = np.array(W)

@@ -1,6 +1,8 @@
 import random
 from typing import List, Tuple
 
+from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
+from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from mdp_const import MdpConsts
 from data_const import (
     JointConstants as consts,
@@ -60,22 +62,19 @@ class FeatureExpectationExtractor:
 
         # possible it has to be normalised (1/m sum(m,i=1)) on slides but i think this is done in
         # irl_algorithm_solver in __init__ (make sure that is the same part of algorithm, not two different)
-        return mi
+        return mi / max_steps
 
-    def get_random_feature_expectations(self,n_steps:int):
+    def get_random_feature_expectations(self,n_steps:int, model:AtHighMdpModel, policy_player:HighPolicyPlayer):
 
         mi = np.array([0 for n in range(self.n_states)])
 
+        n_actions = len(model.actions)
+        policy = np.random.random_integers(0,n_actions-1,size=mi.shape)
 
-        for i in range(n_steps):
-            rnd = random.randint(0,self.n_states-1)
+        random_conversation = policy_player.play_policy(policy,n_steps)
 
-            zeros = np.zeros_like(mi)
-            zeros[rnd] = 1
-            state_vector = zeros
-            mi = mi + ((self.discount_factor ** i) * state_vector)
+        return self.get_feature_expectations(random_conversation)
 
-        return mi
 
     def __get_current_state(self, current_frame, previous_frame) -> np.ndarray:
         """
