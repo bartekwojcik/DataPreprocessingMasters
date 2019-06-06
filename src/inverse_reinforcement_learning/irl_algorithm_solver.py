@@ -89,7 +89,7 @@ class IrlAlgorithmSolver:
 
         """
         #plt.axis([0, 50, 0, 10])
-        possible_w = np.arange(-10,10,0.3)
+
         i = 0
         while True:
 

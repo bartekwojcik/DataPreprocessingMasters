@@ -3,7 +3,7 @@ import numpy as np
 import os
 import settings
 from Mdp.transition_counting_translator import TransitionCountingTranslator
-from mdp_const import MdpConsts
+import mdp_const
 from transition_counting.heatmap_plotter import plot_count_heatmap
 from transition_counting.transition_counter import TransitionCounter
 
@@ -40,7 +40,7 @@ class ConversationComparer:
 
     def __save_plots(self, results, file_name, original_or_not: str, show: bool):
 
-        folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{MdpConsts.TIME_SIZE}"
+        folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{mdp_const.TIME_SIZE}"
 
         folder_path = os.path.join(
             settings.HISTOGRAMS_FOLDER_PATH, folder_name

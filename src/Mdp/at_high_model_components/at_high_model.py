@@ -4,6 +4,7 @@ import numpy as np
 
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from mdp_const import MdpConsts as consts
+import mdp_const
 import settings
 from transition_counting.heatmap_plotter import plot_count_heatmap
 
@@ -22,7 +23,7 @@ class AtHighMdpModel:
         :param counting_array: (2,2,2,2,2,2,2,2) array of transitions counts
         """
 
-        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, consts.TIME_SIZE), "did you update model?"
+        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, mdp_const.TIME_SIZE), "did you update model?"
         self.Ca = counting_array
 
         self.states = consts.GET_TALK_AND_LOOK_STATES_WITH_TIME()
@@ -70,7 +71,7 @@ class AtHighMdpModel:
                     if current_states_idx == new_state_idx:
                         #update time by one
 
-                        if s[4]+1 < consts.TIME_SIZE:
+                        if s[4]+1 < mdp_const.TIME_SIZE:
                             next_time = s[4]+1
                         else:
                             next_time = 0

@@ -2,7 +2,7 @@ from typing import Tuple
 
 from data_const import JointConstants as ConstJoint, ReadableConvMetadataConstants as metaConsts
 import numpy as np
-
+import mdp_const
 from mdp_const import MdpConsts
 from transition_counting.transition_matrix_updater import TransitionMatrixUpdater
 from transition_counting.state_utils import StateUtils
@@ -61,7 +61,7 @@ class FrameAnalyzer:
         previous_state = self.get_gaze_talk_state_vector_from_frame(previous_frame, high, low)
         current_state = self.get_gaze_talk_state_vector_from_frame(frame, high, low)
 
-        if self.previous_time == MdpConsts.TIME_SIZE:
+        if self.previous_time == mdp_const.TIME_SIZE:
             self.previous_time = 0
 
         result = state_processor.increment_matrix(
