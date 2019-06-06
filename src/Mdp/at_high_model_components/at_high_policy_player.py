@@ -55,6 +55,8 @@ class HighPolicyPlayer:
 
         for i in range(max_steps):
             action_index = int(policy[int(current_state_index)])
+            current_state = self.model.states[current_state_index]
+            action = self.model.actions[action_index]
             # new_state is a tuple of length 4
             new_state = self.__random_next_state(current_state_index, action_index)
             assert (high_person != low_person), "high and low person can not be the same, something went wrong, kek"

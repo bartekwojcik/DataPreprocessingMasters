@@ -70,8 +70,8 @@ class IrlProcessor:
 
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
-        #value_iterator = AtHighValueIteration(mdp_graph)
-        value_iterator = AtHighPolicyIteration(mdp_graph) #not a single iteration passed
+        value_iterator = AtHighValueIteration(mdp_graph)
+        #value_iterator = AtHighPolicyIteration(mdp_graph)
         irl = IrlAlgorithmSolver(
             file_name,
             expert_feature_expectations,
@@ -81,7 +81,7 @@ class IrlProcessor:
             feature_expectation_extractor,
             policy_player,
             policy_player_max_step=policy_player_max_step,
-            max_iterations=500,
+            max_iterations=50,
         )
         weights, reward_matrix, policy, V, new_conversation, is_ok = irl.find_weights(
             verbose=verbose

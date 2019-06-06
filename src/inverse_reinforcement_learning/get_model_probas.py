@@ -18,7 +18,7 @@ class ModelProbasGetter:#lol
 
         count_array = self.__count(conversation,file_metadata,frame_step,count_array_shape)
 
-        self.__save_plots(count_array,filename,"original",verbose)
+        #self.__save_plots(count_array,filename,"original",verbose)
 
 
         model = AtHighMdpModel(count_array)

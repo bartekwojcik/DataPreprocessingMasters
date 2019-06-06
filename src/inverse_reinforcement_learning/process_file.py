@@ -36,7 +36,7 @@ def process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE):
 
     probas_getter = ModelProbasGetter()
     mdp_graph = probas_getter.get_model_probas(
-        conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, filename, False
+        conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, filename, VERBOSE
     )
 
     # plots probabilities of model's actions in states

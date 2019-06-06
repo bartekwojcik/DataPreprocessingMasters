@@ -5,7 +5,7 @@ import settings
 
 class MdpConsts:
     # arbitrary
-    __MAX_CONTINUOUS_TIME_SEC = 0.5
+    __MAX_CONTINUOUS_TIME_SEC = 2.5
     # each step in data is like that
     __CONTINUOUS_TIME_STEP_SEC = 0.04
     TIME_SIZE = int(__MAX_CONTINUOUS_TIME_SEC / __CONTINUOUS_TIME_STEP_SEC)
