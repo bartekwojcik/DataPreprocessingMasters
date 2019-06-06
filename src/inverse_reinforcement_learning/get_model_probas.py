@@ -43,11 +43,11 @@ class ModelProbasGetter:#lol
     def __save_plots(self, results, file_name, original_or_not: str, show: bool):
         file_name_counts = os.path.join(
             settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{file_name}_{original_or_not}_plot_counts_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
+            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_counts_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
         )
         file_name_probs = os.path.join(
             settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{file_name}_{original_or_not}_plot_probs_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
+            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_probs_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
         )
 
         translator = TransitionCountingTranslator(results)

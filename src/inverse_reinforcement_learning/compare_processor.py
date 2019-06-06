@@ -31,7 +31,8 @@ class CompareProcessor:
         :param show_plot:
         :return:
         """
-        file_name_to_save_plot = f"{file_name}_frames_{settings.TRANSITION_FRAME_STEP}_time_size:{MdpConsts.TIME_SIZE}"
+
+        file_name_to_save_plot = f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_frames_{settings.TRANSITION_FRAME_STEP}_time_size:{MdpConsts.TIME_SIZE}"
         if not irl_result.is_ok:
             file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
 

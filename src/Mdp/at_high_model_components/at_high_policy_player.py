@@ -29,7 +29,7 @@ class HighPolicyPlayer:
     def play_policy(
             self,
             policy: np.ndarray,
-            max_steps: int = 1000,
+            max_steps: int,
             time_step: float = 0.04,
     ) -> List[dict]:
         """
@@ -55,12 +55,10 @@ class HighPolicyPlayer:
 
         for i in range(max_steps):
             action_index = int(policy[int(current_state_index)])
-            current_state = self.model.states[current_state_index]
-            action = self.model.actions[action_index]
-            # new_state is a tuple of length 4
+
             new_state = self.__random_next_state(current_state_index, action_index)
             assert (high_person != low_person), "high and low person can not be the same, something went wrong, kek"
-            # TODO WORK HERE
+
             # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
 
             high_gaze = StateUtils.gaze_id_to_string(new_state[0])  # type:str
@@ -109,13 +107,6 @@ class HighPolicyPlayer:
 
     def __random_next_state(self, current_state_index: int, agent_action_number_index: int) -> Tuple[int, int, int, int]:
 
-
-        # 0 - None 1 - A at B 2 - B at A 3 - Mutual
-        # 0 - not look, 1 - look
-
-        # 4x4, in - 1, out - 0, array[0,0]
-        # i am high, low is environment
-
         rnd = random.random()
         current_state = self.model.states[current_state_index]
         agent_action = self.model.actions[agent_action_number_index]
@@ -127,6 +118,7 @@ class HighPolicyPlayer:
                 return next_state
             else:
                 last_proba += proba
+
         #if we got here it means that all probabilities were 0
         if last_proba == 0:
             #go to random place

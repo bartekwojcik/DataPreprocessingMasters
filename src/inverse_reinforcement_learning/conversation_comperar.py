@@ -3,6 +3,7 @@ import numpy as np
 import os
 import settings
 from Mdp.transition_counting_translator import TransitionCountingTranslator
+from mdp_const import MdpConsts
 from transition_counting.heatmap_plotter import plot_count_heatmap
 from transition_counting.transition_counter import TransitionCounter
 
@@ -31,18 +32,30 @@ class ConversationComparer:
             calculated_conversation, file_metadata, frame_step,result_shape
         )
 
+
+
         self.__save_plots(original_results, name, "original", show)
         self.__save_plots(calculated_results, name, "calculated", show)
 
 
     def __save_plots(self, results, file_name, original_or_not: str, show: bool):
+
+        folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{MdpConsts.TIME_SIZE}"
+
+        folder_path = os.path.join(
+            settings.HISTOGRAMS_FOLDER_PATH, folder_name
+        )
+
+        if not os.path.exists(folder_path):
+            os.mkdir(folder_path)
+
         file_name_counts = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{file_name}_{original_or_not}_plot_counts.png",
+            settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_counts.png",
         )
         file_name_probs = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{file_name}_{original_or_not}_plot_probs.png",
+            settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_probs.png",
         )
 
         translator = TransitionCountingTranslator(results)

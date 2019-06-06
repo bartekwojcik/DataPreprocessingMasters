@@ -1,5 +1,6 @@
 from typing import List, Tuple, Union
 
+import settings
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
 )
@@ -38,8 +39,8 @@ class IrlAlgorithmSolver:
         value_iterator: Union[AtHighValueIteration,AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
-        epsilon=0.0001,
-        policy_player_max_step:int = 5000,
+        policy_player_max_step:int,
+        epsilon= settings.IRL_SOLVER_EPSILON,
         max_iterations = 100
     ):
         """
@@ -61,6 +62,7 @@ class IrlAlgorithmSolver:
         self.random_feature_expectations = random_feature_expectations
         self.epsilon = epsilon
         self.expert_feature_expectations = expert_feature_expectations
+
         #just for tests
         self.previous_W = 0
         self.previous_intercept = 0
@@ -157,16 +159,9 @@ class IrlAlgorithmSolver:
 
         clf.fit(X,Y)
 
-        #
-        # for (intercept, coef) in zip(clf.intercept_, clf.coef_):
-        #     s = "y = {0:.3f}".format(intercept)
-        #     for (i, c) in enumerate(coef):
-        #         s += " + {0:.3f} * x{1}".format(c, i)
-
         W = np.squeeze(clf.coef_)
 
         return W, clf.intercept_
-
 
 
     def update_policy_list(self, W: np.ndarray, intercept:int) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, List[dict] ]:

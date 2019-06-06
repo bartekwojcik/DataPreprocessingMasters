@@ -1,6 +1,7 @@
 import random
 from typing import List, Tuple
 
+import settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from mdp_const import MdpConsts
@@ -20,7 +21,7 @@ class FeatureExpectationExtractor:
         states: List[Tuple],
         conversation_metadata: dict,
         max_steps: int = 20000,
-        discount_factor=0.90,
+        discount_factor=settings.DISCOUNT_FACTOR,
     ):
         """
         Will "play out" Markov chain / MDP to get feature expectations

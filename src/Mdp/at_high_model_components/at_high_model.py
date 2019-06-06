@@ -92,7 +92,7 @@ class AtHighMdpModel:
                 time = (s[4],)
                 for proba, next_state in self.graph[s][a]:
                     next_s_wo_time = next_state[:4]
-                    next_time = (next_state[4],)
+
                     results[s_wo_time + next_s_wo_time + time] += proba
 
         translator = TransitionCountingTranslator(results)

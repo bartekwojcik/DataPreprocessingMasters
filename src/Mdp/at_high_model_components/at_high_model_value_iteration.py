@@ -1,12 +1,13 @@
 from typing import Tuple
 
+import settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 import numpy as np
 
 
 class AtHighValueIteration:
     def __init__(
-        self, model: AtHighMdpModel, theta=0.001, discount_factor=0.99
+        self, model: AtHighMdpModel, theta= settings.POLICY_THETA, discount_factor= settings.DISCOUNT_FACTOR
     ):
         self.theta = theta
         self.discount_factor = discount_factor
