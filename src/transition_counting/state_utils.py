@@ -15,7 +15,7 @@ class StateUtils:
     quiet_state = ConstJoint.QUIET
 
     @staticmethod
-    def get_gaze_id(state:str):
+    def get_gaze_id(state:str)->int:
         """
         Return 1 if looks at the face, 0 if not
         :param state:
@@ -27,7 +27,7 @@ class StateUtils:
             return 0
 
     @staticmethod
-    def get_talk_id(state:str):
+    def get_talk_id(state:str)->int:
         """
         return 1 if "talking" and 0 if "quiet"
         :param state:
@@ -41,10 +41,10 @@ class StateUtils:
 
 
     @classmethod
-    def gaze_id_to_string(cls, id: int):
+    def gaze_id_to_string(cls, id: int)->str:
         return JointConstants.LEFT_EYE if id == MdpConsts.LOOK else JointConstants.OUT
 
     @classmethod
-    def talk_id_to_string(cls, id: int):
+    def talk_id_to_string(cls, id: int)->str:
         return JointConstants.TALKING if id == MdpConsts.TALK else JointConstants.QUIET
 

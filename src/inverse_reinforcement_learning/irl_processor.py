@@ -28,7 +28,8 @@ class IrlProcessor:
         file_name: str,
         policy_player_max_step,
         verbose: bool,
-        settings:Settings
+        settings:Settings,
+        irl_solver_iterations:int
     ) -> IrlProcessorResult:
         """
         Processes one file of conversation with Inverse Reinforcement Learning
@@ -69,12 +70,12 @@ class IrlProcessor:
             policy_player,
             policy_player_max_step=policy_player_max_step,
             epsilon= settings.IRL_SOLVER_EPSILON,
-            max_iterations= 50
+            max_iterations=irl_solver_iterations
         )
-        weights, reward_matrix, policy, V, new_conversation, is_ok = irl.find_weights(
+        weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
 
         return IrlProcessorResult(
-            weights, reward_matrix, policy, V, new_conversation, is_ok
+            weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept
         )
