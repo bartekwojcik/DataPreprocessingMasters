@@ -1,9 +1,10 @@
 import numpy as np
 import mdp_const
+from settings import Settings
 
 
 class TransitionCountingTranslator:
-    def __init__(self, count_matrix: np.ndarray):
+    def __init__(self, count_matrix: np.ndarray, settings:Settings):
 
         self.counting_matrix = np.array(count_matrix)
 
@@ -16,7 +17,7 @@ class TransitionCountingTranslator:
             2,
             2,
             2,
-            mdp_const.TIME_SIZE
+            settings.TIME_SIZE
         ), "it is not (2,2,2,2,2,2,2,2,TIME_SIZE) matrix, is it coming from transition_counting_results_with_talk_time_{someframe}.npy?"
 
     def transform_to_2D_count_matrix(self)->np.ndarray:

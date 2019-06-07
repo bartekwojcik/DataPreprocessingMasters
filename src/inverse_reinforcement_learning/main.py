@@ -2,14 +2,14 @@ import multiprocessing
 import threading
 
 import numpy as np
-import settings
+from settings import Settings
 import os
 import json
 from inverse_reinforcement_learning.process_file import process_file, async_process_file
 import asyncio
 
 
-async def main():
+async def main_async(settings:Settings):
     HUMAN_READABLE_FOLDER_PATH = settings.HUMAN_READABLE_FOLDER_PATH
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
     VERBOSE = True
@@ -32,4 +32,5 @@ async def main():
 
 if __name__ == "__main__":
 
-    asyncio.run(main())
+    settings = Settings()
+    asyncio.run(main_async(settings))

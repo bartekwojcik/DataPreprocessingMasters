@@ -1,7 +1,7 @@
 import random
 from typing import List, Tuple
 
-import settings
+from settings import Settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from mdp_const import MdpConsts
@@ -20,8 +20,7 @@ class FeatureExpectationExtractor:
         self,
         states: List[Tuple],
         conversation_metadata: dict,
-        max_steps: int = 20000,
-        discount_factor=settings.DISCOUNT_FACTOR,
+        discount_factor,
     ):
         """
         Will "play out" Markov chain / MDP to get feature expectations
@@ -35,9 +34,7 @@ class FeatureExpectationExtractor:
         self.states = states
         self.discount_factor = discount_factor
         self.conversation_metadata = conversation_metadata
-        self.max_steps = max_steps
         self.previous_time = 0
-
 
     def get_feature_expectations(self, data: List[dict]) -> np.ndarray:
         """
@@ -45,7 +42,7 @@ class FeatureExpectationExtractor:
         :return: feature expectations
         """
         data_length = len(data)
-        max_steps = self.max_steps if data_length > self.max_steps else data_length
+        max_steps = data_length
         mi = np.array([0 for n in range(self.n_states)])
         previous_frame = None
         for i in range(max_steps):
@@ -65,17 +62,18 @@ class FeatureExpectationExtractor:
         # irl_algorithm_solver in __init__ (make sure that is the same part of algorithm, not two different)
         return mi
 
-    def get_random_feature_expectations(self,n_steps:int, model:AtHighMdpModel, policy_player:HighPolicyPlayer):
+    def get_random_feature_expectations(
+        self, n_steps: int, model: AtHighMdpModel, policy_player: HighPolicyPlayer
+    ):
 
         mi = np.array([0 for n in range(self.n_states)])
 
         n_actions = len(model.actions)
-        policy = np.random.random_integers(0,n_actions-1,size=mi.shape)
+        policy = np.random.random_integers(0, n_actions - 1, size=mi.shape)
 
-        random_conversation = policy_player.play_policy(policy,n_steps)
+        random_conversation = policy_player.play_policy(policy, n_steps)
 
         return self.get_feature_expectations(random_conversation)
-
 
     def __get_current_state(self, current_frame, previous_frame) -> np.ndarray:
         """
@@ -86,12 +84,13 @@ class FeatureExpectationExtractor:
         high_person = self.conversation_metadata[read_consts.AT_HIGH]
         low_person = self.conversation_metadata[read_consts.AT_LOW]
 
-        current_state_vector_without_time = FrameAnalyzer.\
-            get_gaze_talk_state_vector_from_frame(current_frame,high_person,low_person)
+        current_state_vector_without_time = FrameAnalyzer.get_gaze_talk_state_vector_from_frame(
+            current_frame, high_person, low_person
+        )
 
-
-        previous_state_vector_without_time = FrameAnalyzer.\
-            get_gaze_talk_state_vector_from_frame(previous_frame,high_person,low_person)
+        previous_state_vector_without_time = FrameAnalyzer.get_gaze_talk_state_vector_from_frame(
+            previous_frame, high_person, low_person
+        )
 
         current_state_vector = current_state_vector_without_time + (self.previous_time,)
 
@@ -100,17 +99,14 @@ class FeatureExpectationExtractor:
         else:
             self.previous_time = 0
 
-
-        mi = self.calculate_state_vector(current_state_vector,self.states)
+        mi = self.calculate_state_vector(current_state_vector, self.states)
 
         return np.array(mi)
 
     @classmethod
-    def calculate_state_vector(cls, current_state_vector:Tuple, states: List[Tuple]):
+    def calculate_state_vector(cls, current_state_vector: Tuple, states: List[Tuple]):
         zeros_indices = np.zeros(len(states))
 
         state_index = states.index(current_state_vector)
         zeros_indices[state_index] = 1
         return zeros_indices
-
-

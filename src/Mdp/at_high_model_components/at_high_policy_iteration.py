@@ -5,9 +5,7 @@ import settings
 
 
 class AtHighPolicyIteration:
-    def __init__(
-        self, model: AtHighMdpModel, theta= settings.POLICY_THETA, discount_factor= settings.DISCOUNT_FACTOR
-    ):
+    def __init__(self, model: AtHighMdpModel, theta, discount_factor):
         self.theta = theta
         self.discount_factor = discount_factor
         self.G = model.graph
@@ -28,7 +26,7 @@ class AtHighPolicyIteration:
         """
         return self.__calculate_policy_iteration(rewards)
 
-    def __policy_eval(self,policy,rewards):
+    def __policy_eval(self, policy, rewards):
         """
         Evaluate a policy given an environment and a full description of the environment's dynamics.
         :param policy:
@@ -47,7 +45,11 @@ class AtHighPolicyIteration:
                     for prob, next_state in self.G[s][a]:
                         index_of_next_state = self.model.states.index(next_state)
                         reward = rewards[index_of_next_state]
-                        v += action_proba * prob * (reward + self.discount_factor * V[index_of_next_state])
+                        v += (
+                            action_proba
+                            * prob
+                            * (reward + self.discount_factor * V[index_of_next_state])
+                        )
                 delta = max(delta, abs(v - V[state_index]))
                 V[state_index] = v
             if delta < self.theta:
@@ -55,11 +57,9 @@ class AtHighPolicyIteration:
 
         return np.array(V)
 
-
-
     def __calculate_policy_iteration(self, rewards: np.ndarray):
 
-        policy = np.ones((self.n_s,self.n_a)) / self.n_a
+        policy = np.ones((self.n_s, self.n_a)) / self.n_a
 
         while True:
 
@@ -76,7 +76,11 @@ class AtHighPolicyIteration:
                     for prob, next_state in self.G[s][a]:
                         index_of_next_state = self.model.states.index(next_state)
                         reward = rewards[index_of_next_state]
-                        actions_values[action_index] += prob * (reward + self.discount_factor * evaluated_policy[index_of_next_state])
+                        actions_values[action_index] += prob * (
+                            reward
+                            + self.discount_factor
+                            * evaluated_policy[index_of_next_state]
+                        )
 
                 best_action_index = np.argmax(actions_values)
                 if best_action_index != current_action_index:
@@ -93,5 +97,3 @@ class AtHighPolicyIteration:
             policy_with_numbers_of_actions[state_index] = np.argmax(policy[state_index])
 
         return policy_with_numbers_of_actions, evaluated_policy
-
-

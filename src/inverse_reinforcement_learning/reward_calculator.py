@@ -19,12 +19,12 @@ class RewardCalculator:
         """
 
         shape_length = self.reward_shape[0]
-        #shape of 16, because reward PER state
+
         R = np.zeros((shape_length,))
 
         for s in range(shape_length):
             current_state = self.states[s]
-            ##this is just to make work around zero vector problem
+
             state_vector = FeatureExpectationExtractor.calculate_state_vector(current_state,self.states)
             R[s] = np.dot(W.T, state_vector) + intercept
 

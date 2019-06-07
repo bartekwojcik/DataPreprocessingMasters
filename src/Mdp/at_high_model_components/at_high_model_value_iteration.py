@@ -6,9 +6,7 @@ import numpy as np
 
 
 class AtHighValueIteration:
-    def __init__(
-        self, model: AtHighMdpModel, theta= settings.POLICY_THETA, discount_factor= settings.DISCOUNT_FACTOR
-    ):
+    def __init__(self, model: AtHighMdpModel, theta, discount_factor):
         self.theta = theta
         self.discount_factor = discount_factor
         self.G = model.graph
@@ -46,7 +44,9 @@ class AtHighValueIteration:
                         # the reward is the reward of given next_state
                         index_of_next_state = self.model.states.index(next_state)
                         reward = rewards[index_of_next_state]
-                        value = prob * (reward + self.discount_factor * V[index_of_next_state])
+                        value = prob * (
+                            reward + self.discount_factor * V[index_of_next_state]
+                        )
                         action_values[index_of_action] += value
                         debug = 5
                 best_a = np.max(action_values)
@@ -54,7 +54,7 @@ class AtHighValueIteration:
                 index_of_state = self.model.states.index(s)
                 delta = max(delta, np.abs(best_a - V[index_of_state]))
                 V[index_of_state] = best_a
-            i+=1
+            i += 1
             if delta < self.theta:
                 break
 

@@ -1,12 +1,4 @@
 import itertools
-import numpy as np
-import settings
-
-MAX_CONTINUOUS_TIME_SEC = 2.5
-# each step in data is like that
-CONTINUOUS_TIME_STEP_SEC = 0.04
-TIME_SIZE = int(MAX_CONTINUOUS_TIME_SEC / CONTINUOUS_TIME_STEP_SEC)
-
 
 class MdpConsts:
 
@@ -20,7 +12,7 @@ class MdpConsts:
     __LIST_OF_TALKING_STATES = [QUIET, TALK]
 
     @classmethod
-    def GET_TALK_AND_LOOK_STATES_WITH_TIME(cls):
+    def GET_TALK_AND_LOOK_STATES_WITH_TIME(cls, time_size:int):
         """
         :return: List of tuples - possible states [(High_gaze,High_talk,Low_gaze,Low_talk,time0)...]
         """
@@ -31,7 +23,7 @@ class MdpConsts:
                 for lg in cls.__LIST_OF_LOOKING_STATES:
                     for lt in cls.__LIST_OF_TALKING_STATES:
                         # so i am not interested in real time (0.04 sec etc but in RELATIVE TIME STEP IN CONVERSATION
-                        for time in range(TIME_SIZE):
+                        for time in range(time_size):
                             result.append((hg, ht, lg, lt, time))
 
         return result

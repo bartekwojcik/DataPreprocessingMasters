@@ -2,7 +2,7 @@ import os
 import json
 from typing import List
 
-import settings
+from settings import Settings
 from data_const import (
     UsableConversationConstants as ConstUC,
     ReadableConvMetadataConstants as ReadConst,
@@ -16,7 +16,7 @@ from human_read_creator.at_high_at_low_calculator import AtHightAtLowCalculator
 OUTPUT_FILE_NAME_PATTERN = "human_readable_conversation_{}.json"
 
 
-def save_conversation_to_file(labeled_data):
+def save_conversation_to_file(labeled_data,settings:Settings):
 
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     file_name = OUTPUT_FILE_NAME_PATTERN.format(
@@ -27,7 +27,7 @@ def save_conversation_to_file(labeled_data):
         json.dump(labeled_data, new_file)
 
 
-def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalculator]):
+def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalculator], settings: Settings):
     """
     Saves at low and at high values to file
     :param at_high_at_low_calculators: list of calculator that calculate at low and at high values
@@ -64,7 +64,9 @@ if __name__ == "__main__":
     #     settings.CLUSTER_DATA_FOLDER_PATH, "clustering_04.json"
     # )
 
-    with open(settings.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:
+    sett = Settings()
+
+    with open(sett.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:
 
         usable_conversations_data = json.loads(usable_conversation_file.read())[
             ConstUC.CONVERSATIONS
@@ -74,11 +76,11 @@ if __name__ == "__main__":
         for conversation_data in usable_conversations_data:
             conv_number = conversation_data[ConstUC.NUMBER]
             joint_file_path = os.path.join(
-                settings.JOINT_DATA_FOLDER_PATH,
+                sett.JOINT_DATA_FOLDER_PATH,
                 f"conversation_{str(conv_number).zfill(2)}.json",
             )
             cluster_file_path = os.path.join(
-                settings.CLUSTER_DATA_FOLDER_PATH,
+                sett.CLUSTER_DATA_FOLDER_PATH,
                 f"clustering_{str(conv_number).zfill(2)}.json",
             )
 
@@ -113,6 +115,6 @@ if __name__ == "__main__":
                 )
 
                 list_of_at_high_calculators.append(at_high_at_low_calculator)
-                save_conversation_to_file(labeled_data)
+                save_conversation_to_file(labeled_data,sett)
 
-        save_at_high_calc_to_file(list_of_at_high_calculators)
+        save_at_high_calc_to_file(list_of_at_high_calculators,sett)

@@ -1,12 +1,9 @@
-import json
+from concurrent.futures import ProcessPoolExecutor
 
-import settings
-from Mdp.mdp_utils import MdpUtils
 from inverse_reinforcement_learning.compare_processor import CompareProcessor
-from inverse_reinforcement_learning.irl_processor import IrlProcessor
-import asyncio
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from inverse_reinforcement_learning.get_model_probas import ModelProbasGetter
+from inverse_reinforcement_learning.irl_processor import IrlProcessor
+from settings import Settings
 
 
 async def async_process_file(
@@ -24,19 +21,14 @@ async def async_process_file(
     )
 
 
-# process_file(metadata_json, filename, conv_json, full_file_name,VERBOSE)
 
-# async_func = asyncio.coroutine(process_file(metadata_json, filename, conv_json,full_file_name,VERBOSE))
-# return await async_func()
-
-
-def process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE):
+def process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE, settings:Settings):
 
     this_file_metadata = metadata_json[filename]
 
     probas_getter = ModelProbasGetter()
     mdp_graph = probas_getter.get_model_probas(
-        conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, filename, VERBOSE
+        conv_json, this_file_metadata, settings.TRANSITION_FRAME_STEP, filename, VERBOSE, settings
     )
 
     # plots probabilities of model's actions in states
@@ -52,6 +44,7 @@ def process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE):
         full_file_name,
         policy_player_max_step=data_length,
         verbose=VERBOSE,
+        settings=settings
     )
 
     compare_processor = CompareProcessor()
@@ -62,6 +55,7 @@ def process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE):
         this_file_metadata,
         settings.TRANSITION_FRAME_STEP,
         mdp_graph.Ca.shape,
+        settings,
         show_plot=VERBOSE,
     )
 

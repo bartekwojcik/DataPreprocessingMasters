@@ -1,22 +1,20 @@
-import os
-import mdp_const
-
-from mdp_const import MdpConsts as mdp
-import settings
 import json
+import os
+
 import numpy as np
-from transition_counting.transition_counter import TransitionCounter
-from transition_counting.transition_matrix_updater import TransitionMatrixUpdater
-#import pylab as plt
-from Mdp.transition_counting_translator import  TransitionCountingTranslator
 
+import mdp_const
+from Mdp.transition_counting_translator import TransitionCountingTranslator
+from settings import Settings
 from transition_counting.heatmap_plotter import plot_count_heatmap
+from transition_counting.transition_counter import TransitionCounter
 
-def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_probas:str)->None:
+
+def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_probas:str, settings:Settings)->None:
     file_name_counts = os.path.join(settings.MY_DATA_FOLDER_PATH,file_name_counts )
     file_name_probs = os.path.join(settings.MY_DATA_FOLDER_PATH, file_name_probas)
 
-    translator = TransitionCountingTranslator(result_array)
+    translator = TransitionCountingTranslator(result_array, settings)
     count_matrix = translator.transform_to_2D_count_matrix()
     probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
     plot_count_heatmap(count_matrix, file_name_counts)
@@ -29,9 +27,9 @@ if __name__ == "__main__":
     the time transitions are from perspective of high, namely: after what time did the at high person change his state 
     
     """
-
+    settings = Settings()
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
-    time_size = mdp_const.TIME_SIZE
+    time_size = settings.TIME_SIZE
     global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2,time_size))
     counter = TransitionCounter()
 
@@ -59,10 +57,11 @@ if __name__ == "__main__":
                 debug = 5
 
     result_file_path = os.path.join(
-        settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_{FRAME_STEP}_frame_{mdp_const.TIME_SIZE}_time_size"
+        settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_"
+                                                 f"{FRAME_STEP}_frame_{settings.TIME_SIZE}_time_size"
     )
     np.save(result_file_path, global_results)
-    plot_heatmaps(global_results,"heat_plot_counts.png","heat_plot_probs.png")
+    plot_heatmaps(global_results,"heat_plot_counts.png","heat_plot_probs.png",settings)
     print(f"results saved to {result_file_path}")
 
 

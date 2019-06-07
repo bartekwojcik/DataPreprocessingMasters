@@ -5,7 +5,7 @@ import numpy as np
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from mdp_const import MdpConsts as consts
 import mdp_const
-import settings
+from settings import Settings
 from transition_counting.heatmap_plotter import plot_count_heatmap
 
 
@@ -18,20 +18,20 @@ class AtHighMdpModel:
 
     """
 
-    def __init__(self, counting_array: np.ndarray):
+    def __init__(self, counting_array: np.ndarray, settings:Settings):
         """
         :param counting_array: (2,2,2,2,2,2,2,2) array of transitions counts
         """
 
-        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, mdp_const.TIME_SIZE), "did you update model?"
+        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, settings.TIME_SIZE), "did you update model?"
         self.Ca = counting_array
 
-        self.states = consts.GET_TALK_AND_LOOK_STATES_WITH_TIME()
+        self.states = consts.GET_TALK_AND_LOOK_STATES_WITH_TIME(settings.TIME_SIZE)
         self.actions = consts.GET_TALK_AND_LOOK_ACTIONS()
 
-        self.__init_states()
+        self.__init_states(settings)
 
-    def __init_states(self):
+    def __init_states(self, settings:Settings):
         """
         Sets graph where graph[state][action] = List of tuples (probability_of going to this state, state we will end up)
 
@@ -48,7 +48,8 @@ class AtHighMdpModel:
 
                 # get sum of all transition:
                 sum = 0
-                # because your count_matrix is of shape [high_person_talk, high_person_talk, low_person_gaze, low_person_talk, time]
+                # because your count_matrix is of shape
+                # [high_person_talk, high_person_talk, low_person_gaze, low_person_talk, time]
                 # we need to split time from s to append it to action and get the correct format
                 current_states_idx = s[:4]
                 current_time_idx = (s[4],)
@@ -56,7 +57,8 @@ class AtHighMdpModel:
                 for p_a in self.actions:
                     # tuple1 + tuple2 = tuple3
                     # and array[0,0] == array[(0,0)]
-                    # selc.Ca[s+a+p_a] -> s = state we were in, a = action agent wants to do, p_a = action that the other guy might do
+                    # selc.Ca[s+a+p_a] -> s = state we were in, a = action agent wants to do,
+                    # p_a = action that the other guy might do
 
                     sum += self.Ca[current_states_idx + a + p_a + current_time_idx]
 
@@ -71,7 +73,7 @@ class AtHighMdpModel:
                     if current_states_idx == new_state_idx:
                         #update time by one
 
-                        if s[4]+1 < mdp_const.TIME_SIZE:
+                        if s[4]+1 < settings.TIME_SIZE:
                             next_time = s[4]+1
                         else:
                             next_time = 0
@@ -82,7 +84,7 @@ class AtHighMdpModel:
         debug = 5
 
 
-    def plot_probabilities_per_state(self,verbose:bool,file_name:str):
+    def plot_probabilities_per_state(self,verbose:bool,file_name:str, settings:Settings):
 
         results = np.zeros_like(self.Ca)
 
@@ -96,11 +98,8 @@ class AtHighMdpModel:
 
                     results[s_wo_time + next_s_wo_time + time] += proba
 
-        translator = TransitionCountingTranslator(results)
-        #probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
+        translator = TransitionCountingTranslator(results,settings)
         count_matrix = translator.transform_to_2D_count_matrix()
 
         file_name_count = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_counts.jpg")
-        #file_name_proba = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_probas.jpg")
         plot_count_heatmap(np.round(count_matrix, decimals=2),file_name_count,show=verbose)
-        #plot_count_heatmap(probabilities_matrix,file_name_proba,show=verbose)

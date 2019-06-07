@@ -1,6 +1,5 @@
 from typing import List, Tuple, Union
 
-import settings
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
 )
@@ -36,12 +35,12 @@ class IrlAlgorithmSolver:
         expert_feature_expectations: np.ndarray,
         random_feature_expectations: np.ndarray,
         reward_calculator: RewardCalculator,
-        value_iterator: Union[AtHighValueIteration,AtHighPolicyIteration],
+        value_iterator: Union[AtHighValueIteration, AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
-        policy_player_max_step:int,
-        epsilon= settings.IRL_SOLVER_EPSILON,
-        max_iterations = 100
+        policy_player_max_step: int,
+        epsilon: float,
+        max_iterations: int,
     ):
         """
         :param policy_player: policy player
@@ -63,10 +62,10 @@ class IrlAlgorithmSolver:
         self.epsilon = epsilon
         self.expert_feature_expectations = expert_feature_expectations
 
-        #just for tests
+        # just for tests
         self.previous_W = 0
         self.previous_intercept = 0
-        self.previous_policy = np.zeros((1,1))
+        self.previous_policy = np.zeros((1, 1))
 
         # step 1 of algorithm
         # norm of the diff in expert and random
@@ -82,13 +81,15 @@ class IrlAlgorithmSolver:
 
         self.currentT = self.random_t
 
-    def find_weights(self,verbose: bool) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict], bool ]:
+    def find_weights(
+        self, verbose: bool
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict], bool]:
         """
 
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
 
         """
-        #plt.axis([0, 50, 0, 10])
+        # plt.axis([0, 50, 0, 10])
 
         i = 0
         while True:
@@ -101,7 +102,9 @@ class IrlAlgorithmSolver:
 
             W, intercept = self.get_SVM_weights()
 
-            self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W, intercept)
+            self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(
+                W, intercept
+            )
 
             if verbose:
                 plt.scatter(i, self.current_t)
@@ -132,7 +135,7 @@ class IrlAlgorithmSolver:
         policy_list = [self.expert_feature_expectations]
         h_list = [1]
         for i in self.policies_feature_expectations.keys():
-            #get just t
+            # get just t
             policy_list.append(self.policies_feature_expectations[i])
             h_list.append(1)
         policy_mat = np.matrix(policy_list)
@@ -148,23 +151,29 @@ class IrlAlgorithmSolver:
 
     def get_SVM_weights(self):
 
-        shape = (len(self.policies_feature_expectations)+1,len(self.expert_feature_expectations))
+        shape = (
+            len(self.policies_feature_expectations) + 1,
+            len(self.expert_feature_expectations),
+        )
         X = np.zeros(shape)
         Y = np.ones((shape[0],))
-        clf = SVC(kernel='linear')
+        clf = SVC(kernel="linear")
 
-        for i, (t, feature_expectation) in enumerate(self.policies_feature_expectations.items()):
-            X[i+1] = feature_expectation
-            Y[i+1] = -1
+        for i, (t, feature_expectation) in enumerate(
+            self.policies_feature_expectations.items()
+        ):
+            X[i + 1] = feature_expectation
+            Y[i + 1] = -1
 
-        clf.fit(X,Y)
+        clf.fit(X, Y)
 
         W = np.squeeze(clf.coef_)
 
         return W, clf.intercept_
 
-
-    def update_policy_list(self, W: np.ndarray, intercept:int) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, List[dict] ]:
+    def update_policy_list(
+        self, W: np.ndarray, intercept: int
+    ) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, List[dict]]:
         """
 
         :param self:
@@ -173,11 +182,14 @@ class IrlAlgorithmSolver:
         """
 
         # get feature expectations of a new policy respective to the input weights
-        temp_fe, reward_matrix, policy, V, new_conversation = self.get_reinforcement_learning_features_expectations(W, intercept)
+        temp_fe, reward_matrix, policy, V, new_conversation = self.get_reinforcement_learning_features_expectations(
+            W, intercept
+        )
         hyper_distance = np.abs(
             np.dot(
                 W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)
-            ) + intercept
+            )
+            + intercept
         )
 
         # hyperdistance = t
@@ -188,7 +200,7 @@ class IrlAlgorithmSolver:
         return (float_hyper_distance, reward_matrix, policy, V, new_conversation)
 
     def get_reinforcement_learning_features_expectations(
-        self, W: np.ndarray, intercept:int
+        self, W: np.ndarray, intercept: int
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict]]:
         """
 
@@ -198,11 +210,11 @@ class IrlAlgorithmSolver:
         if np.any(np.isnan(W)):
             raise ValueError("some elements of W are Nan")
 
-
-
         reward_matrix = self.reward_calculator.calculate_reward(W, intercept)
         policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
-        new_conversation = self.policy_player.play_policy(policy, max_steps= self.policy_player_max_step)
+        new_conversation = self.policy_player.play_policy(
+            policy, max_steps=self.policy_player_max_step
+        )
         new_features = self.feature_expectation_extractor.get_feature_expectations(
             new_conversation
         )
@@ -213,9 +225,12 @@ class IrlAlgorithmSolver:
         print(f"sum of W:{np.sum(W)}")
         print(f"intercept: {intercept}")
 
-        print(f"sum of W difference:{'{:.10f}'.format(np.sum(W) - np.sum(self.previous_W))}")
-        print(f"intercept difference:{'{:.10f}'.format(np.sum(intercept) - np.sum(self.previous_intercept))}")
-
+        print(
+            f"sum of W difference:{'{:.10f}'.format(np.sum(W) - np.sum(self.previous_W))}"
+        )
+        print(
+            f"intercept difference:{'{:.10f}'.format(np.sum(intercept) - np.sum(self.previous_intercept))}"
+        )
 
         self.previous_reward_matrix = np.array(reward_matrix)
         self.previous_W = np.array(W)
