@@ -9,10 +9,10 @@ from inverse_reinforcement_learning.process_file import process_file, async_proc
 import asyncio
 
 
-async def main_async(settings:Settings):
+async def main_async(settings:Settings, VERBOSE:bool):
     HUMAN_READABLE_FOLDER_PATH = settings.HUMAN_READABLE_FOLDER_PATH
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
-    VERBOSE = True
+
 
     tasks = []
     loop = asyncio.get_event_loop()
@@ -24,13 +24,13 @@ async def main_async(settings:Settings):
 
             with open(full_file_name, "r") as conversation_file:
                 conv_json = json.loads(conversation_file.read())
-                task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE)
+                task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
     await asyncio.gather(*(tasks)[3:4])
 
 
 if __name__ == "__main__":
-
-    settings = Settings()
-    asyncio.run(main_async(settings))
+    VERBOSE = True
+    settings = Settings(1, 0.99, 0.001, 0.1)
+    asyncio.run(main_async(settings, VERBOSE))

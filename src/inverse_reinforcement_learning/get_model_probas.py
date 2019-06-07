@@ -27,7 +27,8 @@ class ModelProbasGetter:  # lol
             conversation, file_metadata, frame_step, count_array_shape,settings
         )
 
-        self.__save_plots(count_array, filename, "original", verbose,settings)
+        #not really usefull
+        #self.__save_plots(count_array, filename, "original", verbose,settings)
 
         model = AtHighMdpModel(count_array,settings)
 

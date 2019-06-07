@@ -7,7 +7,7 @@ from settings import Settings
 
 
 async def async_process_file(
-    loop, metadata_json, filename, conv_json, full_file_name, VERBOSE
+    loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, setting:Settings
 ):
 
     return await loop.run_in_executor(
@@ -18,6 +18,7 @@ async def async_process_file(
         conv_json,
         full_file_name,
         VERBOSE,
+        setting
     )
 
 

@@ -43,7 +43,7 @@ class ConversationComparer:
         folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{settings.TIME_SIZE}"
 
         folder_path = os.path.join(
-            settings.HISTOGRAMS_FOLDER_PATH, folder_name
+            settings.COMPARISON_PLOTS_FOLDER_PATH, folder_name
         )
 
         if not os.path.exists(folder_path):

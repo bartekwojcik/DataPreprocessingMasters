@@ -27,7 +27,7 @@ if __name__ == "__main__":
     the time transitions are from perspective of high, namely: after what time did the at high person change his state 
     
     """
-    settings = Settings()
+    settings = Settings(1,0.99,0.001,0.1)
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     time_size = settings.TIME_SIZE
     global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2,time_size))
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 data = json.loads(data_raw.read())
 
                 for i in starting_points:
-                    one_result = counter.count_transitions(data, FRAME_STEP, i, file_metadata, global_results.shape)
+                    one_result = counter.count_transitions(data, FRAME_STEP, i, file_metadata, global_results.shape,settings)
                     global_results += one_result
                     file_results += one_result
 

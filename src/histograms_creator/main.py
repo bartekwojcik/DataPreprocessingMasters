@@ -14,8 +14,8 @@ def save_plot(file_path, y_label, bins, value_array, state_from, state_to):
     plt.bar(bins, value_array, width=1, ec="black")
     plt.ylabel(y_label)
     plt.xlabel("frame step (0.04s)")
-
-    plt.savefig(file_path, dpi=800)
+    fig.set_size_inches((18, 9), forward=False)
+    plt.savefig(file_path, quality=90, dpi=1000)
     plt.close(fig)
 
 
@@ -77,7 +77,7 @@ def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings)
 if __name__ == "__main__":
     # plot histograms of global data
 
-    settings = Settings()
+    settings = Settings(1, 0.99, 0.001, 0.1)
 
     file = os.path.join(
         settings.TRANSITION_RESULTS_FOLDER_PATH,

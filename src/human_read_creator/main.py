@@ -64,7 +64,7 @@ if __name__ == "__main__":
     #     settings.CLUSTER_DATA_FOLDER_PATH, "clustering_04.json"
     # )
 
-    sett = Settings()
+    sett = Settings(1, 0.99, 0.001, 0.1)
 
     with open(sett.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:
 
