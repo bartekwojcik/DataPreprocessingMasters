@@ -32,5 +32,5 @@ async def main_async(settings:Settings, VERBOSE:bool):
 
 if __name__ == "__main__":
     VERBOSE = True
-    settings = Settings(1, 0.99, 0.001, 0.1)
+    settings = Settings(0.5, 0.99, 0.01, 0.1)
     asyncio.run(main_async(settings, VERBOSE))

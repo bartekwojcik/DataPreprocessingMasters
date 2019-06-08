@@ -52,7 +52,8 @@ class IrlResultsPlotterSaver:
         policies_full_values = np.zeros(((length,)+policy.shape))
         rewards_full_values = np.zeros(((length,)+reward.shape))
 
-        iterations = len(self.list_of_ts_weights_intercept_policy_reward)
+        n_i = len(self.list_of_ts_weights_intercept_policy_reward)
+        iterations = np.arange(0,n_i,1)
 
         for i,(t,W,intercept,policy,reward) in enumerate(self.list_of_ts_weights_intercept_policy_reward):
             t_values[i] = t
@@ -69,17 +70,26 @@ class IrlResultsPlotterSaver:
                 W_previous,\
                 intercept_previous, \
                 policy_previous, \
-                reward_previous = self.list_of_ts_weights_intercept_policy_reward[i]
+                reward_previous = self.list_of_ts_weights_intercept_policy_reward[i-1]
 
                 w_intercept = W + intercept
                 previous_w_intercept = W_previous + intercept_previous
-                w_diff = np.sum(w_intercept - previous_w_intercept)
+                w_diff = np.linalg.norm(
+                    np.asarray(w_intercept)
+                    - np.asarray(previous_w_intercept)
+                )
                 w_diff_values[i-1] =w_diff
 
-                policy_diff = np.sum(policy - policy_previous)
+                policy_diff = np.linalg.norm(
+                    np.asarray(policy)
+                    - np.asarray(policy_previous)
+                )
                 policies_diff_values[i-1] =policy_diff
 
-                reward_diff = np.sum(reward - reward_previous)
+                reward_diff = np.linalg.norm(
+                    np.asarray(reward)
+                    - np.asarray(reward_previous)
+                )
                 rewards_diff_values[i-1] =reward_diff
 
         title = f"{self.file_name} t value over iterations"
@@ -95,12 +105,13 @@ class IrlResultsPlotterSaver:
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_policies", policies_full_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_rewards", rewards_full_values)
 
-        if iterations > 1:
+        if len(iterations) > 1:
             title = f"{self.file_name} difference of w+intercept per iteration (minus w previous + intercept previous)"
+            shorter_iterations = iterations[1:]
             self.__save_plot(folder_path,
                              self.file_name,
                              "W_difference",
-                             w_diff_values, iterations - 1, title,
+                             w_diff_values, shorter_iterations, title,
                              "iteration",
                              "W - previous W value")
 
@@ -108,7 +119,7 @@ class IrlResultsPlotterSaver:
             self.__save_plot(folder_path,
                              self.file_name,
                              "policy_difference",
-                             policies_diff_values, iterations - 1, title,
+                             policies_diff_values, shorter_iterations, title,
                              "iteration",
                              "policy - previous policy value")
 
@@ -116,7 +127,7 @@ class IrlResultsPlotterSaver:
             self.__save_plot(folder_path,
                              self.file_name,
                              "rewards_difference",
-                             rewards_diff_values, iterations - 1, title,
+                             rewards_diff_values, shorter_iterations, title,
                              "iteration",
                              "reward - previous reward value")
 
