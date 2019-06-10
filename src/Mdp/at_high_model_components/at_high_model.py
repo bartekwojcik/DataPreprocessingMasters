@@ -63,16 +63,11 @@ class AtHighMdpModel:
                     sum += self.Ca[current_states_idx + a + p_a + current_time_idx]
 
                 for p_a in self.actions:
-                    epsilon = 0.05
+                    epsilon = 0.02
                     if sum == 0:
                         proba = 0
                     else:
                         proba = self.Ca[current_states_idx + a + p_a + current_time_idx] / sum
-                        #if proba == 1, we want to add some epsilon to let agent chose from other actions as well
-                        if proba + epsilon >= 1:
-                            proba = 1 - epsilon
-                        elif proba < epsilon:
-                            proba = epsilon
 
                     new_state_idx = (a+p_a)
                     #if old state is the same as new one:
