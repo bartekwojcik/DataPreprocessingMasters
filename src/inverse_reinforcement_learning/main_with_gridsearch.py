@@ -4,7 +4,7 @@ from inverse_reinforcement_learning.main import main_async
 import asyncio
 
 if __name__ == "__main__":
-    VERBOSE = True
+    VERBOSE = False
     max_time_steps = [7, 0.5, 1]
     discount_factors = [0.7, 0.99, 0.90]
     policies_theta = [0.005, 0.01, 0.001]
