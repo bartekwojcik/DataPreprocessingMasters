@@ -103,10 +103,10 @@ class IrlAlgorithmSolver:
         while True:
 
             # try:
-            #     W = self.calc_weights()
+            #     W, intercept = self.calc_weights()
             # except ValueError:
             #     print(f"{self.conversation_name} Value iteration happened#################################")
-            #     return W, reward_matrix, policy, V, new_conversation, False
+
 
             W, intercept = self.get_SVM_weights()
 
@@ -158,7 +158,7 @@ class IrlAlgorithmSolver:
         weights = np.squeeze(np.asarray(sol["x"]))
         norm = np.linalg.norm(weights)
         weights = weights / norm
-        return weights  # return the normalized weights
+        return weights, 0  # return the normalized weights
 
     def get_SVM_weights(self):
 

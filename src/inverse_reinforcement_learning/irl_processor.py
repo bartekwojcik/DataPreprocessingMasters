@@ -43,7 +43,7 @@ class IrlProcessor:
 
 
         feature_expectation_extractor = FeatureExpectationExtractor(
-            mdp_graph.states, metadata,settings.DISCOUNT_FACTOR
+            mdp_graph.states, metadata,settings.DISCOUNT_FACTOR,settings
         )
 
         expert_feature_expectations = feature_expectation_extractor.get_feature_expectations(
@@ -57,7 +57,7 @@ class IrlProcessor:
 
 
         states_array = np.array(mdp_graph.states)
-        reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
+        reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states, settings)
         value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
         #value_iterator = AtHighPolicyIteration(mdp_graph)
         irl = IrlAlgorithmSolver(

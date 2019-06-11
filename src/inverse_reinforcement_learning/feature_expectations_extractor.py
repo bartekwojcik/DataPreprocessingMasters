@@ -20,7 +20,8 @@ class FeatureExpectationExtractor:
         self,
         states: List[Tuple],
         conversation_metadata: dict,
-        discount_factor,
+        discount_factor: float,
+        settings: Settings
     ):
         """
         Will "play out" Markov chain / MDP to get feature expectations
@@ -30,6 +31,7 @@ class FeatureExpectationExtractor:
         :param max_steps: maximal amount of steps model will check or perform
         :param discount_factor: gamma
         """
+        self.settings = settings
         self.n_states = len(states)
         self.states = states
         self.discount_factor = discount_factor
@@ -43,7 +45,7 @@ class FeatureExpectationExtractor:
         """
         data_length = len(data)
         max_steps = data_length
-        mi = np.array([0 for n in range(self.n_states)])
+        mi = np.zeros((9,))
         previous_frame = None
         for i in range(max_steps):
             current_frame = data[i]
@@ -66,10 +68,8 @@ class FeatureExpectationExtractor:
         self, n_steps: int, model: AtHighMdpModel, policy_player: HighPolicyPlayer
     ):
 
-        mi = np.array([0 for n in range(self.n_states)])
-
         n_actions = len(model.actions)
-        policy = np.random.random_integers(0, n_actions - 1, size=mi.shape)
+        policy = np.random.random_integers(0, n_actions - 1, size=(self.n_states,))
 
         random_conversation = policy_player.play_policy(policy, n_steps)
 
@@ -99,14 +99,32 @@ class FeatureExpectationExtractor:
         else:
             self.previous_time = 0
 
-        mi = self.calculate_state_vector(current_state_vector, self.states)
+        mi = self.calculate_state_vector(current_state_vector, self.settings)
 
         return np.array(mi)
 
     @classmethod
-    def calculate_state_vector(cls, current_state_vector: Tuple, states: List[Tuple]):
-        zeros_indices = np.zeros(len(states))
+    def calculate_state_vector(cls, current_state_vector: Tuple, settings:Settings):
 
-        state_index = states.index(current_state_vector)
-        zeros_indices[state_index] = 1
-        return zeros_indices
+        #High person:  Looks at, looks away, Talks, Listen,)
+        #low person: Looks at, looks away, Talks, Listen, )
+
+        mi = np.zeros((9,))
+        denominator = 4
+        mi[0] = current_state_vector[0] / denominator
+        mi[1] = int(not current_state_vector[0]) / denominator
+        mi[2] = current_state_vector[1] / denominator
+        mi[3] = int(not current_state_vector[1]) / denominator
+
+        mi[4] = current_state_vector[2] / denominator
+        mi[5] = int(not current_state_vector[2]) / denominator
+        mi[6] = current_state_vector[3] / denominator
+        mi[7] = int(not current_state_vector[3]) / denominator
+        mi[8] = current_state_vector[4] / settings.TIME_SIZE
+
+        return mi
+
+
+
+
+

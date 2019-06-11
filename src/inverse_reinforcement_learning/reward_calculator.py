@@ -2,13 +2,16 @@ import numpy as np
 from typing import List, Tuple
 
 from inverse_reinforcement_learning.feature_expectations_extractor import FeatureExpectationExtractor
+from settings import Settings
 
 
 class RewardCalculator:
 
-    def __init__(self, reward_shape:tuple, states:List[Tuple]):
+    def __init__(self, reward_shape:tuple, states:List[Tuple], settings:Settings):
+        self.settings = settings
         self.states = states
         self.reward_shape = reward_shape
+
 
     def calculate_reward(self, W:np.ndarray, intercept)-> np.ndarray:
         """
@@ -25,7 +28,7 @@ class RewardCalculator:
         for s in range(shape_length):
             current_state = self.states[s]
 
-            state_vector = FeatureExpectationExtractor.calculate_state_vector(current_state,self.states)
+            state_vector = FeatureExpectationExtractor.calculate_state_vector(current_state,self.settings)
             R[s] = np.dot(W.T, state_vector) + intercept
 
         return R
