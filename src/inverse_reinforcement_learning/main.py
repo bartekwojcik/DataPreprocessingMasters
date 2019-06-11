@@ -27,10 +27,13 @@ async def main_async(settings:Settings, VERBOSE:bool):
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks)[3:6])
+    await asyncio.gather(*(tasks)[3:4])
 
 
 if __name__ == "__main__":
     VERBOSE = True
-    settings = Settings(0.5, 0.99, 0.01, 0.1)
+    settings = Settings(MAX_CONTINUOUS_TIME_SEC=0.5,
+                        DISCOUNT_FACTOR= 0.99,
+                        POLICY_THETA= 0.00001,
+                        IRL_SOLVER_EPSILON= 0.1)
     asyncio.run(main_async(settings, VERBOSE))

@@ -161,7 +161,7 @@ class IrlResultsPlotterSaver:
         plt.ylabel(y_label)#")
         plt.xlabel(x_label)#")
         fig.set_size_inches((18, 9), forward=False)
-        plt.savefig(file_path, quality=90, dpi=1000)
+        plt.savefig(file_path, quality=70, dpi= 400)
         plt.close(fig)
 
     def __save_numpy_to_file(self, folder_path, file_name, values):

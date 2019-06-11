@@ -77,7 +77,7 @@ class FeatureExpectationExtractor:
 
     def __get_current_state(self, current_frame, previous_frame) -> np.ndarray:
         """
-        Get vector of current state. For instance [0,0,1,0,TIME], [0,0,0,1,,TIME]
+        Get vector of current state. For instance [0,0,1,0,TIME], [0,0,0,1,TIME]
         :param current_frame:
         :return:
         """

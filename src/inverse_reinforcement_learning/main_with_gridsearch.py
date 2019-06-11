@@ -5,9 +5,9 @@ import asyncio
 
 if __name__ == "__main__":
     VERBOSE = False
-    max_time_steps = [7, 0.5, 1]
-    discount_factors = [0.7, 0.99, 0.90]
-    policies_theta = [0.005, 0.01, 0.001]
+    max_time_steps = [0.5, 1]
+    discount_factors = [0.99,]
+    policies_theta = [0.0001]
 
 
 

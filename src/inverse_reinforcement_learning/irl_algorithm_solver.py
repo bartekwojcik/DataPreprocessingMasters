@@ -230,7 +230,7 @@ class IrlAlgorithmSolver:
             new_conversation
         )
 
-        print(f"sum of new features:{np.sum(new_features)}")
+
         print(f"sum of policy:{np.sum(policy)}")
         print(f"sum of rewards:{np.sum(reward_matrix)}")
         print(f"sum of W:{np.sum(W)}")

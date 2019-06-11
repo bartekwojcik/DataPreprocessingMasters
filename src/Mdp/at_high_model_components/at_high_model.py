@@ -63,7 +63,6 @@ class AtHighMdpModel:
                     sum += self.Ca[current_states_idx + a + p_a + current_time_idx]
 
                 for p_a in self.actions:
-                    epsilon = 0.02
                     if sum == 0:
                         proba = 0
                     else:

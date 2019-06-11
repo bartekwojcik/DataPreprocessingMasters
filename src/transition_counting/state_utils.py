@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from data_const import JointConstants as ConstJoint
 from mdp_const import MdpConsts
 from data_const import JointConstants
@@ -47,4 +49,35 @@ class StateUtils:
     @classmethod
     def talk_id_to_string(cls, id: int)->str:
         return JointConstants.TALKING if id == MdpConsts.TALK else JointConstants.QUIET
+
+    @classmethod
+    def state_vector_to_human_string(cls, vector: Tuple[int,int,int,int,int]):
+        h_g = vector[0]
+        h_t = vector[1]
+        l_g = vector[2]
+        l_t = vector[3]
+
+        return f"state: high person is {cls.state_to_simple_string(h_g,h_t)} " \
+               f"and low person is {cls.state_to_simple_string(l_g,l_t)}" \
+
+
+    @classmethod
+    def state_to_simple_string(cls, gaze_state:int, talk_state:int):
+        """
+        produces simple string like "looking at and silent
+        :param gaze_state:
+        :param talk_state:
+        :return:
+        """
+        gaze_dict = {
+            0: "looking away",
+            1: "looking at"
+        }
+
+        talk_dict = {
+            0: "silent",
+            1: "talking"
+        }
+
+        return f"{gaze_dict[gaze_state]} and {talk_dict[talk_state]}"
 

@@ -6,7 +6,7 @@ import os
 from mdp_const import MdpConsts
 
 
-def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = True) -> None:
+def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = True, title="") -> None:
     """
     Taken from matplotlib website
     :param array:
@@ -35,11 +35,11 @@ def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = T
             text = ax.text(j, i, array[i, j],
                            ha="center", va="center", color="w")
 
-    base = os.path.basename(file_path_to_save)
-    ax.set_title(base)
+    title = title or os.path.basename(file_path_to_save)
+    ax.set_title(title)
     fig.tight_layout()
-    fig.set_size_inches((18, 9), forward=False)
-    plt.savefig(file_path_to_save,quality=70,dpi= 1000)
+    fig.set_size_inches((20, 10))
+    plt.savefig(file_path_to_save,quality=70,dpi= 400)
     if show:
         plt.show()
     else:
