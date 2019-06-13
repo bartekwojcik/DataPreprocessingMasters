@@ -10,7 +10,7 @@ class RewardCalculator:
         self.states = states
         self.reward_shape = reward_shape
 
-    def calculate_reward(self, W:np.ndarray, intercept)-> np.ndarray:
+    def calculate_reward(self, W:np.ndarray)-> np.ndarray:
         """
         Calculates reward for each state given array of Weights
         http://3dvision.princeton.edu/courses/COS598/2014sp/slides/lecture07_reinforcement.pdf
@@ -26,7 +26,7 @@ class RewardCalculator:
             current_state = self.states[s]
 
             state_vector = FeatureExpectationExtractor.calculate_state_vector(current_state,self.states)
-            R[s] = np.dot(W.T, state_vector) + intercept
+            R[s] = np.dot(W.T, state_vector)
 
         return R
 

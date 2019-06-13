@@ -101,5 +101,11 @@ class AtHighMdpModel:
         translator = TransitionCountingTranslator(results,settings)
         count_matrix = translator.transform_to_2D_count_matrix()
 
+
         file_name_count = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_counts.jpg")
         plot_count_heatmap(np.round(count_matrix, decimals=2),file_name_count,show=verbose)
+
+        # proba_matrix = translator.transform_to_2D_probabilities_matrix()
+        # file_name_proba = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,
+        #                                f"{file_name}_MDP_MODEL_GRAPTH_proba.jpg")
+        # plot_count_heatmap(np.round(proba_matrix, decimals=2), file_name_proba, show=verbose)

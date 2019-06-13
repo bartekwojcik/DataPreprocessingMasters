@@ -39,11 +39,11 @@ class IrlProcessor:
         :return: IrlProcessorResult
         """
 
-        policy_player = HighPolicyPlayer(metadata, mdp_graph)
+        policy_player = HighPolicyPlayer(metadata, mdp_graph,0.05)
 
 
         feature_expectation_extractor = FeatureExpectationExtractor(
-            mdp_graph.states, metadata,settings.DISCOUNT_FACTOR
+            mdp_graph.states, metadata, 0.9999999
         )
 
         expert_feature_expectations = feature_expectation_extractor.get_feature_expectations(
@@ -54,12 +54,10 @@ class IrlProcessor:
             len(conversation_json), mdp_graph, policy_player
         )
 
-
-
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
         value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
-        #value_iterator = AtHighPolicyIteration(mdp_graph)
+
         irl = IrlAlgorithmSolver(
             file_name,
             expert_feature_expectations,
@@ -75,6 +73,8 @@ class IrlProcessor:
         weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
+
+        #new_conversation_with_epsilon = HighPolicyPlayer(metadata,mdp_graph,0.05).play_policy(policy,policy_player_max_step)
 
         return IrlProcessorResult(
             weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept

@@ -17,20 +17,20 @@ class HighPolicyPlayer:
     Uses transition_counting_results to calculates probabilities.
     """
 
-    def __init__(self, file_metadata: dict, model: AtHighMdpModel):
+    def __init__(
+        self, file_metadata: dict, model: AtHighMdpModel, epsilon_greedy: float = 0.0
+    ):
         """
 
         :param file_metadata: metadata stating who is high and who is low
         """
+        self.epsilon_greedy = epsilon_greedy
         self.model = model
         self.count_array = model.Ca
         self.file_metadata = file_metadata
 
     def play_policy(
-            self,
-            policy: np.ndarray,
-            max_steps: int,
-            time_step: float = 0.04,
+        self, policy: np.ndarray, max_steps: int, time_step: float = 0.04
     ) -> List[dict]:
         """
         :param file_metadata: metadata
@@ -54,10 +54,12 @@ class HighPolicyPlayer:
         low_person = self.file_metadata[metadata_consts.AT_LOW]
 
         for i in range(max_steps):
-            action_index = int(policy[int(current_state_index)])
+            action_index = self.__get_action(policy, current_state_index)
 
             new_state = self.__random_next_state(current_state_index, action_index)
-            assert (high_person != low_person), "high and low person can not be the same, something went wrong, kek"
+            assert (
+                high_person != low_person
+            ), "high and low person can not be the same, something went wrong, kek"
 
             # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
 
@@ -85,8 +87,15 @@ class HighPolicyPlayer:
         return result
 
     def __create_frame(
-            self, high_person, high_gaze, high_person_talk, low_person, low_gaze, low_person_talk, current_time,
-            time_step
+        self,
+        high_person,
+        high_gaze,
+        high_person_talk,
+        low_person,
+        low_gaze,
+        low_person_talk,
+        current_time,
+        time_step,
     ) -> dict:
         # gaze action are relevant only to "in" or "out" but not to the "leftEye" or "rightEye"
         result = {
@@ -105,7 +114,9 @@ class HighPolicyPlayer:
         }
         return result
 
-    def __random_next_state(self, current_state_index: int, agent_action_number_index: int) -> Tuple[int, int, int, int]:
+    def __random_next_state(
+        self, current_state_index: int, agent_action_number_index: int
+    ) -> Tuple[int, int, int, int]:
 
         rnd = random.random()
         current_state = self.model.states[current_state_index]
@@ -119,10 +130,25 @@ class HighPolicyPlayer:
             else:
                 last_proba += proba
 
-        #if we got here it means that all probabilities were 0
+        # if we got here it means that all probabilities were 0
         if last_proba == 0:
-            #go to random place
-            random_int = random.randint(0,len(list_of_possible_actions)-1)
+            # go to random place
+            random_int = random.randint(0, len(list_of_possible_actions) - 1)
             return list_of_possible_actions[random_int][1]
 
         raise ValueError("no state was chosen, something went wrong")
+
+    def __get_action(self, policy: np.ndarray, current_state_index: int) -> int:
+
+        if self.epsilon_greedy <= 0:
+            return int(policy[int(current_state_index)])
+        elif self.epsilon_greedy > 0:
+
+            best_action_index = int(policy[int(current_state_index)])
+            n_a = len(self.model.actions)
+            actions_indexes = np.arange(0, n_a, 1)
+            probas = np.full(actions_indexes.shape, self.epsilon_greedy / (n_a -1))
+            probas[best_action_index] = 1 - self.epsilon_greedy
+
+            selected_action_index = np.random.choice(actions_indexes, p=probas)
+            return selected_action_index
