@@ -4,10 +4,22 @@ import numpy as np
 
 ###
 # some code was used from https://github.com/dennybritz/reinforcement-learning/blob/master/TD/Q-Learning%20Solution.ipynb
-from Mdp.at_high_model_components import Environment
+from Mdp.at_high_model_components import environment
+from Mdp.at_high_model_components.environment import Environment
 
 
 class QLearner:
+
+    def __init__(self,
+                 q_iterations: int,
+                 discount_factor:float,
+                 q_alpha:float,
+                 policy_epsilon= 0.05):
+
+        self.discount_factor = discount_factor
+        self.q_alpha = q_alpha
+        self.policy_epsilon = policy_epsilon
+        self.q_iterations = q_iterations
 
     def __make_epsilon_greedy_policy(self,Q, epsilon, nA):
         def policy_fn(observation):
@@ -18,12 +30,14 @@ class QLearner:
 
         return policy_fn
 
-    def learn(self, env:Environment, num_episodes, discount_factor, alpha, epsilon):
-
+    def learn(self, env:Environment):
+        """
+        :return: Q values
+        """
         Q = defaultdict(lambda: np.zeros(env.n_actions))
-        policy = self.__make_epsilon_greedy_policy(Q, epsilon, env.action_space.n)
+        policy = self.__make_epsilon_greedy_policy(Q, self.policy_epsilon, env.n_actions)
 
-        for i_episode in range(num_episodes):
+        for i_episode in range(self.q_iterations):
             state = env.reset()
             done = False
             t = 0
@@ -38,7 +52,7 @@ class QLearner:
                 a_max = np.argmax(next_action_probas)
                 q_prim = Q[new_state][a_max]
 
-                Q[state][action] += alpha * (reward + discount_factor * q_prim - Q[state][action])
+                Q[state][action] += self.q_alpha * (reward + self.discount_factor * q_prim - Q[state][action])
                 state = new_state
 
                 t += 1

@@ -2,11 +2,14 @@ from typing import List, Tuple, Union
 
 from matplotlib.colors import ListedColormap
 
+from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
     AtHighValueIteration,
 )
 from Mdp.at_high_model_components.at_high_policy_iteration import AtHighPolicyIteration
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
+from Mdp.at_high_model_components.environment import Environment
+from Mdp.at_high_model_components.q_learning import QLearner
 
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
@@ -37,28 +40,32 @@ class IrlAlgorithmSolver:
         expert_feature_expectations: np.ndarray,
         random_feature_expectations: np.ndarray,
         reward_calculator: RewardCalculator,
-        value_iterator: Union[AtHighValueIteration, AtHighPolicyIteration],
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
+        q_learner: QLearner,
+        model :AtHighMdpModel,
         policy_player_max_step: int,
         epsilon: float,
-        max_iterations: int,
+        max_iterations: int
     ):
         """
         :param policy_player: policy player
         :param feature_expectation_extractor: calculates feature expectations
-        :param value_iterator: objects that calculates value iteration algorithm
+
         :param expert_feature_expectations:
         :param random_feature_expectations:
         :param reward_calculator:
         :param epsilon:
         """
+
+        self.model = model
+        self.q_learner = q_learner
         self.conversation_name = conversation_name
         self.max_iterations = max_iterations
         self.policy_player_max_step = policy_player_max_step
         self.policy_player = policy_player
         self.feature_expectation_extractor = feature_expectation_extractor
-        self.value_iterator = value_iterator
+
         self.reward_calculator = reward_calculator
         self.random_feature_expectations = random_feature_expectations
         self.epsilon = epsilon
@@ -88,7 +95,6 @@ class IrlAlgorithmSolver:
         np.ndarray,
         np.ndarray,
         np.ndarray,
-        np.ndarray,
         List[dict],
         bool,
         List[Tuple[float, np.ndarray, np.ndarray,np.ndarray,np.ndarray]],
@@ -98,17 +104,17 @@ class IrlAlgorithmSolver:
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
 
         """
-        # plt.axis([0, 50, 0, 10])
+
         list_of_ts = []
         i = 0
         while True:
 
             W = self.calc_weights()
 
-            self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(
+            self.current_t, reward_matrix, Q, new_conversation = self.update_policy_list(
                 W
             )
-            list_of_ts.append((self.current_t, W,np.array(0.0),policy,reward_matrix))
+            list_of_ts.append((self.current_t, W,np.array(0.0),Q ,reward_matrix))
 
             if verbose:
                 plt.scatter(i, self.current_t)
@@ -120,13 +126,13 @@ class IrlAlgorithmSolver:
             if i > self.max_iterations:
                 print(f"{self.conversation_name} file IS STUCK AND ITERATION IS BROKEN")
                 fail = False
-                return W, reward_matrix, policy, V, new_conversation, fail, list_of_ts
+                return W, reward_matrix, Q, new_conversation, fail, list_of_ts
             i += 1
 
         assert not (np.all(np.isnan(W))), "weights are broken"
 
         success = True
-        return W, reward_matrix, policy, V, new_conversation, success, list_of_ts
+        return W, reward_matrix, Q, new_conversation, success, list_of_ts
 
     def calc_weights(self) -> np.ndarray:
         """
@@ -157,7 +163,7 @@ class IrlAlgorithmSolver:
 
     def update_policy_list(
         self, W: np.ndarray,
-    ) -> Tuple[float, np.ndarray, np.ndarray, np.ndarray, List[dict]]:
+    ) -> Tuple[float, np.ndarray, np.ndarray, List[dict]]:
         """
 
         :param self:
@@ -166,7 +172,7 @@ class IrlAlgorithmSolver:
         """
 
         # get feature expectations of a new policy respective to the input weights
-        temp_fe, reward_matrix, policy, V, new_conversation = self.get_reinforcement_learning_features_expectations(
+        temp_fe, reward_matrix, Q, new_conversation = self.get_reinforcement_learning_features_expectations(
             W
         )
         hyper_distance = np.abs(
@@ -181,11 +187,11 @@ class IrlAlgorithmSolver:
         self.policies_feature_expectations[float_hyper_distance] = temp_fe
 
         # t = (weights.transpose)*(expert-newPolicy)
-        return (float_hyper_distance, reward_matrix, policy, V, new_conversation)
+        return (float_hyper_distance, reward_matrix, Q, new_conversation)
 
     def get_reinforcement_learning_features_expectations(
         self, W: np.ndarray,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict]]:
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, List[dict]]:
         """
 
         :param W: weights
@@ -195,7 +201,13 @@ class IrlAlgorithmSolver:
             raise ValueError("some elements of W are Nan")
 
         reward_matrix = self.reward_calculator.calculate_reward(W)
-        policy, V = self.value_iterator.get_optimal_policy(reward_matrix)
+
+
+        env = Environment(self.model,reward_matrix)
+        Q = self.q_learner.learn(env)
+
+        #todo translate Q to policy
+
         new_conversation = self.policy_player.play_policy(
             policy, max_steps=self.policy_player_max_step
         )
@@ -204,18 +216,19 @@ class IrlAlgorithmSolver:
         )
 
 
+
+
+
+        #TODO
         print(f"sum of policy:{np.sum(policy)}")
         print(f"sum of rewards:{np.sum(reward_matrix)}")
         print(f"sum of W:{np.sum(W)}")
-
-
         print(
             f"sum of W difference:{'{:.10f}'.format(np.sum(W) - np.sum(self.previous_W))}"
         )
 
-
         self.previous_reward_matrix = np.array(reward_matrix)
         self.previous_W = np.array(W)
-        self.previous_policy = np.array(policy)
+        self.previous_policy = np.array(Q)
 
-        return new_features, reward_matrix, policy, V, new_conversation
+        return new_features, reward_matrix, Q, new_conversation

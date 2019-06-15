@@ -1,6 +1,9 @@
 from typing import List
 
 import numpy as np
+
+from Mdp.at_high_model_components.environment import Environment
+from Mdp.at_high_model_components.q_learning import QLearner
 from settings import Settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 from Mdp.at_high_model_components.at_high_model_value_iteration import (
@@ -56,21 +59,27 @@ class IrlProcessor:
 
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
-        value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
+        #value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
+
+        q_learner = QLearner(settings.Q_ITERATIONS, settings.DISCOUNT_FACTOR, settings.Q_ALPHA)
 
         irl = IrlAlgorithmSolver(
             file_name,
             expert_feature_expectations,
             random_feature_expectations,
             reward_calculator,
-            value_iterator,
             feature_expectation_extractor,
             policy_player,
+            q_learner,
+            mdp_graph,
             policy_player_max_step=policy_player_max_step,
             epsilon= settings.IRL_SOLVER_EPSILON,
             max_iterations=irl_solver_iterations
         )
-        weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
+        #TODO change this to include these Q values
+        #TODO add rewards tracking later so you can plot 3D things
+
+        weights, reward_matrix, policy, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
 

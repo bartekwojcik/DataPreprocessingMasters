@@ -9,7 +9,12 @@ class Settings:
         POLICY_THETA: float,
         IRL_SOLVER_EPSILON: float,
         GLOBAL_PREFIX_FOR_FILE_NAMES: str = "",
+        Q_ITERATIONS = 500,
+        Q_ALPHA = 0.5
     ):
+
+        self.Q_ALPHA = Q_ALPHA
+        self.Q_ITERATIONS = Q_ITERATIONS
         # time
         self.MAX_CONTINUOUS_TIME_SEC = MAX_CONTINUOUS_TIME_SEC
         # each step in data is like that

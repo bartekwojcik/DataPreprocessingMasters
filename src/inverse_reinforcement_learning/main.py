@@ -34,5 +34,7 @@ if __name__ == "__main__":
     settings = Settings(MAX_CONTINUOUS_TIME_SEC=6.0,
                         DISCOUNT_FACTOR=0.99999,
                         POLICY_THETA=0.01,
-                        IRL_SOLVER_EPSILON=0.05)
+                        IRL_SOLVER_EPSILON=0.05,
+                        Q_ITERATIONS = 50000,
+                        Q_ALPHA = 0.5)
     asyncio.run(main_async(settings, VERBOSE))
