@@ -189,7 +189,7 @@ class IrlAlgorithmSolver:
         self.policies_feature_expectations[float_hyper_distance] = temp_fe
 
         # t = (weights.transpose)*(expert-newPolicy)
-        return (float_hyper_distance, reward_matrix, Q, new_conversation)
+        return float_hyper_distance, reward_matrix,policy, Q, new_conversation
 
     def get_reinforcement_learning_features_expectations(
             self, W: np.ndarray,

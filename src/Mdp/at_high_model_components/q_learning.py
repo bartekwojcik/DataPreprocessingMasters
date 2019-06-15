@@ -46,14 +46,15 @@ class QLearner:
                 action_probas = policy(state)
                 # i keep forgeting that we "have to" use epsilon greedy policy
                 # action = np.argmax(action_probas)
-                action = np.random.choice(np.arange(len(action_probas)), p=action_probas)
+                action_index = np.random.choice(np.arange(len(action_probas)), p=action_probas)
+                action = env.model.actions[action_index]
                 new_state, reward = env.step(action)
 
                 next_action_probas = Q[new_state]
                 a_max = np.argmax(next_action_probas)
                 q_prim = Q[new_state][a_max]
 
-                Q[state][action] += self.q_alpha * (reward + self.discount_factor * q_prim - Q[state][action])
+                Q[state][action_index] += self.q_alpha * (reward + self.discount_factor * q_prim - Q[state][action_index])
                 state = new_state
 
         return Q

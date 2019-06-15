@@ -40,10 +40,10 @@ class MdpUtils:
         n_states = len(model.states)
         policy = np.zeros((n_states,))
 
-        for state, actions_probas in Q.items():
+        for state, actions_values in Q.items():
             state_index = model.states.index(state)
 
-            best_action_index = np.argmax(actions_probas)
+            best_action_index = np.argmax(actions_values)
 
             policy[state_index] = best_action_index
 
