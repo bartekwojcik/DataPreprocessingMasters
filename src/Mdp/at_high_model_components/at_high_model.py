@@ -46,7 +46,7 @@ class AtHighMdpModel:
                 #it might go to another state with time equal to 0
 
                 # get sum of all transition:
-                sum = 0
+                sumation = 0
                 # because your count_matrix is of shape
                 # [high_person_talk, high_person_talk, low_person_gaze, low_person_talk, time]
                 # we need to split time from s to append it to action and get the correct format
@@ -59,13 +59,13 @@ class AtHighMdpModel:
                     # selc.Ca[s+a+p_a] -> s = state we were in, a = action agent wants to do,
                     # p_a = action that the other guy might do
 
-                    sum += self.Ca[current_states_idx + a + p_a + current_time_idx]
+                    sumation += self.Ca[current_states_idx + a + p_a + current_time_idx]
 
                 for p_a in self.actions:
-                    if sum == 0:
+                    if sumation == 0:
                         proba = 0
                     else:
-                        proba = self.Ca[current_states_idx + a + p_a + current_time_idx] / sum
+                        proba = self.Ca[current_states_idx + a + p_a + current_time_idx] / sumation
 
                     new_state_idx = (a+p_a)
                     #if old state is the same as new one:

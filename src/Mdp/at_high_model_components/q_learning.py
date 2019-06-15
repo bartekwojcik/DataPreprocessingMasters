@@ -14,8 +14,10 @@ class QLearner:
                  q_iterations: int,
                  discount_factor:float,
                  q_alpha:float,
+                 episode_length,
                  policy_epsilon= 0.05):
 
+        self.episode_length = episode_length
         self.discount_factor = discount_factor
         self.q_alpha = q_alpha
         self.policy_epsilon = policy_epsilon
@@ -39,9 +41,8 @@ class QLearner:
 
         for i_episode in range(self.q_iterations):
             state = env.reset()
-            done = False
-            t = 0
-            while not done:
+
+            for t in range(self.episode_length):
                 action_probas = policy(state)
                 # i keep forgeting that we "have to" use epsilon greedy policy
                 # action = np.argmax(action_probas)
@@ -54,7 +55,5 @@ class QLearner:
 
                 Q[state][action] += self.q_alpha * (reward + self.discount_factor * q_prim - Q[state][action])
                 state = new_state
-
-                t += 1
 
         return Q

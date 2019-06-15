@@ -35,11 +35,11 @@ class TransitionCountingTranslator:
 
         with np.errstate(divide='ignore', invalid='ignore'):
             cm = self.transform_to_2D_count_matrix()
-            sum = cm.sum(axis=1, keepdims=True)
+            sumation = cm.sum(axis=1, keepdims=True)
             # pm = cm / sum
 
             # https://stackoverflow.com/questions/26248654/how-to-return-0-with-divide-by-zero/32106804#32106804
-            c = np.true_divide(cm, sum)
+            c = np.true_divide(cm, sumation)
             c[c == np.inf] = 0
             c = np.nan_to_num(c)
             return c

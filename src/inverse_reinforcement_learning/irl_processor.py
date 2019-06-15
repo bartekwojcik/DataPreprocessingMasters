@@ -61,7 +61,7 @@ class IrlProcessor:
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
         #value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
 
-        q_learner = QLearner(settings.Q_ITERATIONS, settings.DISCOUNT_FACTOR, settings.Q_ALPHA)
+        q_learner = QLearner(settings.Q_ITERATIONS, settings.DISCOUNT_FACTOR, settings.Q_ALPHA, len(conversation_json))
 
         irl = IrlAlgorithmSolver(
             file_name,
@@ -79,12 +79,12 @@ class IrlProcessor:
         #TODO change this to include these Q values
         #TODO add rewards tracking later so you can plot 3D things
 
-        weights, reward_matrix, policy, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
+        weights, reward_matrix, policy,Q, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
 
         #new_conversation_with_epsilon = HighPolicyPlayer(metadata,mdp_graph,0.05).play_policy(policy,policy_player_max_step)
 
         return IrlProcessorResult(
-            weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_t_W_intercept
+            weights, reward_matrix, policy, Q, new_conversation, is_ok, list_of_t_W_intercept
         )

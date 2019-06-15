@@ -62,11 +62,11 @@ def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings)
                 state_to,
             )
 
-            sum = np.sum(times_array)
-            if sum == 0:
+            sumation = np.sum(times_array)
+            if sumation == 0:
                 percentage_array = times_array - times_array
             else:
-                percentage_array = times_array / sum
+                percentage_array = times_array / sumation
             file_name_probas = f"{frequency}_{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}" \
                                f"_state_{state_from,state_to}_probas_frame_" \
                                f"{settings.TRANSITION_FRAME_STEP}_time_{settings.TIME_SIZE}.png"

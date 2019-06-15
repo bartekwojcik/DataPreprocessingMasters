@@ -1,4 +1,6 @@
 import os
+from collections import defaultdict
+
 import numpy as np
 from settings import Settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
@@ -27,4 +29,24 @@ class MdpUtils:
             MdpUtils.__AtHighMdpModel = AtHighMdpModel(array,settings)
 
             return MdpUtils.__AtHighMdpModel
+
+
+    @staticmethod
+    def q_values_to_policy(model:AtHighMdpModel, Q:defaultdict)->np.ndarray:
+        """
+        translates Q values to policy
+        :return:
+        """
+        n_states = len(model.states)
+        policy = np.zeros((n_states,))
+
+        for state, actions_probas in Q.items():
+            state_index = model.states.index(state)
+
+            best_action_index = np.argmax(actions_probas)
+
+            policy[state_index] = best_action_index
+
+        return policy
+
 

@@ -10,6 +10,7 @@ from Mdp.at_high_model_components.at_high_policy_iteration import AtHighPolicyIt
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.at_high_model_components.environment import Environment
 from Mdp.at_high_model_components.q_learning import QLearner
+from Mdp.mdp_utils import MdpUtils
 
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
@@ -35,18 +36,18 @@ class IrlAlgorithmSolver:
     """
 
     def __init__(
-        self,
-        conversation_name: str,
-        expert_feature_expectations: np.ndarray,
-        random_feature_expectations: np.ndarray,
-        reward_calculator: RewardCalculator,
-        feature_expectation_extractor: FeatureExpectationExtractor,
-        policy_player: HighPolicyPlayer,
-        q_learner: QLearner,
-        model :AtHighMdpModel,
-        policy_player_max_step: int,
-        epsilon: float,
-        max_iterations: int
+            self,
+            conversation_name: str,
+            expert_feature_expectations: np.ndarray,
+            random_feature_expectations: np.ndarray,
+            reward_calculator: RewardCalculator,
+            feature_expectation_extractor: FeatureExpectationExtractor,
+            policy_player: HighPolicyPlayer,
+            q_learner: QLearner,
+            model: AtHighMdpModel,
+            policy_player_max_step: int,
+            epsilon: float,
+            max_iterations: int
     ):
         """
         :param policy_player: policy player
@@ -90,14 +91,15 @@ class IrlAlgorithmSolver:
         self.currentT = self.random_t
 
     def find_weights(
-        self, verbose: bool
+            self, verbose: bool
     ) -> Tuple[
+        np.ndarray,
         np.ndarray,
         np.ndarray,
         np.ndarray,
         List[dict],
         bool,
-        List[Tuple[float, np.ndarray, np.ndarray,np.ndarray,np.ndarray]],
+        List[Tuple[float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]],
     ]:
         """
 
@@ -111,10 +113,10 @@ class IrlAlgorithmSolver:
 
             W = self.calc_weights()
 
-            self.current_t, reward_matrix, Q, new_conversation = self.update_policy_list(
+            self.current_t, reward_matrix, policy, Q, new_conversation = self.update_policy_list(
                 W
             )
-            list_of_ts.append((self.current_t, W,np.array(0.0),Q ,reward_matrix))
+            list_of_ts.append((self.current_t, W, np.array(0.0), policy, reward_matrix))
 
             if verbose:
                 plt.scatter(i, self.current_t)
@@ -126,13 +128,13 @@ class IrlAlgorithmSolver:
             if i > self.max_iterations:
                 print(f"{self.conversation_name} file IS STUCK AND ITERATION IS BROKEN")
                 fail = False
-                return W, reward_matrix, Q, new_conversation, fail, list_of_ts
+                return W, reward_matrix, policy, Q, new_conversation, fail, list_of_ts
             i += 1
 
         assert not (np.all(np.isnan(W))), "weights are broken"
 
         success = True
-        return W, reward_matrix, Q, new_conversation, success, list_of_ts
+        return W, reward_matrix, policy, Q, new_conversation, success, list_of_ts
 
     def calc_weights(self) -> np.ndarray:
         """
@@ -162,8 +164,8 @@ class IrlAlgorithmSolver:
         return weights  # return the normalized weights
 
     def update_policy_list(
-        self, W: np.ndarray,
-    ) -> Tuple[float, np.ndarray, np.ndarray, List[dict]]:
+            self, W: np.ndarray,
+    ) -> Tuple[float, np.ndarray, np.ndarray,np.ndarray,  List[dict]]:
         """
 
         :param self:
@@ -172,7 +174,7 @@ class IrlAlgorithmSolver:
         """
 
         # get feature expectations of a new policy respective to the input weights
-        temp_fe, reward_matrix, Q, new_conversation = self.get_reinforcement_learning_features_expectations(
+        temp_fe, reward_matrix, policy, Q, new_conversation = self.get_reinforcement_learning_features_expectations(
             W
         )
         hyper_distance = np.abs(
@@ -190,8 +192,8 @@ class IrlAlgorithmSolver:
         return (float_hyper_distance, reward_matrix, Q, new_conversation)
 
     def get_reinforcement_learning_features_expectations(
-        self, W: np.ndarray,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, List[dict]]:
+            self, W: np.ndarray,
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict]]:
         """
 
         :param W: weights
@@ -202,11 +204,10 @@ class IrlAlgorithmSolver:
 
         reward_matrix = self.reward_calculator.calculate_reward(W)
 
-
-        env = Environment(self.model,reward_matrix)
+        env = Environment(self.model, reward_matrix)
         Q = self.q_learner.learn(env)
 
-        #todo translate Q to policy
+        policy = MdpUtils.q_values_to_policy(self.model, Q)
 
         new_conversation = self.policy_player.play_policy(
             policy, max_steps=self.policy_player_max_step
@@ -215,11 +216,6 @@ class IrlAlgorithmSolver:
             new_conversation
         )
 
-
-
-
-
-        #TODO
         print(f"sum of policy:{np.sum(policy)}")
         print(f"sum of rewards:{np.sum(reward_matrix)}")
         print(f"sum of W:{np.sum(W)}")
@@ -231,4 +227,4 @@ class IrlAlgorithmSolver:
         self.previous_W = np.array(W)
         self.previous_policy = np.array(Q)
 
-        return new_features, reward_matrix, Q, new_conversation
+        return new_features, reward_matrix, policy, Q, new_conversation

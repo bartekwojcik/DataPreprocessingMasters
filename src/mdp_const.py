@@ -46,5 +46,5 @@ class MdpConsts:
     @classmethod
     def GET_TALK_AND_LOOK_ACTIONS(cls):
         # maybe instead of tuple i should use list?
-        result = list(tuple for tuple in itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
+        result = list(tuple_val for tuple_val in itertools.product(cls.__LIST_OF_LOOKING_STATES, cls.__LIST_OF_TALKING_STATES))
         return result
