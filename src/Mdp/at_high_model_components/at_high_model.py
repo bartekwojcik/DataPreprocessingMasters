@@ -4,7 +4,6 @@ import numpy as np
 
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from mdp_const import MdpConsts as consts
-import mdp_const
 from settings import Settings
 from transition_counting.heatmap_plotter import plot_count_heatmap
 

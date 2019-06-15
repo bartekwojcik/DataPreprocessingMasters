@@ -1,7 +1,5 @@
 import os
-import mdp_const
 import numpy as np
-from mdp_const import MdpConsts as mdp
 from settings import Settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
 

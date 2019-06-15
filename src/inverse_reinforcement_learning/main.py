@@ -31,8 +31,8 @@ async def main_async(settings: Settings, VERBOSE: bool):
 
 if __name__ == "__main__":
     VERBOSE = True
-    settings = Settings(MAX_CONTINUOUS_TIME_SEC=0.5,
-                        DISCOUNT_FACTOR=0.9999,
-                        POLICY_THETA=0.00001,
+    settings = Settings(MAX_CONTINUOUS_TIME_SEC=6.0,
+                        DISCOUNT_FACTOR=0.99999,
+                        POLICY_THETA=0.01,
                         IRL_SOLVER_EPSILON=0.05)
     asyncio.run(main_async(settings, VERBOSE))

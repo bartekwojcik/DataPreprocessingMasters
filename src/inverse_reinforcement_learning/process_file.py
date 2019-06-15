@@ -45,7 +45,7 @@ def process_file(
     #mdp_graph.plot_probabilities_per_state(VERBOSE,filename, settings)
 
     data_length = len(conv_json)
-    irl_solver_iterations = 270
+    irl_solver_iterations = 30
     processor = IrlProcessor()
     irl_result = processor.process(
         conv_json,

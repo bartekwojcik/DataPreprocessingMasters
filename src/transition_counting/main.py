@@ -35,7 +35,7 @@ if __name__ == "__main__":
     the time transitions are from perspective of high, namely: after what time did the at high person change his state 
     
     """
-    settings = Settings(1.5 ,0.99,0.001,0.1)
+    settings = Settings(6 ,0.99,0.001,0.1)
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     time_size = settings.TIME_SIZE
     global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2,time_size))
