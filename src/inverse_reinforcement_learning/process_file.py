@@ -45,7 +45,7 @@ def process_file(
     #mdp_graph.plot_probabilities_per_state(VERBOSE,filename, settings)
 
     data_length = len(conv_json)
-    irl_solver_iterations = 30
+    IRL_SOLVER_ITERATIONS = 50
     processor = IrlProcessor()
     irl_result = processor.process(
         conv_json,
@@ -55,7 +55,7 @@ def process_file(
         policy_player_max_step=data_length,
         verbose=VERBOSE,
         settings=settings,
-        irl_solver_iterations=irl_solver_iterations,
+        irl_solver_iterations=IRL_SOLVER_ITERATIONS,
     )
 
     compare_processor = CompareProcessor()
@@ -73,7 +73,7 @@ def process_file(
     saver_plotter = IrlResultsPlotterSaver(
         filename,
         irl_result.list_of_t_W_intercept_policies_rewards,
-        irl_solver_iterations,
+        IRL_SOLVER_ITERATIONS,
         settings,
     )
 
