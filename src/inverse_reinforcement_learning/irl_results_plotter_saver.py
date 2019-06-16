@@ -95,7 +95,7 @@ class IrlResultsPlotterSaver:
         title = f"{self.file_name} t value over iterations"
         self.__save_plot(folder_path,
                          self.file_name,
-                         "T_VALUES",
+                         "T_VALUES_plot",
                          t_values, iterations, title,
                          "iteration",
                          "value of t")
@@ -104,6 +104,7 @@ class IrlResultsPlotterSaver:
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_intercepts", intercept_full_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_policies", policies_full_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_rewards", rewards_full_values)
+        self.__save_numpy_to_file(folder_path, f"{self.file_name}_T_values", t_values)
 
         if len(iterations) > 1:
             title = f"{self.file_name} difference of w+intercept per iteration (minus w previous + intercept previous)"

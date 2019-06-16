@@ -31,11 +31,11 @@ async def main_async(settings: Settings, VERBOSE: bool):
 
 if __name__ == "__main__":
     VERBOSE = True
-    settings = Settings(MAX_CONTINUOUS_TIME_SEC=8.0,
+    settings = Settings(MAX_CONTINUOUS_TIME_SEC=10.0,
                         DISCOUNT_FACTOR=0.999999,
                         POLICY_THETA=0.01,
                         IRL_SOLVER_EPSILON=0.05,
-                        Q_ITERATIONS=100,
-                        Q_ALPHA=0.4,
-                        Q_EPSILON = 0.2)
+                        Q_ITERATIONS=900,
+                        Q_ALPHA=0.5,
+                        Q_EPSILON = 0.25)
     asyncio.run(main_async(settings, VERBOSE))

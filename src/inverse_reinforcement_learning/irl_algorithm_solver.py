@@ -113,7 +113,7 @@ class IrlAlgorithmSolver:
 
             W = self.calc_weights()
 
-            self.current_t, reward_matrix, policy, Q, new_conversation = self.update_policy_list(
+            self.current_t, reward_matrix, policy,  Q, new_conversation = self.update_policy_list(
                 W
             )
             list_of_ts.append((self.current_t, W, np.array(0.0), policy, reward_matrix))
