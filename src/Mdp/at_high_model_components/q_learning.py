@@ -44,8 +44,6 @@ class QLearner:
 
             for t in range(self.episode_length):
                 action_probas = policy(state)
-                # i keep forgeting that we "have to" use epsilon greedy policy
-                # action = np.argmax(action_probas)
                 action_index = np.random.choice(np.arange(len(action_probas)), p=action_probas)
                 action = env.model.actions[action_index]
                 new_state, reward = env.step(action)

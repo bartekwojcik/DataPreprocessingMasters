@@ -48,17 +48,17 @@ class IrlResultsPlotterSaver:
         t, W, intercept, policy, reward = self.list_of_ts_weights_intercept_policy_reward[0]
 
         w_full_values = np.zeros(((length,)+W.shape))
-        intercept_full_values = np.zeros((length,))
+        qs_values = []
         policies_full_values = np.zeros(((length,)+policy.shape))
         rewards_full_values = np.zeros(((length,)+reward.shape))
 
         n_i = len(self.list_of_ts_weights_intercept_policy_reward)
         iterations = np.arange(0,n_i,1)
 
-        for i,(t,W,intercept,policy,reward) in enumerate(self.list_of_ts_weights_intercept_policy_reward):
+        for i,(t,W,Q,policy,reward) in enumerate(self.list_of_ts_weights_intercept_policy_reward):
             t_values[i] = t
             w_full_values[i] = W
-            intercept_full_values[i] = intercept
+            qs_values.append(dict(Q))
             policies_full_values[i] = policy
             rewards_full_values[i] = reward
 
@@ -68,12 +68,12 @@ class IrlResultsPlotterSaver:
             else:
                 t_previous,\
                 W_previous,\
-                intercept_previous, \
+                Q_previous, \
                 policy_previous, \
                 reward_previous = self.list_of_ts_weights_intercept_policy_reward[i-1]
 
-                w_intercept = W + intercept
-                previous_w_intercept = W_previous + intercept_previous
+                w_intercept = W
+                previous_w_intercept = W_previous
                 w_diff = np.linalg.norm(
                     np.asarray(w_intercept)
                     - np.asarray(previous_w_intercept)
@@ -100,8 +100,9 @@ class IrlResultsPlotterSaver:
                          "iteration",
                          "value of t")
 
+
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_w_values", w_full_values)
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_intercepts", intercept_full_values)
+        self.__save_numpy_to_file(folder_path, f"{self.file_name}_Q_values", qs_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_policies", policies_full_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_rewards", rewards_full_values)
         self.__save_numpy_to_file(folder_path, f"{self.file_name}_T_values", t_values)

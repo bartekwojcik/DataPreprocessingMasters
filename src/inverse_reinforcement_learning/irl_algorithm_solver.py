@@ -116,7 +116,7 @@ class IrlAlgorithmSolver:
             self.current_t, reward_matrix, policy,  Q, new_conversation = self.update_policy_list(
                 W
             )
-            list_of_ts.append((self.current_t, W, np.array(0.0), policy, reward_matrix))
+            list_of_ts.append((self.current_t, W, Q, policy, reward_matrix))
 
             if verbose:
                 plt.scatter(i, self.current_t)

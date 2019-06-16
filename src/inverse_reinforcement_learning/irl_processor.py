@@ -81,14 +81,10 @@ class IrlProcessor:
             epsilon=settings.IRL_SOLVER_EPSILON,
             max_iterations=irl_solver_iterations,
         )
-        # TODO change this to include these Q values
-        # TODO add rewards tracking later so you can plot 3D things
 
         weights, reward_matrix, policy, Q, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
-
-        # new_conversation_with_epsilon = HighPolicyPlayer(metadata,mdp_graph,0.05).play_policy(policy,policy_player_max_step)
 
         return IrlProcessorResult(
             weights,

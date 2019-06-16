@@ -37,5 +37,5 @@ if __name__ == "__main__":
                         IRL_SOLVER_EPSILON=0.05,
                         Q_ITERATIONS=900,
                         Q_ALPHA=0.5,
-                        Q_EPSILON = 0.25)
+                        Q_EPSILON = 0.20)
     asyncio.run(main_async(settings, VERBOSE))
