@@ -42,6 +42,7 @@ class Environment:
         selected_response = self.__select_environment_response(possible_environment_responses)
         response_index = self.model.states.index(selected_response)
         reward = self.rewards[response_index]
+        self.current_state = selected_response
 
         return selected_response, reward
 

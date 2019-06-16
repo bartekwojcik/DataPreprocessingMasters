@@ -31,8 +31,8 @@ class IrlProcessor:
         file_name: str,
         policy_player_max_step,
         verbose: bool,
-        settings:Settings,
-        irl_solver_iterations:int
+        settings: Settings,
+        irl_solver_iterations: int,
     ) -> IrlProcessorResult:
         """
         Processes one file of conversation with Inverse Reinforcement Learning
@@ -42,8 +42,7 @@ class IrlProcessor:
         :return: IrlProcessorResult
         """
 
-        policy_player = HighPolicyPlayer(metadata, mdp_graph,0.05)
-
+        policy_player = HighPolicyPlayer(metadata, mdp_graph, 0.05)
 
         feature_expectation_extractor = FeatureExpectationExtractor(
             mdp_graph.states, metadata, 0.9999999
@@ -59,9 +58,15 @@ class IrlProcessor:
 
         states_array = np.array(mdp_graph.states)
         reward_calculator = RewardCalculator(states_array.shape, mdp_graph.states)
-        #value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
+        # value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
 
-        q_learner = QLearner(settings.Q_ITERATIONS, settings.DISCOUNT_FACTOR, settings.Q_ALPHA, len(conversation_json))
+        q_learner = QLearner(
+            settings.Q_ITERATIONS,
+            settings.DISCOUNT_FACTOR,
+            settings.Q_ALPHA,
+            len(conversation_json),
+            settings.Q_EPSILON,
+        )
 
         irl = IrlAlgorithmSolver(
             file_name,
@@ -73,18 +78,24 @@ class IrlProcessor:
             q_learner,
             mdp_graph,
             policy_player_max_step=policy_player_max_step,
-            epsilon= settings.IRL_SOLVER_EPSILON,
-            max_iterations=irl_solver_iterations
+            epsilon=settings.IRL_SOLVER_EPSILON,
+            max_iterations=irl_solver_iterations,
         )
-        #TODO change this to include these Q values
-        #TODO add rewards tracking later so you can plot 3D things
+        # TODO change this to include these Q values
+        # TODO add rewards tracking later so you can plot 3D things
 
-        weights, reward_matrix, policy,Q, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
+        weights, reward_matrix, policy, Q, new_conversation, is_ok, list_of_t_W_intercept = irl.find_weights(
             verbose=verbose
         )
 
-        #new_conversation_with_epsilon = HighPolicyPlayer(metadata,mdp_graph,0.05).play_policy(policy,policy_player_max_step)
+        # new_conversation_with_epsilon = HighPolicyPlayer(metadata,mdp_graph,0.05).play_policy(policy,policy_player_max_step)
 
         return IrlProcessorResult(
-            weights, reward_matrix, policy, Q, new_conversation, is_ok, list_of_t_W_intercept
+            weights,
+            reward_matrix,
+            policy,
+            Q,
+            new_conversation,
+            is_ok,
+            list_of_t_W_intercept,
         )

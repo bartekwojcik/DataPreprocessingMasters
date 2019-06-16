@@ -10,9 +10,11 @@ class Settings:
         IRL_SOLVER_EPSILON: float,
         GLOBAL_PREFIX_FOR_FILE_NAMES: str = "",
         Q_ITERATIONS = 500,
-        Q_ALPHA = 0.5
+        Q_ALPHA = 0.5,
+            Q_EPSILON = 0.05
     ):
 
+        self.Q_EPSILON = Q_EPSILON
         self.Q_ALPHA = Q_ALPHA
         self.Q_ITERATIONS = Q_ITERATIONS
         # time
