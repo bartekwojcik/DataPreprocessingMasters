@@ -35,7 +35,7 @@ if __name__ == "__main__":
                         DISCOUNT_FACTOR=0.999999,
                         POLICY_THETA=0.01,
                         IRL_SOLVER_EPSILON=0.05,
-                        Q_ITERATIONS=500,
+                        Q_ITERATIONS=4,
                         Q_ALPHA=0.5,
                         Q_EPSILON = 0.20)
     asyncio.run(main_async(settings, VERBOSE))

@@ -29,7 +29,8 @@ class IrlProcessor:
         mdp_graph: AtHighMdpModel,
         metadata: dict,
         file_name: str,
-        policy_player_max_step,
+        policy_player: HighPolicyPlayer,
+        policy_player_max_step: int,
         verbose: bool,
         settings: Settings,
         irl_solver_iterations: int,
@@ -41,8 +42,6 @@ class IrlProcessor:
         :param metadata:
         :return: IrlProcessorResult
         """
-
-        policy_player = HighPolicyPlayer(metadata, mdp_graph, 0.05)
 
         feature_expectation_extractor = FeatureExpectationExtractor(
             mdp_graph.states, metadata, 0.9999999

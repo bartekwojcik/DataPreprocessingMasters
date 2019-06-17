@@ -1,5 +1,6 @@
 from concurrent.futures import ProcessPoolExecutor
 
+from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from inverse_reinforcement_learning.compare_processor import CompareProcessor
 from inverse_reinforcement_learning.get_model_probas import ModelProbasGetter
 from inverse_reinforcement_learning.irl_processor import IrlProcessor
@@ -45,13 +46,17 @@ def process_file(
     #mdp_graph.plot_probabilities_per_state(VERBOSE,filename, settings)
 
     data_length = len(conv_json)
-    IRL_SOLVER_ITERATIONS = 50
+    IRL_SOLVER_ITERATIONS = 5
+
+    policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph, 0.05)
+
     processor = IrlProcessor()
     irl_result = processor.process(
         conv_json,
         mdp_graph,
         this_file_metadata,
         full_file_name,
+        policy_player,
         policy_player_max_step=data_length,
         verbose=VERBOSE,
         settings=settings,
@@ -67,6 +72,8 @@ def process_file(
         settings.TRANSITION_FRAME_STEP,
         mdp_graph.Ca.shape,
         settings,
+        policy_player,
+        policy_player_max_step=data_length,
         show_plot=VERBOSE,
     )
 

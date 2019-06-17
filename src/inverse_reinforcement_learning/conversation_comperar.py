@@ -15,7 +15,8 @@ class ConversationComparer:
         self,
         file_name: str,
         original_conversation: List[dict],
-        calculated_conversation: List[dict],
+        calculated_conversations: List[List[dict]],
+        t_values: List[float],
         frame_step: int,
         file_metadata: dict,
         show: bool,
@@ -28,19 +29,22 @@ class ConversationComparer:
         original_results = self.__count(
             original_conversation, file_metadata, frame_step,result_shape,settings
         )
-        calculated_results = self.__count(
-            calculated_conversation, file_metadata, frame_step,result_shape,settings
-        )
+
+        self.__save_plots(original_results, name, "original", show, settings)
+
+        for i, conversation in enumerate(calculated_conversations):
+            calculated_results = self.__count(
+                conversation, file_metadata, frame_step, result_shape, settings
+            )
+
+            t = np.round(t_values[i], decimals=2)
+
+            self.__save_plots(calculated_results, name, "calculated", show=False, settings=settings, t_value=t)
 
 
+    def __save_plots(self, results, file_name, original_or_not: str, show: bool, settings:Settings, t_value:float=None):
 
-        self.__save_plots(original_results, name, "original", show,settings)
-        self.__save_plots(calculated_results, name, "calculated", show,settings)
-
-
-    def __save_plots(self, results, file_name, original_or_not: str, show: bool, settings:Settings):
-
-        folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{settings.TIME_SIZE}"
+        folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_QITERS_{settings.Q_ITERATIONS}_QEPSILON_{settings.Q_EPSILON}"
 
         folder_path = os.path.join(
             settings.COMPARISON_PLOTS_FOLDER_PATH, folder_name
@@ -49,14 +53,26 @@ class ConversationComparer:
         if not os.path.exists(folder_path):
             os.mkdir(folder_path)
 
-        file_name_counts = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
-            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_counts.png",
-        )
-        file_name_probs = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
-            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_probs.png",
-        )
+
+
+        if t_value == None:
+            file_name_probs = os.path.join(
+                settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+                f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_probs.png",
+            )
+            file_name_counts = os.path.join(
+                settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+                f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_plot_counts.png",
+            )
+        else:
+            file_name_probs = os.path.join(
+                settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+                f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_t_{t_value}_{file_name}_{original_or_not}_plot_probs.png",
+            )
+            file_name_counts = os.path.join(
+                settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
+                f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_t_{t_value}_{file_name}_{original_or_not}_plot_counts.png",
+            )
 
         translator = TransitionCountingTranslator(results,settings)
         probabilities_matrix = translator.transform_to_2D_probabilities_matrix()

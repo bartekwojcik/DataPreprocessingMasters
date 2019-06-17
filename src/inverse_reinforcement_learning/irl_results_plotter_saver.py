@@ -30,7 +30,10 @@ class IrlResultsPlotterSaver:
         Eh
         :return:
         """
-        folder_name = f"frame_{self.settings.TRANSITION_FRAME_STEP}_time_{self.settings.TIME_SIZE}"
+
+        folder_name = f"frame_{self.settings.TRANSITION_FRAME_STEP}" \
+                      f"_QITERS_{self.settings.Q_ITERATIONS}" \
+                      f"_QEPSILON_{self.settings.Q_EPSILON}"
         folder_path = os.path.join(
             self.settings.COMPARISON_PLOTS_FOLDER_PATH, folder_name
         )
