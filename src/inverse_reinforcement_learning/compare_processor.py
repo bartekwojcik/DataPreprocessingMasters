@@ -39,6 +39,9 @@ class CompareProcessor:
         if not irl_result.is_ok:
             file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
 
+
+        #TODO RUN PLOTS OF ALL POLICIES (or the top 10%)
+
         comparer = ConversationComparer()
         comparer.compare_and_save_plots(
             file_name_to_save_plot,

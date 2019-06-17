@@ -179,7 +179,7 @@ class IrlAlgorithmSolver:
         )
         hyper_distance = np.abs(
             np.dot(
-                W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)
+                W, np.abs(np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe))
             )
 
         )

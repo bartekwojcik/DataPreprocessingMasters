@@ -7,10 +7,17 @@ from inverse_reinforcement_learning.conversation_comperar import ConversationCom
 
 from settings import Settings
 
-file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_200 - Copy\\_human_readable_conversation_16.json_policies.npy"
-policy = np.load(file_path)[12]
+policies_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250 - Copy\\_human_readable_conversation_16.json_policies.npy"
+t_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250 - Copy\\_human_readable_conversation_16.json_T_values.npy"
 
-settings = Settings(MAX_CONTINUOUS_TIME_SEC=8.0,
+ts = np.load(t_file_path)
+
+min_t = np.argmin(ts)
+
+
+policy = np.load(policies_file_path)[5]
+
+settings = Settings(MAX_CONTINUOUS_TIME_SEC=10.0,
                     DISCOUNT_FACTOR=0.999999,
                     POLICY_THETA=0.01,
                     IRL_SOLVER_EPSILON=0.05,
@@ -34,7 +41,7 @@ with open(METADATA_PATH, "r") as metadata_file:
     conversation = player.play_policy(policy,1200)
 
     comparer = ConversationComparer()
-    comparer.compare_and_save_plots("16_with_made_up",conversation,conversation,1,metadata,True,model.Ca.shape,settings)
+    comparer.compare_and_save_plots("16_with_made_up",conversation,conversation,1,metadata,False,model.Ca.shape,settings)
 
 
 
