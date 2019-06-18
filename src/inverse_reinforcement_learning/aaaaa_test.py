@@ -7,8 +7,8 @@ from inverse_reinforcement_learning.conversation_comperar import ConversationCom
 
 from settings import Settings
 
-policies_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250 - Copy\\_human_readable_conversation_16.json_policies.npy"
-t_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250 - Copy\\_human_readable_conversation_16.json_T_values.npy"
+policies_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250\\_human_readable_conversation_16.json_policies.npy"
+t_file_path = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_time_250\\_human_readable_conversation_16.json_T_values.npy"
 
 ts = np.load(t_file_path)
 
