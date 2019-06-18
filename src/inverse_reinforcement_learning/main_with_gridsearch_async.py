@@ -1,7 +1,10 @@
-from inverse_reinforcement_learning.main import main_synchronous
 from settings import Settings
+import mdp_const
+from inverse_reinforcement_learning.main import main_async
+import asyncio
 
-def do_grid_synchronous():
+
+def do_grid():
     print("STARTED")
 
     VERBOSE = False
@@ -27,8 +30,7 @@ def do_grid_synchronous():
                                 GLOBAL_PREFIX_FOR_FILE_NAMES= global_prefix
                                 )
 
-            main_synchronous(settings, VERBOSE)
-
+            asyncio.run(main_async(settings, VERBOSE))
 
     print("ENDED")
 
