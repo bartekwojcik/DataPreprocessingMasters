@@ -24,7 +24,7 @@ async def main_async(settings: Settings, VERBOSE: bool):
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks))
+    await asyncio.gather(*(tasks)[0::2])
 
 
 def main_synchronous(settings: Settings, VERBOSE: bool):
