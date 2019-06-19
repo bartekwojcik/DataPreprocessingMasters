@@ -17,14 +17,14 @@ async def main_async(settings: Settings, VERBOSE: bool):
         for filename in os.listdir(HUMAN_READABLE_FOLDER_PATH):
             full_file_name = os.path.join(HUMAN_READABLE_FOLDER_PATH, filename)
 
-            print(f"file started: {full_file_name} ")
+
 
             with open(full_file_name, "r") as conversation_file:
                 conv_json = json.loads(conversation_file.read())
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks)[0::2])
+    await asyncio.gather(*(tasks)[0:6])
 
 
 def main_synchronous(settings: Settings, VERBOSE: bool):

@@ -29,6 +29,7 @@ async def async_process_file(
 def process_file(
     metadata_json, filename, conv_json, full_file_name, VERBOSE, settings: Settings
 ):
+    print(f"file started: {full_file_name} ")
 
     this_file_metadata = metadata_json[filename]
 
