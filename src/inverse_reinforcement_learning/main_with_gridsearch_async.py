@@ -30,7 +30,9 @@ def do_grid():
                                 GLOBAL_PREFIX_FOR_FILE_NAMES= global_prefix
                                 )
 
-            asyncio.run(main_async(settings, VERBOSE))
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(main_async(settings, VERBOSE))
+            loop.close()
 
     print("ENDED")
 

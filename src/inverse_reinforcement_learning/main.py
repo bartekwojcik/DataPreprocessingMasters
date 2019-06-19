@@ -24,7 +24,7 @@ async def main_async(settings: Settings, VERBOSE: bool):
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks)[3:4])
+    await asyncio.gather(*(tasks))
 
 
 def main_synchronous(settings: Settings, VERBOSE: bool):
@@ -54,5 +54,11 @@ if __name__ == "__main__":
                         Q_ITERATIONS=2,
                         Q_ALPHA=0.5,
                         Q_EPSILON = 0.20)
-    asyncio.run(main_async(settings, VERBOSE))
+    #asyncio.run(main_async(settings, VERBOSE))
+
+    loop = asyncio.get_event_loop()
+    # Blocking call which returns when the hello_world() coroutine is done
+    loop.run_until_complete(main_async(settings, VERBOSE))
+    loop.close()
+
     print("started")

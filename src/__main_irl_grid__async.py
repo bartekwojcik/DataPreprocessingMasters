@@ -1,0 +1,4 @@
+from inverse_reinforcement_learning.main_with_gridsearch_async import do_grid
+
+
+do_grid()
