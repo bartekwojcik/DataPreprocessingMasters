@@ -1,5 +1,4 @@
-import json
-import math
+
 from typing import Tuple
 from human_read_creator.cluster_matcher import ClusterMatcher
 from data_const import (

@@ -2,20 +2,16 @@ from typing import List
 
 import numpy as np
 
-from Mdp.at_high_model_components.environment import Environment
-from Mdp.at_high_model_components.q_learning import QLearner
-from settings import Settings
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
-from Mdp.at_high_model_components.at_high_model_value_iteration import (
-    AtHighValueIteration,
-)
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
+from Mdp.at_high_model_components.q_learning import QLearner
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
 )
 from inverse_reinforcement_learning.irl_algorithm_solver import IrlAlgorithmSolver
 from inverse_reinforcement_learning.irl_processor_result import IrlProcessorResult
 from inverse_reinforcement_learning.reward_calculator import RewardCalculator
+from settings import Settings
 
 
 class IrlProcessor:

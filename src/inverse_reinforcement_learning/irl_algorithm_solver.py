@@ -1,25 +1,18 @@
-from typing import List, Tuple, Union
+from typing import List, Tuple
 
-from matplotlib.colors import ListedColormap
+import matplotlib.pyplot as plt
+import numpy as np
+from cvxopt import matrix, solvers
 
 from Mdp.at_high_model_components.at_high_model import AtHighMdpModel
-from Mdp.at_high_model_components.at_high_model_value_iteration import (
-    AtHighValueIteration,
-)
-from Mdp.at_high_model_components.at_high_policy_iteration import AtHighPolicyIteration
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.at_high_model_components.environment import Environment
 from Mdp.at_high_model_components.q_learning import QLearner
 from Mdp.mdp_utils import MdpUtils
-
 from inverse_reinforcement_learning.feature_expectations_extractor import (
     FeatureExpectationExtractor,
 )
 from inverse_reinforcement_learning.reward_calculator import RewardCalculator
-import numpy as np
-from cvxopt import matrix, solvers
-import matplotlib.pyplot as plt
-from sklearn.svm import SVC
 
 
 class IrlAlgorithmSolver:
@@ -179,7 +172,7 @@ class IrlAlgorithmSolver:
         )
         hyper_distance = np.abs(
             np.dot(
-                W, np.abs(np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe))
+                W, np.asarray(self.expert_feature_expectations) - np.asarray(temp_fe)
             )
 
         )
