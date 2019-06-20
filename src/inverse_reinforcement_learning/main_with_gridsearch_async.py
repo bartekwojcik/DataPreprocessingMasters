@@ -36,5 +36,5 @@ def do_grid():
 
     print("ENDED")
 
-# if __name__ == "__main__":
-#     do_grid()
+if __name__ == "__main__":
+    do_grid()
