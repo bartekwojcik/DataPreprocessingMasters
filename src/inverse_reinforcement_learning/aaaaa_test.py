@@ -2,6 +2,9 @@ from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.mdp_utils import MdpUtils
 import numpy as np
 import json
+from scipy import stats
+
+stats.norm.pdf()
 
 from inverse_reinforcement_learning.conversation_comperar import ConversationComparer
 
