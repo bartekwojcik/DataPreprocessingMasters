@@ -136,5 +136,11 @@
 		"person 2 at person 1 ratio": 0.9398223577022127,
 		"person at high": "person2",
 		"person at low": "person1"
+	},
+	"human_readable_conversation_99.json": {
+		"person 1 at person 2 ratio": 0.8295579965312451,
+		"person 2 at person 1 ratio": 0.9398223577022127,
+		"person at high": "person2",
+		"person at low": "person1"
 	}
 }

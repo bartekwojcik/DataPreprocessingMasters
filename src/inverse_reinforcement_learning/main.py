@@ -24,7 +24,7 @@ async def main_async(settings: Settings, VERBOSE: bool):
                 task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
                 tasks.append(task)
 
-    await asyncio.gather(*(tasks)[0:6])
+    await asyncio.gather(*(tasks)[-1:])
 
 
 def main_synchronous(settings: Settings, VERBOSE: bool):
@@ -51,9 +51,9 @@ if __name__ == "__main__":
                         DISCOUNT_FACTOR=0.999999,
                         POLICY_THETA=0.01,
                         IRL_SOLVER_EPSILON=0.05,
-                        Q_ITERATIONS=2,
+                        Q_ITERATIONS=700,
                         Q_ALPHA=0.5,
-                        Q_EPSILON = 0.20)
+                        Q_EPSILON = 0.10)
     #asyncio.run(main_async(settings, VERBOSE))
 
     loop = asyncio.get_event_loop()
