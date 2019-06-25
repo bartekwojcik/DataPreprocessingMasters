@@ -11,8 +11,9 @@ from settings import Settings
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 import os
 import re
-
+import math
 from transition_counting.transition_counter import TransitionCounter
+import matplotlib.pyplot as plt
 
 """
 
@@ -46,6 +47,18 @@ p = re.compile(T_FILE_REGEX)
 states = model.states
 
 
+"""
+this script: 
+- point it to the folder with all the .npy files
+then:
+
+1) it will find for each conversation it's .npy file with policies and t_values
+2) it will find count_transition for given conversation
+3) calculate count_transition for each policy from conversation's policies.npy file
+4) will produce kl_div value for these two and store it
+5) produces plot telling you which policy produces  
+"""
+
 with open(METADATA_PATH, "r") as metadata_file:
     metadata_json = json.loads(metadata_file.read())
 
@@ -65,7 +78,6 @@ with open(METADATA_PATH, "r") as metadata_file:
             policies_file_name = saved_numpy_file_name.replace(".json_T_values.npy",".json_policies.npy")
             policies_file_path = os.path.join(FOLDER_PATH, policies_file_name)
 
-            kls = {}
             with open(conversation_file_path, "r") as conversation_file_string:
                 conv_json =  json.load(conversation_file_string)
 
@@ -77,18 +89,56 @@ with open(METADATA_PATH, "r") as metadata_file:
                 FRAME_STEP = settings.TRANSITION_FRAME_STEP
                 original_ca = counter.count_transitions(conv_json,FRAME_STEP,0,metadata,ca_shape,settings)
                 policies = np.load(policies_file_path)
+                t_values = np.load(os.path.join(FOLDER_PATH,saved_numpy_file_name))
+
                 current_model = AtHighMdpModel(original_ca, settings)
 
-                this_file_kls = {}
+                this_file_kls = []
 
-                for policy in policies:
+                for i_pol,policy in enumerate(policies):
 
                     player = HighPolicyPlayer(metadata,current_model)
                     created_conversation = player.play_policy(policy,len(conv_json))
                     created_ca = counter.count_transitions(created_conversation,FRAME_STEP,0,metadata,ca_shape,settings)
 
-                    this_kl = scipy.special.kl_div(original_ca,created_ca)
-                    sum_kl = np.sum(this_kl)
+
+                    #i am not sure if this is supposed to be count_transitions
+                    # perhaps 2D probabilities per state would be better?
+                    kl = scipy.special.kl_div(original_ca, created_ca)
+
+                    #if value is inf, we want to replace it with 0
+                    # (i dont know if this is correct though :D)
+                    kl = np.where(kl == math.inf, 0, kl)
+                    sum_kl = np.sum(kl)
+
+                    this_file_kls.append(sum_kl)
+
+                #kls[conversation_file_name] = this_file_kls
+
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
+                for x,y in enumerate(this_file_kls):
+                    this_x_t_val = np.round(t_values[x],decimals=1)
+                    this_x_kl =  np.round(y,decimals=1)
+                    ax.annotate(f"{x}, kl={this_x_kl}, t={this_x_t_val}",xy=(x,y),textcoords = 'data')
+
+                plt.plot(this_file_kls)
+                plt.yscale('log')
+
+                fig.suptitle(
+                    f"kl_div for conversation {conv_number}", fontsize=14, fontweight="bold"
+                )
+
+                plt.ylabel("kullback leibler divergence")
+                plt.xlabel("policy number")
+
+
+
+                file_path = os.path.join(FOLDER_PATH, f"kl_{conv_number}")
+                fig.set_size_inches((18, 9), forward=False)
+                plt.savefig(file_path, quality=70, dpi=400)
+                plt.close(fig)
+
 
 
 
