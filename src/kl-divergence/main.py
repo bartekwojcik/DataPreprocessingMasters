@@ -117,10 +117,12 @@ with open(METADATA_PATH, "r") as metadata_file:
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
+                print(f"CONVERSATION {conv_number} ######################################")
                 for x,y in enumerate(this_file_kls):
                     this_x_t_val = np.round(t_values[x],decimals=1)
                     this_x_kl =  np.round(y,decimals=1)
                     ax.annotate(f"{x}, kl={this_x_kl}, t={this_x_t_val}",xy=(x,y),textcoords = 'data')
+                    print(f"{x}, kl={this_x_kl}, t={this_x_t_val}")
 
                 plt.plot(this_file_kls)
                 plt.yscale('log')
