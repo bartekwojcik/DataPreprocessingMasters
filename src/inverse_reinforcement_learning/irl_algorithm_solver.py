@@ -132,20 +132,19 @@ class IrlAlgorithmSolver:
     def calc_weights(self) -> np.ndarray:
         """
         Step 2 of the algorithm
-        taken from https://jangirrishabh.github.io/2016/07/09/virtual-car-IRL/
+        with help from https://jangirrishabh.github.io/2016/07/09/virtual-car-IRL/
         finds the maximum margin hyperplane separating two sets of points.
         :return: weights
         """
         m = len(self.expert_feature_expectations)  # feature expectation
         P = matrix(2.0 * np.eye(m), tc="d")  # min ||w||
         q = matrix(np.zeros(m), tc="d")
-        policy_list = [self.expert_feature_expectations]
+        fe_list = [self.expert_feature_expectations]
         h_list = [1]
         for i in self.policies_feature_expectations.keys():
-            # get just t
-            policy_list.append(self.policies_feature_expectations[i])
+            fe_list.append(self.policies_feature_expectations[i])
             h_list.append(1)
-        policy_mat = np.matrix(policy_list)
+        policy_mat = np.matrix(fe_list)
         policy_mat[0] = -1 * policy_mat[0]
         G = matrix(policy_mat, tc="d")
         h = matrix(-np.array(h_list), tc="d")

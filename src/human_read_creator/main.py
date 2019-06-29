@@ -30,7 +30,7 @@ def save_conversation_to_file(labeled_data,settings:Settings):
 def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalculator], settings: Settings):
     """
     Saves at low and at high values to file
-    :param at_high_at_low_calculators: list of calculator that calculate at low and at high values
+    :param at_high_at_low_calculators: list of calculators that calculate at low and at high values
     """
     result_dict = {}
 

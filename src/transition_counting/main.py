@@ -57,10 +57,10 @@ def main_transition_counting(time = 10):
                 data = json.loads(data_raw.read())
 
                 for i in starting_points:
-                    one_result = counter.count_transitions(data, FRAME_STEP, i, file_metadata, global_results.shape,
+                    one_file_results = counter.count_transitions(data, FRAME_STEP, i, file_metadata, global_results.shape,
                                                            settings)
-                    global_results += one_result
-                    file_results += one_result
+                    global_results += one_file_results
+                    file_results += one_file_results
 
                 # plot_heatmaps(file_results, f"{clear_name}_counts.jpg", f"{clear_name}_probas.jpg")
                 debug = 5
