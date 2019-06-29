@@ -76,7 +76,8 @@ class IrlAlgorithmSolver:
 
         self.currentT = self.random_t
 
-    def find_weights(self,verbose: bool) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict], bool ]:
+    def find_weights(self,verbose: bool) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, List[dict], bool,
+                                                  List[Tuple[float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]]]:
         """
 
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
@@ -85,10 +86,12 @@ class IrlAlgorithmSolver:
         plt.axis([0, 50, 0, 10])
         pp = pprint.PrettyPrinter(indent=4)
         i = 0
+        list_of_ts = []
         while True:
 
             W = self.calc_weights()
             self.current_t, reward_matrix, policy, V, new_conversation = self.update_policy_list(W)
+            list_of_ts.append((self.current_t, W, V, policy, reward_matrix))
             print(f"iteration: {i}")
             print("weights:")
             pp.pprint(W)
@@ -106,11 +109,11 @@ class IrlAlgorithmSolver:
                 break
             if i > self.max_iterations:
                 print(f"{self.conversation_name} file IS STUCK AND ITERATION IS BROKEN")
-                return W, reward_matrix, policy, V, new_conversation, False
+                return W, reward_matrix, policy, V, new_conversation, False, list_of_ts
             i += 1
 
         assert not (np.all(np.isnan(W))), "weights are broken"
-        return W, reward_matrix, policy, V, new_conversation, True
+        return W, reward_matrix, policy, V, new_conversation, True, list_of_ts
 
     def calc_weights(self) -> np.ndarray:
         """

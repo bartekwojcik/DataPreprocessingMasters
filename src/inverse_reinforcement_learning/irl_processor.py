@@ -50,9 +50,9 @@ class IrlProcessor():
             max_iterations=50
 
         )
-        weights, reward_matrix, policy, V, new_conversation, is_ok = irl.find_weights(
+        weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_ts = irl.find_weights(
             verbose=True
         )
 
-        return IrlProcessorResult(weights, reward_matrix, policy, V, new_conversation, is_ok)
+        return IrlProcessorResult(weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_ts)
 
