@@ -15,7 +15,6 @@ class CompareProcessor:
         frame_step: int,
             result_shape: Tuple,
             policy_player: HighPolicyPlayer,
-            policy_player_max_step: int,
         show_plot=True
     ) -> None:
 
@@ -28,7 +27,7 @@ class CompareProcessor:
         t_values = [t for t, W, Q, policy, reward_matrix in irl_result.list_of_ts]
         policies = [policy for t, W, Q, policy, reward_matrix in irl_result.list_of_ts]
 
-        calculated_conversations = [policy_player.play_policy(policy, policy_player_max_step) for policy in policies]
+        calculated_conversations = [policy_player.play_policy(policy, len(original_conversation)) for policy in policies]
 
         comparer = ConversationComparer()
         comparer.compare_and_save_plots(

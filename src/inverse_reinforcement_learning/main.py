@@ -7,6 +7,7 @@ from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.mdp_utils import MdpUtils
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from inverse_reinforcement_learning.compare_processor import CompareProcessor
+from inverse_reinforcement_learning.get_model_probas import ModelProbasGetter
 from inverse_reinforcement_learning.irl_processor import IrlProcessor
 from data_const import UsableConversationConstants as const_uc
 
@@ -29,19 +30,20 @@ if __name__ == "__main__":
 
                 mdp_graph = MdpUtils.get_at_high_mdp_model()
 
+                model = ModelProbasGetter().get_model_probas(conv_json,this_file_metadata,1)
+
                 processor = IrlProcessor()
                 irl_result = processor.process(
-                    conv_json, mdp_graph, this_file_metadata, full_file_name
+                    conv_json, model, this_file_metadata, full_file_name
                 )
 
-                policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph)
+                policy_player = HighPolicyPlayer(this_file_metadata, model)
 
                 compare_processor = CompareProcessor()
                 compare_processor.compare(
                     irl_result, full_file_name, conv_json,
-                    this_file_metadata, 12, mdp_graph.Ca.shape ,
-                    policy_player,len(conv_json),False
-                )
+                    this_file_metadata, 12, (2, 2, 2, 2) ,
+                    policy_player,False                )
 
                 #TODO might do something with irl_result later ¯\_(ツ)_/¯
 

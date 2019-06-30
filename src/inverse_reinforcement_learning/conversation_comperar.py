@@ -65,11 +65,11 @@ class ConversationComparer:
         else:
             file_name_probs = os.path.join(
                 settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
-                f"t_{t_value}_{file_name}_{original_or_not}_plot_probs.png",
+                f"{file_name}_t_{t_value}_{original_or_not}_plot_probs.png",
             )
             file_name_counts = os.path.join(
                 settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
-                f"t_{t_value}_{file_name}_{original_or_not}_plot_counts.png",
+                f"{file_name}_t_{t_value}_{original_or_not}_plot_counts.png",
             )
 
         translator = TransitionCountingTranslator(results)

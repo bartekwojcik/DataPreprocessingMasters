@@ -38,8 +38,8 @@ class IrlAlgorithmSolver:
         value_iterator: AtHighValueIteration,
         feature_expectation_extractor: FeatureExpectationExtractor,
         policy_player: HighPolicyPlayer,
+            policy_player_max_step: int,
         epsilon=0.1,
-        policy_player_max_step:int = 5000,
             max_iterations = 100
     ):
         """
@@ -83,7 +83,6 @@ class IrlAlgorithmSolver:
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
 
         """
-        plt.axis([0, 50, 0, 10])
         pp = pprint.PrettyPrinter(indent=4)
         i = 0
         list_of_ts = []
@@ -113,6 +112,7 @@ class IrlAlgorithmSolver:
             i += 1
 
         assert not (np.all(np.isnan(W))), "weights are broken"
+        plt.close()
         return W, reward_matrix, policy, V, new_conversation, True, list_of_ts
 
     def calc_weights(self) -> np.ndarray:

@@ -61,7 +61,7 @@ class HighPolicyPlayer:
                     data_consts.OUT,
                     low_person,
                     data_consts.OUT,
-                    current_state,
+                    current_time,
                     time_step,
                 )
             elif new_state == mdp_consts.H_AT_L:
@@ -70,7 +70,7 @@ class HighPolicyPlayer:
                     data_consts.LEFT_EYE,
                     low_person,
                     data_consts.OUT,
-                    current_state,
+                    current_time,
                     time_step,
                 )
             elif new_state == mdp_consts.L_AT_H:
@@ -79,7 +79,7 @@ class HighPolicyPlayer:
                     data_consts.OUT,
                     low_person,
                     data_consts.LEFT_EYE,
-                    current_state,
+                    current_time,
                     time_step,
                 )
             elif new_state == mdp_consts.MUTUAL:
@@ -88,7 +88,7 @@ class HighPolicyPlayer:
                     data_consts.LEFT_EYE,
                     low_person,
                     data_consts.LEFT_EYE,
-                    current_state,
+                    current_time,
                     time_step,
                 )
             else:
@@ -96,7 +96,7 @@ class HighPolicyPlayer:
 
             current_time += time_step
 
-            current_state = action_number
+            current_state = new_state
             result.append(frame)
 
         return result

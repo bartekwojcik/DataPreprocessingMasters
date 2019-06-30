@@ -46,8 +46,8 @@ class IrlProcessor():
             value_iterator,
             feature_expectation_extractor,
             policy_player,
-            policy_player_max_step=2000,
-            max_iterations=50
+            policy_player_max_step= len(conversation_json),
+            max_iterations=3
 
         )
         weights, reward_matrix, policy, V, new_conversation, is_ok, list_of_ts = irl.find_weights(
