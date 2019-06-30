@@ -19,16 +19,14 @@ class CompareProcessor:
         show_plot=True
     ) -> None:
 
-        file_name_to_save_plot = f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}" \
-                                 f"_{file_name}_frames_{settings.TRANSITION_FRAME_STEP}" \
-                                 f"_time_size:{settings.TIME_SIZE}"
+        file_name_to_save_plot = f"co_{file_name}"
 
 
         if not irl_result.is_ok:
             file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
 
-        t_values = [t for t, W, Q, policy, reward_matrix in irl_result.list_of_t_W_intercept_policies_rewards]
-        policies = [policy for t, W, Q, policy, reward_matrix in irl_result.list_of_t_W_intercept_policies_rewards]
+        t_values = [t for t, W, Q, policy, reward_matrix in irl_result.list_of_ts]
+        policies = [policy for t, W, Q, policy, reward_matrix in irl_result.list_of_ts]
 
         calculated_conversations = [policy_player.play_policy(policy, policy_player_max_step) for policy in policies]
 
@@ -41,6 +39,6 @@ class CompareProcessor:
             frame_step=frame_step,
             file_metadata=metadata,
             show=show_plot,
-            result_shape=result_shape,
-            settings=settings
+            result_shape=result_shape
+
         )

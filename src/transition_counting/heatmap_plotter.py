@@ -36,6 +36,9 @@ def plot_count_heatmap(array: np.ndarray, file_path_to_save: str, show: bool = T
     base = os.path.basename(file_path_to_save)
     ax.set_title(base)
     fig.tight_layout()
-    plt.savefig(file_path_to_save)
+    fig.set_size_inches((20, 10))
+    plt.savefig(file_path_to_save, quality=70, dpi=400)
     if show:
         plt.show()
+    else:
+        plt.close(fig)

@@ -3,6 +3,7 @@ import settings
 import os
 import json
 
+from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from Mdp.mdp_utils import MdpUtils
 from Mdp.transition_counting_translator import TransitionCountingTranslator
 from inverse_reinforcement_learning.compare_processor import CompareProcessor
@@ -33,9 +34,13 @@ if __name__ == "__main__":
                     conv_json, mdp_graph, this_file_metadata, full_file_name
                 )
 
+                policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph)
+
                 compare_processor = CompareProcessor()
                 compare_processor.compare(
-                    irl_result, full_file_name, conv_json, this_file_metadata, 12, True
+                    irl_result, full_file_name, conv_json,
+                    this_file_metadata, 12, mdp_graph.Ca.shape ,
+                    policy_player,len(conv_json),False
                 )
 
                 #TODO might do something with irl_result later ¯\_(ツ)_/¯

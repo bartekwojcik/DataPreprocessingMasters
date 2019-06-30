@@ -28,7 +28,7 @@ class HighPolicyPlayer:
     def play_policy(
         self,
         policy: np.ndarray,
-        max_steps: int = 1000,
+        max_steps: int = 16000,
         time_step: float = 0.04,
     ) -> List[dict]:
         """
