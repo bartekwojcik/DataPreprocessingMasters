@@ -91,4 +91,5 @@ class TransitionCountingTranslator:
         """
         cm = self.transform_to_4x4_count_matrix()
         pm = cm / cm.sum(axis=1, keepdims=True)
+        pm = np.nan_to_num(pm)
         return pm

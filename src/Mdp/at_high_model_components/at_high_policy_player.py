@@ -140,5 +140,6 @@ class HighPolicyPlayer:
                 return next_state
             else: last_proba+= proba
 
+        return random.randint(0, 3)
         raise ValueError("no state was chosen, something went wrong")
 
