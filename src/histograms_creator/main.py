@@ -19,12 +19,12 @@ def save_plot(file_path, y_label, bins, value_array, state_from, state_to):
     plt.bar(bins, value_array, width=1, ec="black")
     plt.ylabel(y_label)
     plt.xlabel("frame step (0.04s)")
-    fig.set_size_inches((18, 9), forward=False)
-    plt.savefig(file_path, quality=70, dpi=400)
+    fig.set_size_inches((14, 7), forward=False)
+    plt.savefig(file_path, quality=10, dpi=200)
     plt.close(fig)
 
 
-def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings):
+def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings, subfolder_name:str):
     n_bins = settings.TIME_SIZE
     bins = np.arange(0, n_bins, 1)
     all_states = MdpConsts.GET_TALK_AND_LOOK_STATES()
@@ -32,18 +32,27 @@ def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings)
         for state_to in all_states:
             transition_tuple = state_from + state_to
             times_array = count_array[transition_tuple]
+            summation = np.sum(times_array)
 
-            if np.all(times_array == 0):
+            if np.all(times_array == 0) or summation < 5:
                 continue
 
             folder_name = f"frame_{settings.TRANSITION_FRAME_STEP}_time_{settings.TIME_SIZE}"
 
+
             folder_path = os.path.join(
                 settings.HISTOGRAMS_FOLDER_PATH, folder_name
             )
-
             if not os.path.exists(folder_path):
                 os.mkdir(folder_path)
+
+            if subfolder_name:
+                folder_path = os.path.join(
+                    settings.HISTOGRAMS_FOLDER_PATH,folder_name, subfolder_name
+                )
+                if not os.path.exists(folder_path):
+                    os.mkdir(folder_path)
+
 
             frequency = int(np.sum(times_array))
 
@@ -51,7 +60,7 @@ def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings)
                                f"{state_from}_{state_to}_counts_frame_{settings.TRANSITION_FRAME_STEP}" \
                                f"_time_{settings.TIME_SIZE}.png"
             full_file_name_counts = os.path.join(
-                settings.HISTOGRAMS_FOLDER_PATH,folder_name, file_name_counts
+                folder_path, file_name_counts
             )
             save_plot(
                 full_file_name_counts,
@@ -71,7 +80,7 @@ def plot_histograms(file_name: str, count_array: np.ndarray, settings: Settings)
                                f"_state_{state_from,state_to}_probas_frame_" \
                                f"{settings.TRANSITION_FRAME_STEP}_time_{settings.TIME_SIZE}.png"
             full_file_name_probas = os.path.join(
-                settings.HISTOGRAMS_FOLDER_PATH, folder_name,file_name_probas
+                folder_path,file_name_probas
             )
 
             save_plot(
@@ -96,4 +105,4 @@ if __name__ == "__main__":
         f"_frame_{settings.TIME_SIZE}_time_size.npy",
     )
     count_array = np.load(file)
-    plot_histograms("global", count_array,settings)
+    plot_histograms("global", count_array,settings,"")

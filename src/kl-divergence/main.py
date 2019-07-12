@@ -14,6 +14,7 @@ import re
 import math
 from transition_counting.transition_counter import TransitionCounter
 import matplotlib.pyplot as plt
+import histograms_creator.main
 
 """
 
@@ -94,6 +95,7 @@ with open(METADATA_PATH, "r") as metadata_file:
                 current_model = AtHighMdpModel(original_ca, settings)
 
                 this_file_kls = []
+                this_file_cas = []
 
                 for i_pol,policy in enumerate(policies):
 
@@ -101,19 +103,22 @@ with open(METADATA_PATH, "r") as metadata_file:
                     created_conversation = player.play_policy(policy,len(conv_json))
                     created_ca = counter.count_transitions(created_conversation,FRAME_STEP,0,metadata,ca_shape,settings)
 
+                    #asd = scipy.stats.wasserstein_distance()
 
-                    #i am not sure if this is supposed to be count_transitions
-                    # perhaps 2D probabilities per state would be better?
-                    kl = scipy.special.kl_div(original_ca, created_ca)
+                    #to avoid inf change all 0s to ones
+                    created_ca_no_zeroes = np.where(created_ca == 0, 1, created_ca)
+                    kl = scipy.special.kl_div(original_ca, created_ca_no_zeroes)
 
-                    #if value is inf, we want to replace it with 0
-                    # (i dont know if this is correct though :D)
+
                     kl = np.where(kl == math.inf, 0, kl)
                     sum_kl = np.sum(kl)
 
                     this_file_kls.append(sum_kl)
+                    this_file_cas.append(created_ca)
 
                 #kls[conversation_file_name] = this_file_kls
+
+                top3 = sorted(this_file_kls)[:3]
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
@@ -123,6 +128,11 @@ with open(METADATA_PATH, "r") as metadata_file:
                     this_x_kl =  np.round(y,decimals=1)
                     ax.annotate(f"{x}, kl={this_x_kl}, t={this_x_t_val}",xy=(x,y),textcoords = 'data')
                     print(f"{x}, kl={this_x_kl}, t={this_x_t_val}")
+
+                    if y in top3:
+                        x_ca = this_file_cas[x]
+                        histograms_creator.main.plot_histograms(conversation_file_name,x_ca,settings,f"hi_{conv_number}_{y}")
+
 
                 plt.plot(this_file_kls)
                 plt.yscale('log')

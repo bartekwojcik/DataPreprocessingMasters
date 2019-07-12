@@ -9,8 +9,8 @@ def do_grid():
 
     VERBOSE = False
 
-    q_iterations = [1000,2000]
-    q_epsilon = [0.05,0.1,0.2]
+    q_iterations = [100]
+    q_epsilon = [0.1,0.2]
 
     for iterations in q_iterations:
         for epsilon in q_epsilon:
