@@ -9,8 +9,8 @@ def do_grid():
 
     VERBOSE = False
 
-    q_iterations = [100]
-    q_epsilon = [0.1,0.2]
+    q_iterations = [700,1500]
+    q_epsilon = [0.2,0.3]
 
     for iterations in q_iterations:
         for epsilon in q_epsilon:
@@ -32,7 +32,7 @@ def do_grid():
 
             loop = asyncio.get_event_loop()
             loop.run_until_complete(main_async(settings, VERBOSE))
-            loop.close()
+
 
     print("ENDED")
 

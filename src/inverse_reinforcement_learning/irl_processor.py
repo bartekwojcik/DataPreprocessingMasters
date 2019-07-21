@@ -59,7 +59,7 @@ class IrlProcessor:
             settings.Q_ITERATIONS,
             settings.DISCOUNT_FACTOR,
             settings.Q_ALPHA,
-            len(conversation_json),
+            16000, #len(conversation_json),
             settings.Q_EPSILON,
         )
 

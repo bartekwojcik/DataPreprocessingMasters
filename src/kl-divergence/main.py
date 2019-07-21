@@ -63,7 +63,7 @@ then:
 with open(METADATA_PATH, "r") as metadata_file:
     metadata_json = json.loads(metadata_file.read())
 
-    FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_QITERS_1000_QEPSILON_0.05"
+    FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_QITERS_700_QEPSILON_0.2-new"
 
     counter = TransitionCounter()
     for saved_numpy_file_name in os.listdir(FOLDER_PATH):

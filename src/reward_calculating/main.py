@@ -92,23 +92,21 @@ and rewards for calculated file
 
 
 METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
-FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_QITERS_1000_QEPSILON_0.05"
-policies_file_name = "QITERS_1000_QEPSILON_0.05_human_readable_conversation_6.json_policies.npy"
-rewards_file_name = "QITERS_1000_QEPSILON_0.05_human_readable_conversation_6.json_rewards.npy"
+FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_QITERS_700_QEPSILON_0.2-new"
+policies_file_name = "QITERS_700_QEPSILON_0.2_human_readable_conversation_99.json_policies.npy"
+rewards_file_name = "QITERS_700_QEPSILON_0.2_human_readable_conversation_99.json_rewards.npy"
 
 policies = np.load(os.path.join(FOLDER_PATH,policies_file_name))
 rewards = np.load(os.path.join(FOLDER_PATH,rewards_file_name))
 
-
 #take right policy and rewards
-nr = 0
+nr = 43
 policy = policies[nr]
 reward = rewards[nr]
 
 T_FILE_GROUP_NAME = "FILE_NUMBER"
 T_FILE_REGEX = "(QITERS_)\d+(_QEPSILON_)[0-9]\.[0-9]+(_human_readable_conversation_)" \
                "(?P<FILE_NUMBER>[0-9]+)(\.json_policies\.npy)"
-
 p = re.compile(T_FILE_REGEX)
 model = MdpUtils.get_at_high_mdp_model(settings)
 ca_shape = model.Ca.shape
@@ -139,7 +137,7 @@ if reg_res:
         original_conv_reward = get_rewards(conv_json,reward,metadata)
         calculated_conv_reward = get_rewards(created_conversation,reward,metadata)
 
-        print(f"conv {conv_number}, pol/rew n. {nr}")
+        print(f"conv: {conv_number}, policy/rewwards number: {nr}")
         print(f"original: {np.round(original_conv_reward,decimals=2)}")
         print(f"calculated: {np.round(calculated_conv_reward,decimals=2)}")
 
