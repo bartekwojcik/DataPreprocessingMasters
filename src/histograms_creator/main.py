@@ -23,7 +23,7 @@ def save_plot(file_path, y_label, bins, value_array, state_from, state_to):
     plt.close(fig)
 
 
-def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins:int, folder_to_save_path:str, histogram_file_name):
+def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins:int, folder_to_save_path:str):
     n_bins = n_bins#settings.TIME_SIZE
     bins = np.arange(0, n_bins, 1)
     all_states = MdpConsts.GET_TALK_AND_LOOK_STATES()
@@ -43,7 +43,7 @@ def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins
 
             frequency = int(np.sum(times_array))
 
-            file_name_counts = f"{frequency}_conv_{conversation_file_name}_{histogram_file_name}_{state_from}_{state_to}_counts.png"
+            file_name_counts = f"{frequency}_conv_{conversation_file_name}_{state_from}_{state_to}_counts.png"
             full_file_name_counts = os.path.join(
                 folder_to_save_path, file_name_counts
             )
@@ -62,7 +62,7 @@ def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins
             else:
                 percentage_array = times_array / sumation
 
-            file_name_probas = f"{frequency}_conv_{conversation_file_name}_{histogram_file_name}_{state_from}_{state_to}_probas.png"
+            file_name_probas = f"{frequency}_conv_{conversation_file_name}_{state_from}_{state_to}_probas.png"
             full_file_name_probas = os.path.join(
                 folder_to_save_path,file_name_probas
             )

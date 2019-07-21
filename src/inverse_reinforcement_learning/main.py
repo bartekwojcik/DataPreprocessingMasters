@@ -26,7 +26,7 @@ def main_synchronous(settings: Settings, VERBOSE: bool, root_folder_for_plots:st
                 process_file(metadata_json, filename,
                              conv_json, full_file_name,
                              VERBOSE,
-                             16000,
+                             16, #16000
                              settings.TRANSITION_FRAME_STEP,
                              settings.TIME_SIZE,
                              Q_ITERATIONS=5,
@@ -40,9 +40,9 @@ def main_synchronous(settings: Settings, VERBOSE: bool, root_folder_for_plots:st
 
 
 if __name__ == "__main__":
-    VERBOSE = True
+    VERBOSE = False
     settings = Settings()
 
-    root_folder_for_plots = settings.MY_DATA_FOLDER_PATH
+    root_folder_for_plots = settings.COMPARISON_PLOTS_FOLDER_PATH
     main_synchronous(settings,VERBOSE,root_folder_for_plots)
 

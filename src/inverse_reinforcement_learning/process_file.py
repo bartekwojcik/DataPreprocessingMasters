@@ -41,7 +41,7 @@ def process_file(
     #mdp_graph.plot_probabilities_per_state(VERBOSE,filename, settings)
 
     data_length = len(conv_json)
-    IRL_SOLVER_ITERATIONS = 50
+    IRL_SOLVER_ITERATIONS = 3
 
     policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph, 0.05)
 
