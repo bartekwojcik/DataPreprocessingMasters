@@ -57,13 +57,6 @@ def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalcu
 
 
 if __name__ == "__main__":
-    # JOINT_FILE_PATH = os.path.join(
-    #     settings.JOINT_DATA_FOLDER_PATH, "conversation_04.json"
-    # )
-    # CLUSTER_FILE_PATH = os.path.join(
-    #     settings.CLUSTER_DATA_FOLDER_PATH, "clustering_04.json"
-    # )
-
     sett = Settings(1, 0.99, 0.001, 0.1)
 
     with open(sett.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:

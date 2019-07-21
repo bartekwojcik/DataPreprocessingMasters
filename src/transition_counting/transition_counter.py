@@ -15,7 +15,7 @@ class TransitionCounter:
         starting_step: int,
         metadata: dict,
         shape: Tuple,
-        settings: Settings
+        max_time_frames:int
     ) -> np.ndarray:
         """
         Counts transitions. High is "Person at high" and low is "Person at low" as in paper
@@ -39,7 +39,7 @@ class TransitionCounter:
                 continue
 
             this_frame_result = frame_analyzer.process_frame(
-                previous_frame, frame, metadata, shape, state_processor, settings
+                previous_frame, frame, metadata, shape, state_processor, max_time_frames
             )
             result = result + this_frame_result
             previous_frame = frame

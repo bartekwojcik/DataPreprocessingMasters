@@ -17,20 +17,20 @@ class AtHighMdpModel:
 
     """
 
-    def __init__(self, counting_array: np.ndarray, settings:Settings):
+    def __init__(self, counting_array: np.ndarray, maximum_time_size: int):
         """
         :param counting_array: (2,2,2,2,2,2,2,2) array of transitions counts
         """
 
-        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, settings.TIME_SIZE), "did you update model?"
+        assert counting_array.shape == (2, 2, 2, 2, 2, 2, 2, 2, maximum_time_size), "did you update model?"
         self.Ca = counting_array
 
-        self.states = consts.GET_TALK_AND_LOOK_STATES_WITH_TIME(settings.TIME_SIZE)
+        self.states = consts.GET_TALK_AND_LOOK_STATES_WITH_TIME(maximum_time_size)
         self.actions = consts.GET_TALK_AND_LOOK_ACTIONS()
 
-        self.__init_states(settings)
+        self.__init_states(maximum_time_size)
 
-    def __init_states(self, settings:Settings):
+    def __init_states(self, maximum_time_size: int):
         """
         Sets graph where graph[state][action] = List of tuples (probability_of going to this state, state we will end up)
 
@@ -72,7 +72,7 @@ class AtHighMdpModel:
                     if current_states_idx == new_state_idx:
                         #update time by one
 
-                        if s[4]+1 < settings.TIME_SIZE:
+                        if s[4]+1 < maximum_time_size:
                             next_time = s[4]+1
                         else:
                             next_time = 0
@@ -104,7 +104,3 @@ class AtHighMdpModel:
         file_name_count = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_counts.jpg")
         plot_count_heatmap(np.round(count_matrix, decimals=2),file_name_count,show=verbose)
 
-        # proba_matrix = translator.transform_to_2D_probabilities_matrix()
-        # file_name_proba = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,
-        #                                f"{file_name}_MDP_MODEL_GRAPTH_proba.jpg")
-        # plot_count_heatmap(np.round(proba_matrix, decimals=2), file_name_proba, show=verbose)

@@ -4,7 +4,7 @@ from settings import Settings
 
 
 class TransitionCountingTranslator:
-    def __init__(self, count_matrix: np.ndarray, settings:Settings):
+    def __init__(self, count_matrix: np.ndarray, maximum_time_size:int):
 
         self.counting_matrix = np.array(count_matrix)
 
@@ -17,8 +17,8 @@ class TransitionCountingTranslator:
             2,
             2,
             2,
-            settings.TIME_SIZE
-        ), "it is not (2,2,2,2,2,2,2,2,TIME_SIZE) matrix, is it coming from transition_counting_results_with_talk_time_{someframe}.npy?"
+            maximum_time_size
+        ), "counting matrix shape is nor correct (check if the time, last index, is correct)"
 
     def transform_to_2D_count_matrix(self)->np.ndarray:
         """

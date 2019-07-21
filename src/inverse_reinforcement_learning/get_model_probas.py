@@ -16,26 +16,21 @@ class ModelProbasGetter:  # lol
         conversation,
         file_metadata: dict,
         frame_step: int,
-        filename: str,
-        verbose: bool,
-        settings:Settings
+        maximum_time_size:int
     ) -> AtHighMdpModel:
         # just to get dimentions of the result matrix
-        count_array_shape = MdpUtils.get_at_high_mdp_model(settings).Ca.shape
+        count_array_shape = (2,2,2,2,2,2,2,2,maximum_time_size)
 
         count_array = self.__count(
-            conversation, file_metadata, frame_step, count_array_shape,settings
+            conversation, file_metadata, frame_step, count_array_shape,maximum_time_size
         )
 
-        #not really usefull
-        #self.__save_plots(count_array, filename, "original", verbose,settings)
-
-        model = AtHighMdpModel(count_array,settings)
+        model = AtHighMdpModel(count_array,maximum_time_size)
 
         return model
 
     def __count(
-        self, conversation, file_metadata: dict, frame_step: int, shape: Tuple, settings:Settings
+        self, conversation, file_metadata: dict, frame_step: int, shape: Tuple, max_time_frames:int
     ) -> np.ndarray:
         result = np.zeros(shape)
         starting_points = np.arange(0, frame_step)
@@ -43,30 +38,9 @@ class ModelProbasGetter:  # lol
 
         for i in starting_points:
             file_result = counter.count_transitions(
-                conversation, frame_step, i, file_metadata, shape, settings
+                conversation, frame_step, i, file_metadata, shape, max_time_frames
             )
             result += file_result
 
         return result
 
-    def __save_plots(
-        self, results, file_name, original_or_not: str, show: bool, settings: Settings
-    ):
-        file_name_counts = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_"
-            f"plot_counts_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
-        )
-        file_name_probs = os.path.join(
-            settings.COMPARISON_PLOTS_FOLDER_PATH,
-            f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{original_or_not}_"
-            f"plot_probs_FROM_BEFOREHAND_TO_CHECK_NEW_FUNCTION.png",
-        )
-
-        translator = TransitionCountingTranslator(results,settings)
-        probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
-        count_matrix = translator.transform_to_2D_count_matrix()
-        plot_count_heatmap(
-            np.round(probabilities_matrix, decimals=3), file_name_probs, show
-        )
-        plot_count_heatmap(count_matrix, file_name_counts, show)

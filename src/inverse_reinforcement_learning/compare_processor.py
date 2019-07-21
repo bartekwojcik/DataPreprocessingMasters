@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 from Mdp.at_high_model_components.at_high_policy_player import HighPolicyPlayer
 from settings import Settings
-from inverse_reinforcement_learning.conversation_comperar import ConversationComparer
+from inverse_reinforcement_learning.conversation_comparer import ConversationComparer
 from inverse_reinforcement_learning.irl_processor_result import IrlProcessorResult
 import mdp_const
 
@@ -20,9 +20,10 @@ class CompareProcessor:
         metadata: dict,
         frame_step: int,
         result_shape: Tuple,
-        settings: Settings,
         policy_player: HighPolicyPlayer,
         policy_player_max_step:int,
+            max_time_frames:int,
+            heatmap_folder_path:str,
         show_plot=True,
     ) -> None:
         """
@@ -36,13 +37,6 @@ class CompareProcessor:
         :return:
         """
 
-        file_name_to_save_plot = f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}" \
-                                 f"_{file_name}_frames_{settings.TRANSITION_FRAME_STEP}" \
-                                 f"_time_size:{settings.TIME_SIZE}"
-        if not irl_result.is_ok:
-            file_name_to_save_plot = "FUCKED_UP" + file_name_to_save_plot
-
-
         t_values = [t for t, W, Q, policy, reward_matrix in irl_result.list_of_t_W_intercept_policies_rewards]
         policies = [policy for t, W, Q, policy, reward_matrix in irl_result.list_of_t_W_intercept_policies_rewards]
 
@@ -50,7 +44,7 @@ class CompareProcessor:
 
         comparer = ConversationComparer()
         comparer.compare_and_save_plots(
-            file_name_to_save_plot,
+            file_name,
             original_conversation=original_conversation,
             calculated_conversations=calculated_conversations,
             t_values = t_values,
@@ -58,5 +52,6 @@ class CompareProcessor:
             file_metadata=metadata,
             show=show_plot,
             result_shape=result_shape,
-            settings=settings
+            max_time_frames=max_time_frames,
+            heatmap_folder_path=heatmap_folder_path
         )

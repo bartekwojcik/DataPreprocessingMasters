@@ -10,7 +10,9 @@ class MdpUtils:
     __AtHighMdpModel = None  # type: AtHighMdpModel
 
     @staticmethod
-    def get_at_high_mdp_model(settings:Settings) -> AtHighMdpModel:
+    def get_at_high_mdp_model(transition_frame_step:int,
+                              time_size_frames:int,
+                              TRANSITION_RESULTS_FOLDER_PATH:str) -> AtHighMdpModel:
         """
         Gets MDP model from current (settings and mdpsettings) "transition_results" file
         :return: MDP model as graph.
@@ -20,13 +22,13 @@ class MdpUtils:
 
         else:
             file = os.path.join(
-                settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_"
-                                                         f"{settings.TRANSITION_FRAME_STEP}_frame_"
-                                                         f"{settings.TIME_SIZE}_time_size.npy"
+                TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_"
+                                                         f"{transition_frame_step}_frame_"
+                                                         f"{time_size_frames}_time_size.npy"
             )
             array = np.load(file)
 
-            MdpUtils.__AtHighMdpModel = AtHighMdpModel(array,settings)
+            MdpUtils.__AtHighMdpModel = AtHighMdpModel(array,time_size_frames)
 
             return MdpUtils.__AtHighMdpModel
 

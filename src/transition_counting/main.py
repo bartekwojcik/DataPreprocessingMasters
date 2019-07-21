@@ -10,11 +10,11 @@ from transition_counting.heatmap_plotter import plot_count_heatmap
 from transition_counting.transition_counter import TransitionCounter
 
 
-def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_probas:str, settings:Settings)->None:
-    file_name_counts = os.path.join(settings.MY_DATA_FOLDER_PATH,file_name_counts )
-    file_name_probs = os.path.join(settings.MY_DATA_FOLDER_PATH, file_name_probas)
+def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_probas:str, my_data_folder_path:str, maximum_time:int)->None:
+    file_name_counts = os.path.join(my_data_folder_path,file_name_counts )
+    file_name_probs = os.path.join(my_data_folder_path, file_name_probas)
 
-    translator = TransitionCountingTranslator(result_array, settings)
+    translator = TransitionCountingTranslator(result_array, maximum_time)
     count_matrix = translator.transform_to_2D_count_matrix()
     probabilities_matrix = translator.transform_to_2D_probabilities_matrix()
     plot_count_heatmap(count_matrix,
@@ -28,14 +28,12 @@ def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_proba
                              "and 0 = \"looks away / is silent\" 1 = \"looks at / talks\" ",show=False)
 
 
-def main_transition_counting(time = 10):
+def main_transition_counting():
     """
        the time transitions are from perspective of high, namely: after what time did the at high person change his state
 
        """
-    TIME = time
-
-    settings = Settings(TIME, 0.99, 0.001, 0.1)
+    settings = Settings()
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     time_size = settings.TIME_SIZE
     global_results = np.zeros((2, 2, 2, 2, 2, 2, 2, 2, time_size))
@@ -50,7 +48,7 @@ def main_transition_counting(time = 10):
             file_metadata = metadata[filename]
             file_results = np.zeros_like(global_results)
             base = os.path.basename(filename)
-            clear_name = os.path.splitext(base)[0]
+
             with open(full_file_name, "r") as data_raw:
                 FRAME_STEP = settings.TRANSITION_FRAME_STEP
                 starting_points = np.arange(0, FRAME_STEP)
@@ -58,19 +56,17 @@ def main_transition_counting(time = 10):
 
                 for i in starting_points:
                     one_file_results = counter.count_transitions(data, FRAME_STEP, i, file_metadata, global_results.shape,
-                                                           settings)
+                                                           settings.TIME_SIZE)
                     global_results += one_file_results
                     file_results += one_file_results
 
-                # plot_heatmaps(file_results, f"{clear_name}_counts.jpg", f"{clear_name}_probas.jpg")
-                debug = 5
 
     result_file_path = os.path.join(
         settings.TRANSITION_RESULTS_FOLDER_PATH, f"transition_counting_results_with_talk_"
                                                  f"{FRAME_STEP}_frame_{settings.TIME_SIZE}_time_size"
     )
     np.save(result_file_path, global_results)
-    plot_heatmaps(global_results, "heat_plot_counts.png", "heat_plot_probs.png", settings)
+    plot_heatmaps(global_results, "heat_plot_counts.png", "heat_plot_probs.png", settings.MY_DATA_FOLDER_PATH,settings.MAX_CONTINUOUS_TIME_SEC)
     print(f"results saved to {result_file_path}")
 
 

@@ -7,27 +7,23 @@ from inverse_reinforcement_learning.irl_processor import IrlProcessor
 from inverse_reinforcement_learning.irl_results_plotter_saver import (
     IrlResultsPlotterSaver,
 )
-from settings import Settings
-
-
-async def async_process_file(
-    loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, setting: Settings
-):
-
-    return await loop.run_in_executor(
-        ProcessPoolExecutor(),
-        process_file,
-        metadata_json,
-        filename,
-        conv_json,
-        full_file_name,
-        VERBOSE,
-        setting,
-    )
 
 
 def process_file(
-    metadata_json, filename, conv_json, full_file_name, VERBOSE, settings: Settings
+    metadata_json, filename,
+        conv_json,
+        full_file_name,
+        VERBOSE,
+        q_learning_episode_length:int,
+        transition_frame_step:int,
+        maximum_time_size_frames:int,
+        Q_ITERATIONS,
+        DISCOUNT_FACTOR,
+        Q_ALPHA,
+        Q_EPSILON,
+        IRL_SOLVER_EPSILON,
+        heatmap_folder_path,
+        policies_save_folder_path
 ):
     print(f"file started: {full_file_name} ")
 
@@ -37,10 +33,8 @@ def process_file(
     mdp_graph = probas_getter.get_model_probas(
         conv_json,
         this_file_metadata,
-        settings.TRANSITION_FRAME_STEP,
-        filename,
-        VERBOSE,
-        settings,
+        transition_frame_step,
+        maximum_time_size_frames,
     )
 
     # plots probabilities of model's actions in states
@@ -58,10 +52,15 @@ def process_file(
         this_file_metadata,
         full_file_name,
         policy_player,
+        Q_ITERATIONS=Q_ITERATIONS,
+        DISCOUNT_FACTOR=DISCOUNT_FACTOR,
+        Q_ALPHA=Q_ALPHA,
+        Q_EPSILON=Q_EPSILON,
+        IRL_SOLVER_EPSILON=IRL_SOLVER_EPSILON,
         policy_player_max_step=data_length,
         verbose=VERBOSE,
-        settings=settings,
         irl_solver_iterations=IRL_SOLVER_ITERATIONS,
+        q_learning_episode_length=q_learning_episode_length
     )
 
     compare_processor = CompareProcessor()
@@ -70,19 +69,19 @@ def process_file(
         full_file_name,
         conv_json,
         this_file_metadata,
-        settings.TRANSITION_FRAME_STEP,
+        transition_frame_step,
         mdp_graph.Ca.shape,
-        settings,
         policy_player,
         policy_player_max_step=data_length,
-        show_plot=VERBOSE,
+        show_plot=VERBOSE,max_time_frames=maximum_time_size_frames,
+        heatmap_folder_path=heatmap_folder_path
+
     )
 
     saver_plotter = IrlResultsPlotterSaver(
         filename,
         irl_result.list_of_t_W_intercept_policies_rewards,
-        IRL_SOLVER_ITERATIONS,
-        settings,
+        IRL_SOLVER_ITERATIONS
     )
 
-    saver_plotter.plot()
+    saver_plotter.plot(policies_save_folder_path)

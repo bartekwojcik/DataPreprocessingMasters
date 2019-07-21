@@ -2,17 +2,7 @@ from settings import Settings
 import os
 import json
 
-settings = Settings(
-    MAX_CONTINUOUS_TIME_SEC=10.0,
-    DISCOUNT_FACTOR=0.999999,
-    POLICY_THETA=0.01,
-    IRL_SOLVER_EPSILON=0.05,
-    Q_ITERATIONS=100,
-    Q_ALPHA=0.4,
-    Q_EPSILON=0.2,
-)
-
-
+settings = Settings()
 
 master_conversation = []
 METADATA_PATH = settings.READABLE_METADATA_FILE_PATH

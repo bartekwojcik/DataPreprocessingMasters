@@ -18,27 +18,20 @@ class IrlResultsPlotterSaver:
             file_name:str,
             list_of_ts_weights_intercept:List[Tuple[float, np.ndarray, np.ndarray,np.ndarray,np.ndarray]],
             iterations:int,
-            settings:Settings):
+            ):
 
-        self.file_name = f"{settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}"
-        self.settings = settings
+        self.file_name = file_name
         self.iterations = iterations
         self.list_of_ts_weights_intercept_policy_reward = list_of_ts_weights_intercept
 
-    def plot(self):
+    def plot(self, save_full_folder_path):
         """
         Eh
         :return:
         """
 
-        folder_name = f"frame_{self.settings.TRANSITION_FRAME_STEP}" \
-                      f"_QITERS_{self.settings.Q_ITERATIONS}" \
-                      f"_QEPSILON_{self.settings.Q_EPSILON}"
-        folder_path = os.path.join(
-            self.settings.COMPARISON_PLOTS_FOLDER_PATH, folder_name
-        )
-        if not os.path.exists(folder_path):
-            os.mkdir(folder_path)
+        if not os.path.exists(save_full_folder_path):
+            os.makedirs(save_full_folder_path)
 
 
 
@@ -96,7 +89,7 @@ class IrlResultsPlotterSaver:
                 rewards_diff_values[i-1] =reward_diff
 
         title = f"{self.file_name} t value over iterations"
-        self.__save_plot(folder_path,
+        self.__save_plot(save_full_folder_path,
                          self.file_name,
                          "T_VALUES_plot",
                          t_values, iterations, title,
@@ -104,16 +97,16 @@ class IrlResultsPlotterSaver:
                          "value of t")
 
 
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_w_values", w_full_values)
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_Q_values", qs_values)
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_policies", policies_full_values)
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_rewards", rewards_full_values)
-        self.__save_numpy_to_file(folder_path, f"{self.file_name}_T_values", t_values)
+        self.__save_numpy_to_file(save_full_folder_path, f"{self.file_name}_w_values", w_full_values)
+        self.__save_numpy_to_file(save_full_folder_path, f"{self.file_name}_Q_values", qs_values)
+        self.__save_numpy_to_file(save_full_folder_path, f"{self.file_name}_policies", policies_full_values)
+        self.__save_numpy_to_file(save_full_folder_path, f"{self.file_name}_rewards", rewards_full_values)
+        self.__save_numpy_to_file(save_full_folder_path, f"{self.file_name}_T_values", t_values)
 
         if len(iterations) > 1:
             title = f"{self.file_name} difference of w+intercept per iteration (minus w previous + intercept previous)"
             shorter_iterations = iterations[1:]
-            self.__save_plot(folder_path,
+            self.__save_plot(save_full_folder_path,
                              self.file_name,
                              "W_difference",
                              w_diff_values, shorter_iterations, title,
@@ -121,7 +114,7 @@ class IrlResultsPlotterSaver:
                              "W - previous W value")
 
             title = f"{self.file_name} policy - previous policy"
-            self.__save_plot(folder_path,
+            self.__save_plot(save_full_folder_path,
                              self.file_name,
                              "policy_difference",
                              policies_diff_values, shorter_iterations, title,
@@ -129,7 +122,7 @@ class IrlResultsPlotterSaver:
                              "policy - previous policy value")
 
             title = f"{self.file_name} reward - previous reward"
-            self.__save_plot(folder_path,
+            self.__save_plot(save_full_folder_path,
                              self.file_name,
                              "rewards_difference",
                              rewards_diff_values, shorter_iterations, title,
@@ -153,8 +146,8 @@ class IrlResultsPlotterSaver:
         """
 
         file_path = os.path.join(
-            self.settings.COMPARISON_PLOTS_FOLDER_PATH, folder_path,
-            f"{self.settings.GLOBAL_PREFIX_FOR_FILE_NAMES}_{file_name}_{plot_file_name}.png",
+            folder_path,
+            f"{file_name}_{plot_file_name}.png",
         )
 
 

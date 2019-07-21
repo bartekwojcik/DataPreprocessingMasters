@@ -48,7 +48,7 @@ class FrameAnalyzer:
         metadata: dict,
         shape: Tuple,
         state_processor: TransitionMatrixUpdater,
-        settings:Settings
+        max_time_frames:int
     ) -> np.ndarray:
         """
         Study transition changes between previous and current frame.
@@ -76,7 +76,7 @@ class FrameAnalyzer:
         )
         current_state = self.get_gaze_talk_state_vector_from_frame(frame, high, low)
 
-        if self.previous_time == settings.TIME_SIZE:
+        if self.previous_time == max_time_frames:
             self.previous_time = 0
 
         result = state_processor.increment_matrix(

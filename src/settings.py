@@ -4,14 +4,13 @@ import os
 class Settings:
     def __init__(
         self,
-        MAX_CONTINUOUS_TIME_SEC: float,
-        DISCOUNT_FACTOR: float,
-        POLICY_THETA: float,
-        IRL_SOLVER_EPSILON: float,
+        MAX_CONTINUOUS_TIME_SEC: float = 10,
+        DISCOUNT_FACTOR: float = 0.9999,
+        IRL_SOLVER_EPSILON: float = 0.5,
         GLOBAL_PREFIX_FOR_FILE_NAMES: str = "",
-        Q_ITERATIONS = 500,
+        Q_ITERATIONS = 700,
         Q_ALPHA = 0.5,
-            Q_EPSILON = 0.05
+        Q_EPSILON = 0.05
     ):
 
         self.Q_EPSILON = Q_EPSILON
@@ -28,7 +27,6 @@ class Settings:
         self.GLOBAL_PREFIX_FOR_FILE_NAMES = GLOBAL_PREFIX_FOR_FILE_NAMES
 
         self.DISCOUNT_FACTOR = DISCOUNT_FACTOR
-        self.POLICY_THETA = POLICY_THETA
         self.IRL_SOLVER_EPSILON = IRL_SOLVER_EPSILON
 
         self.TRANSITION_FRAME_STEP = 1

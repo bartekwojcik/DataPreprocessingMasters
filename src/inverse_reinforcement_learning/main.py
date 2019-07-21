@@ -1,35 +1,13 @@
 from settings import Settings
 import os
 import json
-from inverse_reinforcement_learning.process_file import process_file, async_process_file
-import asyncio
+from inverse_reinforcement_learning.process_file import process_file
 
 
-async def main_async(settings: Settings, VERBOSE: bool):
+def main_synchronous(settings: Settings, VERBOSE: bool, root_folder_for_plots:str):
     HUMAN_READABLE_FOLDER_PATH = settings.HUMAN_READABLE_FOLDER_PATH
     METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 
-    tasks = []
-    loop = asyncio.get_event_loop()
-    with open(METADATA_PATH, "r") as metadata_file:
-        metadata_json = json.loads(metadata_file.read())
-
-        for filename in os.listdir(HUMAN_READABLE_FOLDER_PATH):
-            full_file_name = os.path.join(HUMAN_READABLE_FOLDER_PATH, filename)
-
-
-
-            with open(full_file_name, "r") as conversation_file:
-                conv_json = json.loads(conversation_file.read())
-                task = async_process_file(loop, metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
-                tasks.append(task)
-
-    await asyncio.gather(*(tasks)[-1:])
-
-
-def main_synchronous(settings: Settings, VERBOSE: bool):
-    HUMAN_READABLE_FOLDER_PATH = settings.HUMAN_READABLE_FOLDER_PATH
-    METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 
     with open(METADATA_PATH, "r") as metadata_file:
         metadata_json = json.loads(metadata_file.read())
@@ -41,24 +19,30 @@ def main_synchronous(settings: Settings, VERBOSE: bool):
 
             with open(full_file_name, "r") as conversation_file:
                 conv_json = json.loads(conversation_file.read())
-                process_file(metadata_json, filename, conv_json, full_file_name, VERBOSE, settings)
+
+                heatmap_folder_path = os.path.join(root_folder_for_plots,filename,"heatmaps")
+                policies_save_folder_path = os.path.join(root_folder_for_plots,filename,"policies")
+
+                process_file(metadata_json, filename,
+                             conv_json, full_file_name,
+                             VERBOSE,
+                             16000,
+                             settings.TRANSITION_FRAME_STEP,
+                             settings.TIME_SIZE,
+                             Q_ITERATIONS=5,
+                             Q_ALPHA=0.5,Q_EPSILON=0.05,IRL_SOLVER_EPSILON=0.5,
+                             heatmap_folder_path=heatmap_folder_path
+                             ,policies_save_folder_path=policies_save_folder_path
+                             ,DISCOUNT_FACTOR= 0.9999999
+                             )
+
 
 
 
 if __name__ == "__main__":
     VERBOSE = True
-    settings = Settings(MAX_CONTINUOUS_TIME_SEC=10.0,
-                        DISCOUNT_FACTOR=0.999999,
-                        POLICY_THETA=0.01,
-                        IRL_SOLVER_EPSILON=0.05,
-                        Q_ITERATIONS=700,
-                        Q_ALPHA=0.5,
-                        Q_EPSILON = 0.10)
-    #asyncio.run(main_async(settings, VERBOSE))
+    settings = Settings()
 
-    loop = asyncio.get_event_loop()
-    # Blocking call which returns when the hello_world() coroutine is done
-    loop.run_until_complete(main_async(settings, VERBOSE))
-    loop.close()
+    root_folder_for_plots = settings.MY_DATA_FOLDER_PATH
+    main_synchronous(settings,VERBOSE,root_folder_for_plots)
 
-    print("started")

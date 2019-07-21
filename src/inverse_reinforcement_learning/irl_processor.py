@@ -28,8 +28,13 @@ class IrlProcessor:
         policy_player: HighPolicyPlayer,
         policy_player_max_step: int,
         verbose: bool,
-        settings: Settings,
         irl_solver_iterations: int,
+        q_learning_episode_length: int,
+            Q_ITERATIONS,
+            DISCOUNT_FACTOR,
+            Q_ALPHA,
+            Q_EPSILON,
+            IRL_SOLVER_EPSILON
     ) -> IrlProcessorResult:
         """
         Processes one file of conversation with Inverse Reinforcement Learning
@@ -56,11 +61,11 @@ class IrlProcessor:
         # value_iterator = AtHighValueIteration(mdp_graph,settings.POLICY_THETA,settings.DISCOUNT_FACTOR)
 
         q_learner = QLearner(
-            settings.Q_ITERATIONS,
-            settings.DISCOUNT_FACTOR,
-            settings.Q_ALPHA,
-            16000, #len(conversation_json),
-            settings.Q_EPSILON,
+            Q_ITERATIONS,
+            DISCOUNT_FACTOR,
+            Q_ALPHA,
+            q_learning_episode_length,
+            Q_EPSILON,
         )
 
         irl = IrlAlgorithmSolver(
@@ -73,7 +78,7 @@ class IrlProcessor:
             q_learner,
             mdp_graph,
             policy_player_max_step=policy_player_max_step,
-            epsilon=settings.IRL_SOLVER_EPSILON,
+            epsilon=IRL_SOLVER_EPSILON,
             max_iterations=irl_solver_iterations,
         )
 
