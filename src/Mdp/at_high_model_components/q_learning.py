@@ -9,7 +9,9 @@ from Mdp.at_high_model_components.environment import Environment
 
 
 class QLearner:
-
+    """
+    Q learning algorithm as described in Richard S. Sutton and Andrew G. Barto 2018 chapter: 6.5 Q-learning: On-policy TD Control
+    """
     def __init__(self,
                  q_iterations: int,
                  discount_factor:float,

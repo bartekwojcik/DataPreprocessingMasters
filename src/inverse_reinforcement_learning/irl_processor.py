@@ -16,7 +16,7 @@ from settings import Settings
 
 class IrlProcessor:
     """
-    Encapsulates IRL algorithm process
+    Encapsulates IRL algorithm process, it is just a facade
     """
 
     def process(
@@ -38,10 +38,7 @@ class IrlProcessor:
     ) -> IrlProcessorResult:
         """
         Processes one file of conversation with Inverse Reinforcement Learning
-        :param conversation_json:
-        :param mdp_graph:
-        :param metadata:
-        :return: IrlProcessorResult
+        Paramters are just like the ones in inverse inverse_reinforcement_learning.process_file
         """
 
         feature_expectation_extractor = FeatureExpectationExtractor(

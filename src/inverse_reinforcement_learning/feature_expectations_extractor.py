@@ -34,7 +34,8 @@ class FeatureExpectationExtractor:
     def get_feature_expectations(self, data: List[dict]) -> np.ndarray:
         """
         Analyses data step by step to find out features expectations
-        :return: feature expectations
+        :param data: dictionary of the conversation
+        :return: feature expectations as a np.ndarray
         """
         data_length = len(data)
         max_steps = data_length
@@ -60,6 +61,13 @@ class FeatureExpectationExtractor:
     def get_random_feature_expectations(
         self, n_steps: int, model: AtHighMdpModel, policy_player: HighPolicyPlayer
     ):
+        """
+        Returns random feature expectations following random policy
+        :param n_steps: number of frames in produced conversation
+        :param model: MDP model to get number of actions
+        :param policy_player:
+        :return: feature expectations of following random policy
+        """
 
         mi = np.array([0 for n in range(self.n_states)])
 
@@ -100,6 +108,11 @@ class FeatureExpectationExtractor:
 
     @classmethod
     def calculate_state_vector(cls, current_state_vector: Tuple, states: List[Tuple]):
+        """
+        :param current_state_vector: state vector in format (high_gaze,high_talk,low_gaze,low_talk,time)
+        :param states: list of all the possible states
+        :return: Hot-One encoding of the state
+        """
         zeros_indices = np.zeros(len(states))
 
         state_index = states.index(current_state_vector)

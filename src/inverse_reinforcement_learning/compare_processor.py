@@ -9,11 +9,10 @@ import mdp_const
 
 class CompareProcessor:
     """
-    Compares real conversation with the reasult created by IRL algorithm
+    Compares real conversation with the results created by IRL algorithm
     """
     def compare(
         self,
-
         irl_result: IrlProcessorResult,
         file_name: str,
         original_conversation: List[dict],
@@ -28,12 +27,17 @@ class CompareProcessor:
     ) -> None:
         """
         Compares real conversation with the reasult created by IRL algorithm
-        :param irl_result:
-        :param file_name:
-        :param original_conversation:
-        :param metadata:
-        :param frame_step:
-        :param show_plot:
+        :param irl_result: results of IRL solver
+        :param file_name: name of the conversation
+        :param original_conversation: data of the real conversation that will be a point of reference
+        :param metadata: metadata of original_conversation
+        :param frame_step: 1 for one by one frame analysis
+        :param result_shape: shape of the count array (probably (2,2,2,2,2,2,2,2,time))
+        :param policy_player:
+        :param policy_player_max_step: max frames for policy_player to be created (how long will created conversation will be, you probably want it to be as long as original conversation)
+        :param max_time_frames: maximal time for state to be in
+        :param heatmap_folder_path: folder where heat maps will be created and saved to
+        :param show_plot: show or not intermediate plots, you probably want it to be false
         :return:
         """
 

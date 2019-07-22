@@ -24,6 +24,19 @@ class ConversationComparer:
             max_time_frames:int,
             heatmap_folder_path:str
     ):
+        """
+        :param file_name: name of the conversation
+        :param original_conversation: data of the real conversation that will be a point of reference
+        :param calculated_conversations: conversations to be compared with original_conversation
+        :param t_values: t values associated with calculated_conversations
+        :param frame_step: 1
+        :param file_metadata: metadata of original_conversation
+        :param show: just false
+        :param result_shape:  shape of the count array (probably (2,2,2,2,2,2,2,2,time))
+        :param max_time_frames:  maximal time for state to be in
+        :param heatmap_folder_path: folder where heat maps will be created and saved to
+        :return:
+        """
 
         original_results = self.__count(
             original_conversation, file_metadata, frame_step, result_shape, max_time_frames

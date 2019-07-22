@@ -73,15 +73,7 @@ def get_current_state(current_frame, previous_frame,metadata, previous_time:int)
 
 
 
-settings = Settings(
-    MAX_CONTINUOUS_TIME_SEC=10.0,
-    DISCOUNT_FACTOR=0.999999,
-    POLICY_THETA=0.01,
-    IRL_SOLVER_EPSILON=0.05,
-    Q_ITERATIONS=100,
-    Q_ALPHA=0.4,
-    Q_EPSILON=0.2,
-)
+settings = Settings()
 """
 POINT TO THE POLICY .npy FILE, POINT TO THE REWARDS NUMPY FILE
 CHANGE VARIABLE ___nr___ to the right policy and rewards number
@@ -89,7 +81,6 @@ THIS SCRIPT WILL FIND THE CONVERSATION AND calculate
 reward for original file if it was following calculated rewards
 and rewards for calculated file
 """
-
 
 METADATA_PATH = settings.READABLE_METADATA_FILE_PATH
 FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\comparisons_plots\\frame_1_QITERS_700_QEPSILON_0.2-new"
@@ -105,11 +96,11 @@ policy = policies[nr]
 reward = rewards[nr]
 
 T_FILE_GROUP_NAME = "FILE_NUMBER"
-T_FILE_REGEX = "(QITERS_)\d+(_QEPSILON_)[0-9]\.[0-9]+(_human_readable_conversation_)" \
+T_FILE_REGEX = "(human_readable_conversation_)" \
                "(?P<FILE_NUMBER>[0-9]+)(\.json_policies\.npy)"
 p = re.compile(T_FILE_REGEX)
-model = MdpUtils.get_at_high_mdp_model(settings)
-ca_shape = model.Ca.shape
+
+ca_shape = (2,2,2,2,2,2,2,2,settings.TIME_SIZE)
 
 reg_res = p.match(policies_file_name)
 if reg_res:
@@ -128,8 +119,8 @@ if reg_res:
 
         FRAME_STEP = settings.TRANSITION_FRAME_STEP
         counter = TransitionCounter()
-        original_ca = counter.count_transitions(conv_json, FRAME_STEP, 0, metadata, ca_shape, settings)
-        current_model = AtHighMdpModel(original_ca, settings)
+        original_ca = counter.count_transitions(conv_json, FRAME_STEP, 0, metadata, ca_shape,settings.TIME_SIZE)
+        current_model = AtHighMdpModel(original_ca,settings.TIME_SIZE)
         player = HighPolicyPlayer(metadata, current_model)
 
         PRVIOUS_TIME = 0

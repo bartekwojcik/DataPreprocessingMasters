@@ -10,7 +10,10 @@ import numpy as np
 from typing import Tuple
 
 
-class ModelProbasGetter:  # lol
+class ModelProbasGetter:
+    """
+    Creates MDP model that reflects given conversation's probabilities for person "at low"
+    """
     def get_model_probas(
         self,
         conversation,
@@ -18,6 +21,14 @@ class ModelProbasGetter:  # lol
         frame_step: int,
         maximum_time_size:int
     ) -> AtHighMdpModel:
+        """
+        Creates MDP model that reflects given conversation's probabilities for person "at low"
+        :param conversation: conversation data in form of dictionary
+        :param file_metadata: this conversation's metadata in form of dictionary
+        :param frame_step: 1 to check frame by frame
+        :param maximum_time_size: maximum time for state
+        :return:
+        """
         # just to get dimentions of the result matrix
         count_array_shape = (2,2,2,2,2,2,2,2,maximum_time_size)
 

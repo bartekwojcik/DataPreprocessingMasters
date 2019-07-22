@@ -6,7 +6,17 @@ from transition_counting.state_utils import StateUtils
 import matplotlib.pyplot as plt
 
 
-def save_plot(file_path, y_label, bins, value_array, state_from, state_to):
+def __save_plot(file_path, y_label, bins, value_array, state_from, state_to):
+    """
+    Save plots to disc
+    :param file_path:
+    :param y_label:
+    :param bins:
+    :param value_array:
+    :param state_from:
+    :param state_to:
+    :return:
+    """
     fig = plt.figure()
 
     str_state_from = StateUtils.state_vector_to_human_string(state_from)
@@ -24,7 +34,15 @@ def save_plot(file_path, y_label, bins, value_array, state_from, state_to):
 
 
 def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins:int, folder_to_save_path:str):
-    n_bins = n_bins#settings.TIME_SIZE
+    """
+    Creates histograms of states for conversation in json file. Ignores states visited less than 10 times.
+    :param conversation_file_name:
+    :param count_array: array of the transitions (probably of shape (2,2,2,2,2,2,2,2,2,time))
+    :param n_bins: number of bins for histogram
+    :param folder_to_save_path:
+    :return:
+    """
+
     bins = np.arange(0, n_bins, 1)
     all_states = MdpConsts.GET_TALK_AND_LOOK_STATES()
     for state_from in all_states:
@@ -47,7 +65,7 @@ def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins
             full_file_name_counts = os.path.join(
                 folder_to_save_path, file_name_counts
             )
-            save_plot(
+            __save_plot(
                 full_file_name_counts,
                 "number of visits",
                 bins,
@@ -67,7 +85,7 @@ def plot_histograms(conversation_file_name: str, count_array: np.ndarray, n_bins
                 folder_to_save_path,file_name_probas
             )
 
-            save_plot(
+            __save_plot(
                 full_file_name_probas,
                 "chance of transition (%)",
                 bins,

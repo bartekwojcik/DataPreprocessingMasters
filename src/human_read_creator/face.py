@@ -1,11 +1,12 @@
 import numpy as np
 
-"""
-Class based on Face class by Francisco Mendonca - Heriot-Watt university 
-"""
+
 
 
 class Face:
+    """
+    Class based on Face class by Francisco Mendonca - Heriot-Watt university
+    """
     def __init__(self, wantedHeight, leftEye, rightEye, mouth, extraFaceSpaceRatio=1.5):
         self.m_wantedHeight = float(wantedHeight)
         self.m_wantedWidth = (3.0 / 5.0) * self.m_wantedHeight

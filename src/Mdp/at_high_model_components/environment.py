@@ -31,9 +31,9 @@ class Environment:
         self, action: Tuple[int, int]
     ) -> Tuple[Tuple[int, int, int, int, int], float]:
         """
-        action index, currently 0-3
-        :param action_index:
-        :return: state and reward
+
+        :param action: tuple of gaze and talk state, like (1,0) namely: look=1 and not talk=0
+        :return: tuple of (new state of the environment, reward for going there)
         """
 
         possible_environment_responses = self.model.graph[self.current_state][
@@ -50,7 +50,7 @@ class Environment:
     def __select_environment_response(self, possible_environment_responses):
         """
         THIS FUNCTIONS IS ALMOST THE SAME LIKE POLICY_PLAYER.__random_next_state
-        sorry, it is poor coding
+        sorry, it is poor coding and lack of time
         :param possible_environment_responses:
         :return:
         """

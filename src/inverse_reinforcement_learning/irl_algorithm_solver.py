@@ -97,6 +97,7 @@ class IrlAlgorithmSolver:
         """
 
         :return: weights, reward_matrix, policy, V, new_conversation, is_ok_or_broken_after_max_iters (True =ok , False = fucked_up)?
+                    list of tuples of: (t, Weights, Q values, policy, reward_matrix)
 
         """
 

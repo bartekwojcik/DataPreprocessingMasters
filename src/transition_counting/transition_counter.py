@@ -20,12 +20,13 @@ class TransitionCounter:
         """
         Counts transitions. High is "Person at high" and low is "Person at low" as in paper
 
-        :return: return 2x2x2x2x2x2x2x2 matrix that translates to:
+        :return: return 2x2x2x2x2x2x2x2,time matrix that translates to:
            return 2x2x2x2x2x2x2x2 matrix that translates to:
              previous_high_gaze_state, current_high_gaze_state,
             previous_high_talk_state, current_high_talk_state,
             previous_low_gaze_state, current_low_gaze_state,
             previous_low_talk_state, current_low_talk_state,
+            max time
         """
         result = np.zeros(shape)
 

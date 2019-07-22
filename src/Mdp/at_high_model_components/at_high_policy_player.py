@@ -21,8 +21,10 @@ class HighPolicyPlayer:
         self, file_metadata: dict, model: AtHighMdpModel, epsilon_greedy: float = 0.0
     ):
         """
-
-        :param file_metadata: metadata stating who is high and who is low
+        Plays out policy assuming that high person is an agent and low person is an part of environment.
+        :param file_metadata: metadata of tonversation that model is using
+        :param model: MPD model
+        :param epsilon_greedy: parameter of how often does agent chose different action than the one from the policy
         """
         self.epsilon_greedy = epsilon_greedy
         self.model = model
@@ -33,10 +35,9 @@ class HighPolicyPlayer:
         self, policy: np.ndarray, max_steps: int, time_step: float = 0.04
     ) -> List[dict]:
         """
-        :param file_metadata: metadata
+
         :param time_step:
-        :param max_steps: max iterations of playing
-        :param model:
+        :param max_steps: max iterations of playing (how many frames of conversation will be created)
         :param policy: A policy is a mapping where policy[state]->action where state index is given state
         0 - (not look, not talk)
         1 - (not look, talk)

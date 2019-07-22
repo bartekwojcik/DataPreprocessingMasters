@@ -24,7 +24,12 @@ class FrameAnalyzer:
     def get_gaze_talk_state_vector_from_frame(
         cls, frame: dict, person_at_high: str, person_at_low: str
     ) -> Tuple[int, int, int, int]:
-
+        """
+        :param frame:
+        :param person_at_high: state person at high in string form , probably from human_readable_file
+        :param person_at_low: state person at low in string form , probably from human_readable_file
+        :return: Tuple of 4 integers stating (high_gaze, high_talk, low_gaze, low_talk)
+        """
         high = person_at_high
         low = person_at_low
 
@@ -56,11 +61,12 @@ class FrameAnalyzer:
 
         :param previous_frame:
         :param frame:
-        :return: return 2x2x2x2x2x2x2x2 matrix that translates to:
+        :return: return 2x2x2x2x2x2x2x2,TIME matrix that translates to:
              previous_high_gaze_state, current_high_gaze_state,
             previous_high_talk_state, current_high_talk_state,
             previous_low_gaze_state, current_low_gaze_state,
             previous_low_talk_state, current_low_talk_state,
+            MAX TIME
         """
 
         result = np.zeros(shape)

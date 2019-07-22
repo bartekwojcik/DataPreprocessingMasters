@@ -10,7 +10,8 @@ class Settings:
         GLOBAL_PREFIX_FOR_FILE_NAMES: str = "",
         Q_ITERATIONS = 700,
         Q_ALPHA = 0.5,
-        Q_EPSILON = 0.05
+        Q_EPSILON = 0.05,
+        CONTINUOUS_TIME_STEP_SEC = 0.04
     ):
 
         self.Q_EPSILON = Q_EPSILON
@@ -19,7 +20,7 @@ class Settings:
         # time
         self.MAX_CONTINUOUS_TIME_SEC = MAX_CONTINUOUS_TIME_SEC
         # each step in data is like that
-        self.CONTINUOUS_TIME_STEP_SEC = 0.04
+        self.CONTINUOUS_TIME_STEP_SEC = CONTINUOUS_TIME_STEP_SEC
         self.TIME_SIZE = int(
             self.MAX_CONTINUOUS_TIME_SEC / self.CONTINUOUS_TIME_STEP_SEC
         )
@@ -31,31 +32,33 @@ class Settings:
 
         self.TRANSITION_FRAME_STEP = 1
 
-    SOURCE_ROOT = os.path.abspath(os.path.dirname(__file__))  # type: str
-    PROJECT_ROOT = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..")
-    )  # type: str
-    MY_DATA_FOLDER_PATH = os.path.join(PROJECT_ROOT, "my-data")
-    CLUSTER_DATA_FOLDER_PATH = os.path.join(
-        PROJECT_ROOT, "original-data", "ClusterData", "ExpandedRect1.5"
-    )  # type: str
-    JOINT_DATA_FOLDER_PATH = os.path.join(
-        PROJECT_ROOT, "original-data", "JointData"
-    )  # type: str
-    USABLE_CONVERSATIONS_FILE_PATH = os.path.join(
-        PROJECT_ROOT, "original-data", "ClusterData", "UsableConversations.json"
-    )  # type: str
-    HUMAN_READABLE_FOLDER_PATH = os.path.join(
-        PROJECT_ROOT, MY_DATA_FOLDER_PATH, "human-readable-conversations"
-    )  # type: str
+        self.SOURCE_ROOT = os.path.abspath(os.path.dirname(__file__))  # type: str
+        self.PROJECT_ROOT = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..")
+        )  # type: str
+        self.MY_DATA_FOLDER_PATH = os.path.join(self.PROJECT_ROOT, "my-data")
+        self.CLUSTER_DATA_FOLDER_PATH = os.path.join(
+            self.PROJECT_ROOT, "original-data", "ClusterData", "ExpandedRect1.5"
+        )  # type: str
+        self.JOINT_DATA_FOLDER_PATH = os.path.join(
+            self.PROJECT_ROOT, "original-data", "JointData"
+        )  # type: str
+        self.USABLE_CONVERSATIONS_FILE_PATH = os.path.join(
+            self.PROJECT_ROOT, "original-data", "ClusterData", "UsableConversations.json"
+        )  # type: str
+        self.HUMAN_READABLE_FOLDER_PATH = os.path.join(
+            self.PROJECT_ROOT, self.MY_DATA_FOLDER_PATH, "human-readable-conversations"
+        )  # type: str
 
-    READABLE_METADATA_FILE_PATH = os.path.join(
-        MY_DATA_FOLDER_PATH, "human-readable-conversation-metadata.json"
-    )
-    COMPARISON_PLOTS_FOLDER_PATH = os.path.join(
-        MY_DATA_FOLDER_PATH, "comparisons_plots"
-    )
-    TRANSITION_RESULTS_FOLDER_PATH = os.path.join(
-        MY_DATA_FOLDER_PATH, "transition_results"
-    )
-    HISTOGRAMS_FOLDER_PATH = os.path.join(MY_DATA_FOLDER_PATH, "histograms")
+        self.READABLE_METADATA_FILE_PATH = os.path.join(
+            self.MY_DATA_FOLDER_PATH, "human-readable-conversation-metadata.json"
+        )
+        self.COMPARISON_PLOTS_FOLDER_PATH = os.path.join(
+            self.MY_DATA_FOLDER_PATH, "comparisons_plots"
+        )
+        self.TRANSITION_RESULTS_FOLDER_PATH = os.path.join(
+            self.MY_DATA_FOLDER_PATH, "transition_results"
+        )
+        self.HISTOGRAMS_FOLDER_PATH = os.path.join(self.MY_DATA_FOLDER_PATH, "histograms")
+
+

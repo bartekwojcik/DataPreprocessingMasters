@@ -152,14 +152,6 @@ def plot_kullback_leibler(
                     plt.close(fig)
 
 
-"""
-
-get original conversation
-get policies
-"play" policies
-get their transition counts
-compare their KL values
-"""
 
 """
 this script: 
@@ -174,8 +166,9 @@ then:
 """
 
 if __name__ == "__main__":
+    #these two should be adjusted
     WORK_FOLDER_PATH = "C:\\Users\\kicjo\\Documents\\PythonProjects\\DataPreprocessing-Masters\\my-data\\human_readable_conversation_11.json\\policies"
-    HISTOGRAMS_FOLDER_PATH = os.path.join(WORK_FOLDER_PATH, "histograms")
+    HISTOGRAMS_FOLDER_PATH = os.path.join(WORK_FOLDER_PATH, "histograms") #place where results will be stored
 
     settings = Settings()
     TIME_SIZE = settings.TIME_SIZE

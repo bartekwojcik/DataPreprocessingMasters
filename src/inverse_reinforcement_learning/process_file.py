@@ -22,9 +22,31 @@ def process_file(
         Q_ALPHA,
         Q_EPSILON,
         IRL_SOLVER_EPSILON,
+        IRL_SOLVER_ITERATIONS,
         heatmap_folder_path,
         policies_save_folder_path
 ):
+    """
+    Processes single file for Inverse reinforcement learning algorithm and creates its output in heatmap_folder_path and policies_save_folder_path
+    :param metadata_json: metadata for this conversation
+    :param filename: name of the conversation file
+    :param conv_json: conversation data as dictionary
+    :param full_file_name: full path to the file
+    :param VERBOSE: shows or hides intermediate plots during the program run
+    :param q_learning_episode_length: amout of monte carlo episodes for Q learning
+    :param transition_frame_step: if 1 it checks frame by frame, if 2, every second frame are "neighbouring", does not lose any data
+    :param maximum_time_size_frames: how many frames are the maximum amount of frames before staying in the same state restarts time countdown to zero
+    :param Q_ITERATIONS: monte carlo part for q learning
+    :param DISCOUNT_FACTOR: gamma for Q learning
+    :param Q_ALPHA: learning step for q learning
+    :param Q_EPSILON: epsilon-greedy policy paramter for q learning
+    :param IRL_SOLVER_EPSILON: distance for Inverese reinforcement learning algorithm to say "this policy is this good enough"
+    :param IRL_SOLVER_ITERATIONS: number of max iteration of IRL
+    :param heatmap_folder_path: path to folder where the heatmaps will be produces
+    :param policies_save_folder_path: path to folder where policies .npy files will be stored
+    :return:
+    """
+
     print(f"file started: {full_file_name} ")
 
     this_file_metadata = metadata_json[filename]
@@ -41,7 +63,6 @@ def process_file(
     #mdp_graph.plot_probabilities_per_state(VERBOSE,filename, settings)
 
     data_length = len(conv_json)
-    IRL_SOLVER_ITERATIONS = 3
 
     policy_player = HighPolicyPlayer(this_file_metadata, mdp_graph, 0.05)
 

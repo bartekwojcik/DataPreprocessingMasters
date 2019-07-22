@@ -10,7 +10,7 @@ from transition_counting.heatmap_plotter import plot_count_heatmap
 
 class AtHighMdpModel:
     """
-    mdp model where person at high is an agent and low person is a part of environemt. Action's probabilities are defined from .xlsx file
+    mdp model where person at high is an agent and low person is a part of environment.
 
     To maintain flexibility we retain an idea that (s,a) might have stochastic results, therefore each
     Graph[S][A] is a list of tuples (prob_of_going_to_next_state, next_state).
@@ -80,27 +80,6 @@ class AtHighMdpModel:
                     else:
                         #we are going to new state and we are going to time step 0
                         self.graph[s][a].append((proba, a + p_a + (0,)))
-        debug = 5
 
 
-    def plot_probabilities_per_state(self,verbose:bool,file_name:str, settings:Settings):
-
-        results = np.zeros_like(self.Ca)
-
-        for s in self.states:
-            for a in self.actions:
-                debug = 5
-                s_wo_time = s[:4]
-                time = (s[4],)
-                for proba, next_state in self.graph[s][a]:
-                    next_s_wo_time = next_state[:4]
-
-                    results[s_wo_time + next_s_wo_time + time] += proba
-
-        translator = TransitionCountingTranslator(results,settings)
-        count_matrix = translator.transform_to_2D_count_matrix()
-
-
-        file_name_count = os.path.join(settings.COMPARISON_PLOTS_FOLDER_PATH,f"{file_name}_MDP_MODEL_GRAPTH_counts.jpg")
-        plot_count_heatmap(np.round(count_matrix, decimals=2),file_name_count,show=verbose)
 

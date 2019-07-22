@@ -30,9 +30,9 @@ def plot_heatmaps(result_array:np.ndarray, file_name_counts:str, file_name_proba
 
 def main_transition_counting():
     """
-       the time transitions are from perspective of high, namely: after what time did the at high person change his state
-
-       """
+    counts transitions from state to state with regard to time and stores them in file as defined in variable "result_file_path"
+    :return:
+    """
     settings = Settings()
     folder_path = settings.HUMAN_READABLE_FOLDER_PATH
     time_size = settings.TIME_SIZE

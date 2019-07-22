@@ -57,7 +57,10 @@ def save_at_high_calc_to_file(at_high_at_low_calculators: List[AtHightAtLowCalcu
 
 
 if __name__ == "__main__":
-    sett = Settings(1, 0.99, 0.001, 0.1)
+    """
+    Translates the conversation from "original-data" to human readable format
+    """
+    sett = Settings()
 
     with open(sett.USABLE_CONVERSATIONS_FILE_PATH, "r") as usable_conversation_file:
 
